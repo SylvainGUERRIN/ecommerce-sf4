@@ -1,0 +1,52 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Modification du mot de passe{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-5 text-center blue-title">Modifications de votre mot de passe</h1>
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-light">
+                    <hr>
+                    <div class="row mb-5">
+                        <div class="col-3">
+                            {{ form_label(form.oldPassword) }}
+                        </div>
+                        <div class="col-9">
+                            {{ form_widget(form.oldPassword) }}
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-3">
+                            {{ form_label(form.newPassword) }}
+                        </div>
+                        <div class="col-9">
+                            {{ form_widget(form.newPassword) }}
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-3">
+                            {{ form_label(form.confirmPassword) }}
+                        </div>
+                        <div class="col-9">
+                            {{ form_widget(form.confirmPassword) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="alert alert-light text-center">
+                    <p>Si vous avez terminé vos modifications, vous pouvez sauvegarder.</p>
+                    <button type="submit" class="btn btn-color">
+                        Enregistrer votre nouveau mot de passe
+                    </button>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row mb-5 mt-5">
+            <div class="col-12">
+                <h1 class="text-center blue-title">Formulaire d'inscription</h1>
+            </div>
+        </div>
+        <div class="row mb-5 mt-5">
+            <div class="col-12">
+                {{ form_start(form) }}
+                <div class="row mb-5">
+                    <div class="col-3">
+                        {{ form_label(form.username) }}:
+                    </div>
+                    <div class="col-9">
+                        {{ form_widget(form.username) }}
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-3">
+                        {{ form_label(form.mail) }}:
+                    </div>
+                    <div class="col-9">
+                        {{ form_widget(form.mail) }}
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-3">
+                        {{ form_label(form.pass) }}:
+                    </div>
+                    <div class="col-9">
+                        {{ form_widget(form.pass) }}
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-color btn-lg">S'inscrire</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'user/partials/base.html.twig' %}
+{% block title %}Modification de profil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-5 text-center blue-title">Modifications du profil</h1>
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2 class="alert-heading text-center blue-title">Informations générales</h2>
+                    <hr>
+                    {{ form_row(form.username) }}
+                    {{ form_row(form.mail) }}
+                </div>
+            </div>
+            {#            <div class="col">#}
+            {#                <div class="alert alert-light">#}
+            {#                    <h2 class="alert-heading text-center blue-title">Avatar</h2>#}
+            {#                    <hr>#}
+            {#                    {{ form_row(form.avatar) }}#}
+            {#                </div>#}
+            {#            </div>#}
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-light text-center">
+                    <p>Si vous avez terminé vos modifications, vous pouvez sauvegarder.</p>
+                    <button type="submit" class="btn btn-primary">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/filetype-field.js') }}"></script>
+{% endblock %}
