@@ -184,12 +184,4 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/member-space", name="member_space")
-     */
-    public function member()
-    {
-        return $this->render('user/member.html.twig');
-    }
-
 }
