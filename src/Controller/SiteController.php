@@ -30,6 +30,16 @@ class SiteController extends AbstractController
     }
 
     /**
+     * page de la liste d'une catégorie de produits
+     * @Route("/categorie-de-produits", name="products_category")
+     * @return Response
+     */
+    public function productCategory(): Response
+    {
+        return $this->render('site/products-category.html.twig',[]);
+    }
+
+    /**
      * page d'un produit dans le détail
      * @Route("/nom-du-produit", name="single-product")
      * @return Response
@@ -37,5 +47,25 @@ class SiteController extends AbstractController
     public function singleProduct(): Response
     {
         return $this->render('site/single-product.html.twig',[]);
+    }
+
+    /**
+     * page contact
+     * @Route("/contact", name="contact")
+     * @return Response
+     */
+    public function contact(): Response
+    {
+        return $this->render('site/contact.html.twig',[]);
+    }
+
+    /**
+     * mentions
+     * @Route("/mentions-legales", name="mentions")
+     * @return Response
+     */
+    public function mentions(): Response
+    {
+        return $this->render('site/mentions-legales.html.twig',[]);
     }
 }
