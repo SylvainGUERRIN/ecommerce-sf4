@@ -12,18 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class AdminArticlesController
  * @package App\Controller
  *
- * @Route("compo-admin/administration")
+ * @Route("compo-admin/administration/blog")
  */
-class AdminArticlesController extends AbstractController
+class AdminBlogController extends AbstractController
 {
     /**
-     * @Route("/", name="dashboard")
+     * @Route("/", name="dashboard-blog")
      * @return Response
      */
     public function dashboard(): Response
     {
 
-        return $this->render('admin/articles/dashboard.html.twig');
+        return $this->render('admin/blog/dashboard.html.twig');
     }
 
 
