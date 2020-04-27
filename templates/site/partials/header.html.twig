@@ -38,6 +38,13 @@
                         <a href="{{ path('user_connexion') }}" class="nav-link">Connexion</a>
                     </li>
                 {% endif %}
+                <li id="cart-nav-item" class="nav-item cart-nav-item">
+                    <a href="{{ path('cart') }}" class="nav-link cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="cart-count">2</span>
+                        Panier
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

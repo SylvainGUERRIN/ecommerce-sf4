@@ -12,12 +12,12 @@ class PaymentController extends AbstractController
 {
 
     /**
-     * @Route("/panier", name="basket")
+     * @Route("/panier", name="cart")
      * @return Response
      */
-    public function basket(): Response
+    public function cart(): Response
     {
-        return $this->render('payment/basket.html.twig',[]);
+        return $this->render('payment/cart.html.twig',[]);
     }
 
     /**

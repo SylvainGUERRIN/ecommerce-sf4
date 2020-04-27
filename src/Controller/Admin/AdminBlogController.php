@@ -23,8 +23,7 @@ class AdminBlogController extends AbstractController
     public function dashboard(): Response
     {
 
-        return $this->render('admin/blog/dashboard.html.twig');
+        return $this->render('admin/blog/dashboard-blog.html.twig');
     }
-
 
 }

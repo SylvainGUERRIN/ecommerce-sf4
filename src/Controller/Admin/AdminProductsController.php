@@ -16,12 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminProductsController extends AbstractController
 {
     /**
-     * @Route("/", name="dashboard-blog")
+     * @Route("/", name="dashboard-products")
      * @return Response
      */
     public function dashboard(): Response
     {
 
-        return $this->render('admin/blog/dashboard.html.twig');
+        return $this->render('admin/products/dashboard-products.html.twig');
     }
 }
