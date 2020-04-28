@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,6 +52,22 @@ class User
      * @ORM\Column(type="json")
      */
     private $role = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserCommands", mappedBy="user")
+     */
+    private $userCommands;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserAddress", mappedBy="user")
+     */
+    private $userAddresses;
+
+    public function __construct()
+    {
+        $this->userCommands = new ArrayCollection();
+        $this->userAddresses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +154,68 @@ class User
     public function setRole(array $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserCommands[]
+     */
+    public function getUserCommands(): Collection
+    {
+        return $this->userCommands;
+    }
+
+    public function addUserCommand(UserCommands $userCommand): self
+    {
+        if (!$this->userCommands->contains($userCommand)) {
+            $this->userCommands[] = $userCommand;
+            $userCommand->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCommand(UserCommands $userCommand): self
+    {
+        if ($this->userCommands->contains($userCommand)) {
+            $this->userCommands->removeElement($userCommand);
+            // set the owning side to null (unless already changed)
+            if ($userCommand->getUser() === $this) {
+                $userCommand->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserAddress[]
+     */
+    public function getUserAddresses(): Collection
+    {
+        return $this->userAddresses;
+    }
+
+    public function addUserAddress(UserAddress $userAddress): self
+    {
+        if (!$this->userAddresses->contains($userAddress)) {
+            $this->userAddresses[] = $userAddress;
+            $userAddress->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserAddress(UserAddress $userAddress): self
+    {
+        if ($this->userAddresses->contains($userAddress)) {
+            $this->userAddresses->removeElement($userAddress);
+            // set the owning side to null (unless already changed)
+            if ($userAddress->getUser() === $this) {
+                $userAddress->setUser(null);
+            }
+        }
 
         return $this;
     }
