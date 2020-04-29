@@ -24,7 +24,7 @@ security:
             form_login:
                 login_path: admin_connexion
                 check_path: admin_connexion
-                default_target_path: dashboard
+                default_target_path: admin_dashboard
                 always_use_default_target_path: true
                 csrf_token_generator: security.csrf.token_manager
 

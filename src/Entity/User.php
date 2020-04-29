@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -218,5 +219,68 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function serialize():string
+    {
+        return serialize([$this->id, $this->firstname, $this->lastname, $this->mail, $this->pass]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized): void
+    {
+        [$this->id, $this->firstname, $this->lastname, $this->mail, $this->pass] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function getRoles(): ?array
+    {
+        return $this->role;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPassword(): ?string
+    {
+        return $this->pass;
+    }
+
+    /**
+     * @inheritDoc
+     * @return string|void|null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * @return string|void
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->firstname;
     }
 }

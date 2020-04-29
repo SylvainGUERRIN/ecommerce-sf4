@@ -21,7 +21,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
 {#                                <img src="{% if app.user.avatarurl is null %}{{ asset('avatars/user-default-64px.png') }}#}
 {#                        {% else %}{{ asset('avatars/' ~ app.user.avatarurl) }}{% endif %}" alt="Avatar de {{ app.user.username }}" class="avatar-mini rounded-circle">#}
-                            {{ app.user.username }}
+                            {{ app.user.firstname }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountDropdownLink">
                             <a href="{{ path('user_profil') }}" class="dropdown-item">Modifier mon profil</a>

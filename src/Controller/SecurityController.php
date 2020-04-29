@@ -82,10 +82,10 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hashPass = $encoder->encodePassword($user, $user->getPassword());
+            $hashPass = $encoder->encodePassword($user, $user->getPass());
             $user->setPass($hashPass);
 //            change it after set user admin for next user
-            $user->setRole('user');
+            $user->setRole(['ROLE_USER']);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

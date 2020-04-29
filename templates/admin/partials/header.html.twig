@@ -1,4 +1,4 @@
-{% if app.user is not null %}
+{% if app.user is not null and is_granted('ROLE_ADMIN') %}
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="accueil">Logo du site</a>
@@ -9,19 +9,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Accueil</a>
+                        <a class="nav-link" href="{{ path('admin_dashboard') }}">Administration</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Some stuff</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="#">Other stuff</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
                             {#                                <img src="{% if app.user.avatarurl is null %}{{ asset('avatars/user-default-64px.png') }}#}
                             {#                        {% else %}{{ asset('avatars/' ~ app.user.avatarurl) }}{% endif %}" alt="Avatar de {{ app.user.username }}" class="avatar-mini rounded-circle">#}
-                            {{ app.user.username }}
+                            {{ app.user.firstname }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountDropdownLink">
                             <a href="{{ path('admin_profil') }}" class="dropdown-item">Modifier mon profil</a>
@@ -35,9 +35,11 @@
         </div>
     </nav>
 {% else %}
-    <div class="header-admin">
-        <a class="brand" href="accueil">Logo du site</a>
-        <h1>Connexion à l'administration</h1>
+    <div class="header-admin pb-5">
+        <div class="container text-center">
+            <a class="brand" href="accueil">Logo du site</a>
+            <h1 class="text-white mt-3">Connexion à l'administration</h1>
+        </div>
     </div>
 {% endif %}
 {% for label, messages in app.flashes %}

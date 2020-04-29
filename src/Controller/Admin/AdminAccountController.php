@@ -31,7 +31,7 @@ class AdminAccountController extends AbstractController
     public function adminConnec(AuthenticationUtils $utils, Security $security): Response
     {
         if ($security->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         $error = $utils->getLastAuthenticationError();
@@ -69,10 +69,10 @@ class AdminAccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hashPass = $encoder->encodePassword($user, $user->getPassword());
+            $hashPass = $encoder->encodePassword($user, $user->getPass());
             $user->setPass($hashPass);
 //            change it after set user admin for next user
-            $user->setRole('admin');
+            $user->setRole(['ROLE_ADMIN']);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -171,5 +171,11 @@ class AdminAccountController extends AbstractController
         ]);
     }
 
-
+    /**
+     * @Route("/administration", name="admin_dashboard")
+     */
+    public function administrate(): Response
+    {
+        return $this->render('admin/account/dashboard.html.twig', []);
+    }
 }

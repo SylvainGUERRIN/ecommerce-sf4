@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,9 +17,14 @@ class InscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, [
+            ->add('firstname', TextType::class, [
                 'required' => true,
-                'label' =>'Votre nom',
+                'label' =>'Votre prénom:',
+                'attr' => ['placeholder' => 'Veuillez mettre votre nom']
+            ])
+            ->add('lastname', TextType::class, [
+                'required' => true,
+                'label' =>'Votre nom de famille:',
                 'attr' => ['placeholder' => 'Veuillez mettre votre nom']
             ])
             ->add('mail', EmailType::class, [
@@ -26,10 +32,15 @@ class InscriptionType extends AbstractType
                 'label' =>'Votre email',
                 'attr' => ['placeholder' => 'Veuillez mettre votre email']
             ])
-            ->add('pass', PasswordType::class, [
+            ->add('pass', RepeatedType::class, [
+                'label' =>'Votre mot de passe:',
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
+                'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'label' =>'Votre mot de passe',
-                'attr' => ['placeholder' => 'Veuillez mettre votre mot de passe']
+                'first_options'  => ['label' => false, 'attr' => ['placeholder' => 'Mot de passe']],
+                'second_options' => ['label' => false, 'attr' => [
+                    'placeholder' => 'Confirmer le mot de passe']],
             ])
         ;
     }
