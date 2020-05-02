@@ -1,0 +1,22 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Créer un nouveau Produit{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-5 mb-5">
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.slug) }}
+{#                {{ form_row(form.imageFile) }}#}
+                {{ form_row(form.description) }}
+                {{ form_row(form.price) }}
+                {{ form_row(form.category) }}
+                {{ form_row(form.dispo) }}
+                {{ form_row(form.tva) }}
+                <button type="submit" class="btn btn-color">Enregistrer le nouveau produit</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

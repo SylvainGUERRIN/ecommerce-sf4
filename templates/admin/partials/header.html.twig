@@ -1,7 +1,7 @@
 {% if app.user is not null and is_granted('ROLE_ADMIN') %}
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="accueil">Logo du site</a>
+            <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Logo du site</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -12,7 +12,7 @@
                         <a class="nav-link" href="{{ path('admin_dashboard') }}">Administration</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Some stuff</a>
+                        <a class="nav-link" href="{{ path('dashboard-products') }}">Produits</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Other stuff</a>

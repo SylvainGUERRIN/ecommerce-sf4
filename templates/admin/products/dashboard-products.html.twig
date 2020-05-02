@@ -2,5 +2,69 @@
 {% block title %}Dashboard Produits{% endblock %}
 
 {% block body %}
-
+    <div class="container">
+        <div class="row mt-5 mb-3">
+            <div class="col-12 text-center">
+                <a href="{{ path('product_create') }}" class="btn btn-color">Ajouter un nouveau produit</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Image</th>
+                        <th>description</th>
+                        <th>Disponibilité</th>
+                        <th>catégorie</th>
+                        <th>Prix</th>
+                        <th>TVA</th>
+                        <th>date de création</th>
+                        <th>date de modification</th>
+                        <th>editer</th>
+                        <th>supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+{#                            <td>{% if article.imageLeadUrl is not null %}#}
+{#                                    <img src="{{ vich_uploader_asset(article, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
+{#                                {% else %}#}
+{#                                    Cet article n'a pas encore d'image#}
+{#                                {% endif %}#}
+{#                            </td>#}
+{#                            <td>{{ article.content | slice(0,30) }}...</td>#}
+{#                            <td>{% if article.categoryId is not null %}{{ article.categoryId.name }}{% else %}Cet article n'a pas encore de catégorie{% endif %}</td>#}
+{#                            <td>{% if article.subcategoryId is not null %}{{ article.subcategoryId.name }}{% else %}Cet article n'a pas encore de catégorie{% endif %}</td>#}
+{#                            <td>{% if article.userId is not null %}{{ article.userId.name }}{% else %}Cet article n'a pas encore d'auteur{% endif %}</td>#}
+{#                            <td>{{ article.articleCreatedAt | date("d/m/Y H:i:s") }}</td>#}
+{#                            <td>{% if article.articleModifiedAt is not null %}{{ article.articleModifiedAt | date("d/m/Y H:i:s") }}{% else %}Cet article n'a pas encore été modifié{% endif %}</td>#}
+{#                            <td>#}
+{#                                <a href="{{ path('article_edit', {'slug': article.slug}) }}" class="btn btn-color">#}
+{#                                    <i class="fas fa-edit"></i>#}
+{#                                </a>#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                #}{#                            <a href="{{ path('article_delete', {'slug': article.slug}) }}" class="btn btn-danger">#}
+{#                                #}{#                                <i class="fas fa-trash"></i>#}
+{#                                #}{#                            </a>#}
+{#                                <form action="{{ path('article_delete', {'slug': article.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">#}
+{#                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>#}
+{#                                </form>#}
+{#                            </td>#}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 nav-pagination">
+                {{ knp_pagination_render(products) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
