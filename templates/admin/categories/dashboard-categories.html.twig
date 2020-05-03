@@ -1,0 +1,52 @@
+{% extends 'admin/partials/base.html.twig' %}
+
+{% block title %}Dashboard des catégories{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5 mb-3">
+            <div class="col-12 text-center">
+                <a href="{{ path('category_create') }}" class="btn btn-color">Ajouter une nouvelle catégorie</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mt-5 mb-5">La liste des catégories</h1>
+            </div>
+        </div>
+        <div class="row">
+                {% if categories is not empty %}
+                    {% for categorie in categories %}
+                        <div class="col-sm-12 col-md-4 display-card">
+                            <div class="card bg-light mb-3">
+                                <div class="card-header text-center">
+                                    <h1>{{ categorie.name }}</h1>
+                                </div>
+                                <div class="card-body text-center">
+                                    {% if categorie.description is not null %}
+                                        <p class="card-text">{{ categorie.description }}</p>
+                                    {% else %}
+                                        <p>Cette catégorie n'a pas de description</p>
+                                    {% endif %}
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+{#                                            <a href="{{ path('categorie_edit', {'slug': categorie.slug}) }}" class="btn btn-color">#}
+{#                                                <i class="fas fa-edit"></i>#}
+{#                                            </a>#}
+{#                                            <a href="{{ path('categorie_delete', {'slug': categorie.slug}) }}" class="btn btn-danger">#}
+{#                                                <i class="fas fa-trash"></i>#}
+{#                                            </a>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+        </div>
+
+    </div>
+{% endblock %}

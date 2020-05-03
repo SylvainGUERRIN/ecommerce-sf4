@@ -19,12 +19,12 @@ class InscriptionType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'required' => true,
-                'label' =>'Votre prénom:',
+                'label' =>'Votre prénom',
                 'attr' => ['placeholder' => 'Veuillez mettre votre nom']
             ])
             ->add('lastname', TextType::class, [
                 'required' => true,
-                'label' =>'Votre nom de famille:',
+                'label' =>'Votre nom de famille',
                 'attr' => ['placeholder' => 'Veuillez mettre votre nom']
             ])
             ->add('mail', EmailType::class, [
@@ -33,7 +33,7 @@ class InscriptionType extends AbstractType
                 'attr' => ['placeholder' => 'Veuillez mettre votre email']
             ])
             ->add('pass', RepeatedType::class, [
-                'label' =>'Votre mot de passe:',
+                'label' =>'Votre mot de passe',
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'options' => ['attr' => ['class' => 'password-field']],

@@ -62,7 +62,7 @@ class Product
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="products")
      */
     private $category;
 
@@ -175,12 +175,12 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?ProductCategory
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?ProductCategory $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
@@ -254,11 +254,11 @@ class Product
     {
         if(empty($this->slug)){
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->title);
+            $this->slug = $slugify->slugify($this->name);
         }
         if(!empty($this->slug)){
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->title);
+            $this->slug = $slugify->slugify($this->name);
         }
     }
 }

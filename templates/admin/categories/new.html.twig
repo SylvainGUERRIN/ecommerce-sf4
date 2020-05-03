@@ -1,0 +1,16 @@
+{% extends 'admin/partials/base.html.twig' %}
+
+{% block title %}Création d'une nouvelle catégorie{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5 mb-5">
+            <div class="col-12">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-color">Enregistrer la nouvelle catégorie</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

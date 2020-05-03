@@ -1,5 +1,5 @@
 {% extends 'admin/partials/base.html.twig' %}
-{% block title %}Créer un nouveau Produit{% endblock %}
+{% block title %}Editer un Produit{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -8,13 +8,13 @@
                 {{ form_start(form) }}
                 {{ form_row(form.name) }}
 {#                {{ form_row(form.slug) }}#}
-{#                {{ form_row(form.imageFile) }}#}
+                {#                {{ form_row(form.imageFile) }}#}
                 {{ form_row(form.description) }}
                 {{ form_row(form.price) }}
                 {{ form_row(form.category) }}
                 {{ form_row(form.dispo) }}
                 {{ form_row(form.tva) }}
-                <button type="submit" class="btn btn-color">Enregistrer le nouveau produit</button>
+                <button type="submit" class="btn btn-color">Confirmer les modifications sur le produit</button>
                 {{ form_end(form) }}
             </div>
         </div>

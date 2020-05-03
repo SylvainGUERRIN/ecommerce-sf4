@@ -2,14 +2,21 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="Une autre catégorie posséde déjà ce titre, merci de le modifier"
+ * )
  */
-class ProductCategory
+class Category
 {
     /**
      * @ORM\Id()
@@ -113,5 +120,25 @@ class ProductCategory
         }
 
         return $this;
+    }
+
+    /**
+     * Permet d'initialiser un slug
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
+     * @return void
+     */
+    public function initializeSlug(): void
+    {
+        if(empty($this->slug)){
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->name);
+        }
+        if(!empty($this->slug)){
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->name);
+        }
     }
 }

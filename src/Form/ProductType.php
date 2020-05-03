@@ -5,7 +5,7 @@ namespace App\Form;
 
 
 use App\Entity\Product;
-use App\Entity\ProductCategory;
+use App\Entity\Category;
 use App\Entity\Tva;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,19 +31,20 @@ class ProductType extends AbstractType
                 'label' => "Nom du produit",
                 'attr' => ['placeholder' => "Mettez le nom du produit"]
             ])
-            ->add('slug', TextType::class, [
-                'label' => "L'url de l'article",
-                'attr' => ['placeholder' => "Ce champ n'est pas obligatoire.
-                L'url se met automatiquement sauf si vous voulez la personalisée"],
-                'required' => false
-            ])
+//            ->add('slug', TextType::class, [
+//                'label' => "L'url de l'article",
+//                'attr' => ['placeholder' => "Ce champ n'est pas obligatoire.
+//                L'url se met automatiquement sauf si vous voulez la personalisée"],
+//                'required' => false
+//            ])
             ->add('description', TextareaType::class, [
                 'label' => "Description du produit",
                 'attr' => ['placeholder' => "Mettez une description de votre produit la plus compléte possible pour vos clients."],
             ])
             ->add('dispo', CheckboxType::class, [
                 'label' => "Disponibilité du produit",
-                'label_attr' => ['class' => 'switch-custom']
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
             ])
 //            ->add('imageFile',  FileType::class, [
 //                'label' => 'Téléchargez une image pour votre article',
@@ -63,7 +64,7 @@ class ProductType extends AbstractType
             ->add('category', EntityType::class, [
                 'label' => "Choississez la catégorie correspondant au produit",
                 'required' => false,
-                'class' => ProductCategory::class,
+                'class' => Category::class,
                 'choice_label' => 'name',
                 //'multiple' => true
             ])
