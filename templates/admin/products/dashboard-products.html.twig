@@ -24,6 +24,7 @@
                         <th>Disponibilité</th>
                         <th>catégorie</th>
                         <th>Prix</th>
+                        <th>Quantité</th>
                         <th>TVA</th>
                         <th>date de création</th>
                         <th>date de modification</th>
@@ -36,7 +37,8 @@
                         <tr>
                             <td>{{ product.name }}</td>
                             <td>{% if product.productImage is not null %}
-{#                                    <img src="{{ vich_uploader_asset(article, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
+                                    <img src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}" alt="image du produit" width="100px">
+{#                                    <img src="{{ vich_uploader_asset(product, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
                                 {% else %}
                                     Cet article n'a pas encore d'image
                                 {% endif %}
@@ -56,6 +58,7 @@
                                 {% endif %}
                             </td>
                             <td>{{ product.price }} €</td>
+                            <td>{{ product.quantity }}</td>
                             <td>
                                 {% if product.tva is not null %}
                                     {{ product.tva.name }}

@@ -81,6 +81,11 @@ class Product
      */
     private $tva;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantity;
+
     public function __construct()
     {
         $this->product_images = new ArrayCollection();
@@ -260,5 +265,17 @@ class Product
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->name);
         }
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
     }
 }

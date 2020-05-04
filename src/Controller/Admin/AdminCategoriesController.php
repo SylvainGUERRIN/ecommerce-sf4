@@ -76,4 +76,48 @@ class AdminCategoriesController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @param Category $category
+     * @param Request $request
+     * @return Response
+     * @Route("/edit-category/{slug}", name="category_edit")
+     */
+    public function edit(Category $category, Request $request): Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->em->persist($category);
+            $this->em->flush();
+
+            $this->addFlash('success',
+                "La catégorie <strong>{$category->getName()}</strong> a bien été modifiée !"
+            );
+            return $this->redirectToRoute('dashboard-categories');
+        }
+
+        return $this->render('admin/categories/edit.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Category $category
+     * @return Response
+     * @Route("/delete-category/{slug}", name="category_delete")
+     */
+    public function delete(Category $category): Response
+    {
+        $this->em->remove($category);
+        $this->em->flush();
+
+        $this->addFlash(
+            'success',
+            "La catégorie <strong>{$category->getName()}</strong> a  bien été supprimée !"
+        );
+        return $this->redirectToRoute('dashboard-categories');
+    }
 }

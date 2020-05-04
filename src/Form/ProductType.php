@@ -46,6 +46,11 @@ class ProductType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
+            ->add('quantity', NumberType::class, [
+                'label' => "Quantité en stock",
+//                'label_attr' => ['class' => 'switch-custom'],
+                'required' => true
+            ])
 //            ->add('imageFile',  FileType::class, [
 //                'label' => 'Téléchargez une image pour votre article',
 //                'data_class' => null,
@@ -61,6 +66,11 @@ class ProductType extends AbstractType
 //                    ])
 //                ]
 //            ])
+            ->add('productImage', ProductImageType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => true
+            ])
             ->add('category', EntityType::class, [
                 'label' => "Choississez la catégorie correspondant au produit",
                 'required' => false,

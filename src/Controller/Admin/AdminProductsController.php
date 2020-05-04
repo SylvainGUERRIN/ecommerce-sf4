@@ -64,7 +64,7 @@ class AdminProductsController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-
+//            dd($form);
             $product->setCreatedAt(new \DateTime('now'));
 
             $this->em->persist($product);

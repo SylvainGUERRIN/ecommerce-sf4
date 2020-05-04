@@ -1,0 +1,16 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Editer une catégorie{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-5 mb-5">
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                <button type="submit" class="btn btn-color">Confirmer les modifications sur cette catégorie</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
