@@ -48,7 +48,6 @@ class ProductType extends AbstractType
             ])
             ->add('quantity', NumberType::class, [
                 'label' => "Quantité en stock",
-//                'label_attr' => ['class' => 'switch-custom'],
                 'required' => true
             ])
 //            ->add('imageFile',  FileType::class, [

@@ -4,6 +4,11 @@
 {% block body %}
     <div class="container">
         <div class="row">
+            <div class="col-12 mt-5">
+                <h1 class="text-center">Créer un nouveau Produit</h1>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12 mt-5 mb-5">
                 {{ form_start(form) }}
                 {{ form_row(form.name) }}
@@ -14,7 +19,7 @@
                 {{ form_row(form.dispo) }}
                 {{ form_row(form.quantity) }}
                 {{ form_row(form.tva) }}
-                <button type="submit" class="btn btn-color">Enregistrer le nouveau produit</button>
+                <button type="submit" class="btn btn-color mt-3">Enregistrer le nouveau produit</button>
                 {{ form_end(form) }}
             </div>
         </div>

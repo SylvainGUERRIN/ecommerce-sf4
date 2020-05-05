@@ -11,6 +11,36 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="text-center mt-5 mb-5">La liste des TVA</h1>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>multiplicateur</th>
+                        <th>nom</th>
+                        <th>valeur</th>
+                        <th>editer</th>
+                        <th>supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tva in tvas %}
+                        <tr>
+                            <td>{{ tva.multiplicate }}</td>
+                            <td>{{ tva.name }}</td>
+                            <td>{{ tva.value }} €</td>
+                            <td>
+                                <a href="{{ path('tva_edit', {'id': tva.id}) }}" class="btn btn-color">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{ path('tva_delete', {'id': tva.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cette TVA ?')">
+                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row">

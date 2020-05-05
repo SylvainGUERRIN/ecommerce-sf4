@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,7 +23,7 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @method Article[]
+     * @method Product[]
      * @return Query
      * @throws \Exception
      */
@@ -34,5 +36,18 @@ class ProductRepository extends ServiceEntityRepository
             ->orderBy('p.created_at','DESC')
             ->getQuery();
 //            ->getResult();
+    }
+
+    /**
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countNbProducts()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(p)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

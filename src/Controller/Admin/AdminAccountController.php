@@ -3,9 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\PasswordUpdate;
+use App\Entity\UserCommands;
 use App\Form\AccountType;
 use App\Form\InscriptionType;
 use App\Form\PasswordUpdateType;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
+use App\Repository\UserCommandsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -173,9 +177,20 @@ class AdminAccountController extends AbstractController
 
     /**
      * @Route("/administration", name="admin_dashboard")
+     * @param ProductRepository $productRepository
+     * @param UserCommandsRepository $userCommandsRepository
+     * @param CategoryRepository $categoryRepository
+     * @return Response
      */
-    public function administrate(): Response
+    public function administrate(
+        ProductRepository $productRepository,
+        UserCommandsRepository $userCommandsRepository,
+        CategoryRepository $categoryRepository): Response
     {
-        return $this->render('admin/account/dashboard.html.twig', []);
+        return $this->render('admin/account/dashboard.html.twig', [
+            'nbProducts' => $productRepository->countNbProducts(),
+            'nbCommands' => $userCommandsRepository->countNbUserCommands(),
+            'nbCategories' => $categoryRepository->countNbCategories()
+        ]);
     }
 }

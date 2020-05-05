@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Tva;
+use App\Form\TvaType;
 use App\Repository\TvaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,8 +46,69 @@ class AdminTvaController extends AbstractController
      */
     public function create(Request $request): Response
     {
-        return $this->render('admin/tva/new.html.twig',[
+        $tva = new Tva();
+        $form = $this->createForm(TvaType::class, $tva);
+        $form->handleRequest($request);
 
+        if($form->isSubmitted() && $form->isValid()){
+
+            $this->em->persist($tva);
+            $this->em->flush();
+
+            $this->addFlash(
+                'success',
+                "La TVA {$tva->getName()} a bien été créée !"
+            );
+
+            return $this->redirectToRoute('dashboard-tva');
+        }
+
+        return $this->render('admin/tva/new.html.twig',[
+            'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/edit-tva/{id}", name="tva_edit")
+     * @param Tva $tva
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Tva $tva, Request $request): Response
+    {
+        $form = $this->createForm(TvaType::class, $tva);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->em->persist($tva);
+            $this->em->flush();
+
+            $this->addFlash('success',
+                "La TVA <strong>{$tva->getName()}</strong> a bien été modifiée !"
+            );
+            return $this->redirectToRoute('dashboard-tva');
+        }
+
+        return $this->render('admin/tva/edit.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Tva $tva
+     * @return Response
+     * @Route("/delete-category/{id}", name="tva_delete")
+     */
+    public function delete(Tva $tva): Response
+    {
+        $this->em->remove($tva);
+        $this->em->flush();
+
+        $this->addFlash(
+            'success',
+            "La TVA <strong>{$tva->getName()}</strong> a  bien été supprimée !"
+        );
+        return $this->redirectToRoute('dashboard-tva');
     }
 }

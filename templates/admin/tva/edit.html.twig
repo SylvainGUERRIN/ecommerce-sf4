@@ -1,19 +1,20 @@
 {% extends 'admin/partials/base.html.twig' %}
-{% block title %}Editer une catégorie{% endblock %}
+{% block title %}Editer une TVA{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-12 mt-5">
-                <h1 class="text-center">Modifications de la catégorie</h1>
+                <h1 class="text-center">Modifications de la TVA</h1>
             </div>
         </div>
-        <div class="row mb-5">
+        <div class="row">
             <div class="col-12 mt-5 mb-5">
                 {{ form_start(form) }}
+                {{ form_row(form.multiplicate) }}
                 {{ form_row(form.name) }}
-                {{ form_row(form.description) }}
-                <button type="submit" class="btn btn-color mt-3">Confirmer les modifications sur cette catégorie</button>
+                {{ form_row(form.value) }}
+                <button type="submit" class="btn btn-color">Confirmer les modifications sur cette TVA</button>
                 {{ form_end(form) }}
             </div>
         </div>

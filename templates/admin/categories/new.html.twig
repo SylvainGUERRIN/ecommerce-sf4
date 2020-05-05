@@ -4,11 +4,16 @@
 
 {% block body %}
     <div class="container">
+        <div class="row">
+            <div class="col-12 mt-5">
+                <h1 class="text-center">Créer une nouvelle catégorie</h1>
+            </div>
+        </div>
         <div class="row mt-5 mb-5">
-            <div class="col-12">
+            <div class="col-12 mb-5">
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <button type="submit" class="btn btn-color">Enregistrer la nouvelle catégorie</button>
+                <button type="submit" class="btn btn-color mt-3">Enregistrer la nouvelle catégorie</button>
                 {{ form_end(form) }}
             </div>
         </div>
