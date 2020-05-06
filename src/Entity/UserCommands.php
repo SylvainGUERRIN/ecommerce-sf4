@@ -41,6 +41,26 @@ class UserCommands
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserAddress", inversedBy="userCommands")
+     */
+    private $user_address;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $sent;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total_amount;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $sent_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +122,54 @@ class UserCommands
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUserAddress(): ?UserAddress
+    {
+        return $this->user_address;
+    }
+
+    public function setUserAddress(?UserAddress $user_address): self
+    {
+        $this->user_address = $user_address;
+
+        return $this;
+    }
+
+    public function getSent(): ?bool
+    {
+        return $this->sent;
+    }
+
+    public function setSent(?bool $sent): self
+    {
+        $this->sent = $sent;
+
+        return $this;
+    }
+
+    public function getTotalAmount(): ?float
+    {
+        return $this->total_amount;
+    }
+
+    public function setTotalAmount(float $total_amount): self
+    {
+        $this->total_amount = $total_amount;
+
+        return $this;
+    }
+
+    public function getSentAt(): ?\DateTimeInterface
+    {
+        return $this->sent_at;
+    }
+
+    public function setSentAt(?\DateTimeInterface $sent_at): self
+    {
+        $this->sent_at = $sent_at;
 
         return $this;
     }

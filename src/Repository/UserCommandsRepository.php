@@ -6,6 +6,7 @@ use App\Entity\UserCommands;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -32,5 +33,41 @@ class UserCommandsRepository extends ServiceEntityRepository
             ->select('COUNT(u)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @method Product[]
+     * @return Query
+     * @throws \Exception
+     */
+    public function findAllRecent(): Query
+    {
+
+        return $this->createQueryBuilder('u')
+            ->where('u.command_at <= :date')
+            ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
+//            ->andWhere()
+//            ->setParameter()
+            ->orderBy('u.command_at','DESC')
+            ->getQuery();
+//            ->getResult();
+    }
+
+    /**
+     * @method Product[]
+     * @return Query
+     * @throws \Exception
+     */
+    public function findAllToSent(): Query
+    {
+
+        return $this->createQueryBuilder('u')
+            ->where('u.command_at <= :date')
+            ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
+//            ->andWhere()
+//            ->setParameter()
+            ->orderBy('u.command_at','DESC')
+            ->getQuery();
+//            ->getResult();
     }
 }

@@ -10,6 +10,8 @@ use App\Form\PasswordUpdateType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserCommandsRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -181,6 +183,8 @@ class AdminAccountController extends AbstractController
      * @param UserCommandsRepository $userCommandsRepository
      * @param CategoryRepository $categoryRepository
      * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function administrate(
         ProductRepository $productRepository,

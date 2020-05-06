@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -60,6 +62,21 @@ class UserAddress
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userAddresses")
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $for_command;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserCommands", mappedBy="user_address")
+     */
+    private $userCommands;
+
+    public function __construct()
+    {
+        $this->userCommands = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -170,6 +187,49 @@ class UserAddress
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getForCommand(): ?bool
+    {
+        return $this->for_command;
+    }
+
+    public function setForCommand(?bool $for_command): self
+    {
+        $this->for_command = $for_command;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserCommands[]
+     */
+    public function getUserCommands(): Collection
+    {
+        return $this->userCommands;
+    }
+
+    public function addUserCommand(UserCommands $userCommand): self
+    {
+        if (!$this->userCommands->contains($userCommand)) {
+            $this->userCommands[] = $userCommand;
+            $userCommand->setUserAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCommand(UserCommands $userCommand): self
+    {
+        if ($this->userCommands->contains($userCommand)) {
+            $this->userCommands->removeElement($userCommand);
+            // set the owning side to null (unless already changed)
+            if ($userCommand->getUserAddress() === $this) {
+                $userCommand->setUserAddress(null);
+            }
+        }
 
         return $this;
     }
