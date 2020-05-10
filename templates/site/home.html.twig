@@ -2,6 +2,12 @@
 
 {% block title %}Accueil - Ecommerce{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+{% endblock %}
+
 {% block body %}
     <section class="container mt-5 mb-5">
         <div class="row">
@@ -10,7 +16,11 @@
                     <div class="col-12">
                         <div class="case">
                             <h1 class="case-title">Catégories</h1>
-                            <p>liste des catégories</p>
+                            {% for categorie in categories %}
+                                <a href="{{ path('products_category',{'slug': categorie.slug}) }}">
+                                    {{ categorie.name }}
+                                </a> <br>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -18,8 +28,29 @@
             <div class="col-9">
                 <div class="row">
                     <div class="col-12">
-                        <p>slider des derniers produits ou produits phares</p>
-                        
+                        <h1 class="text-center">Nos derniers produits</h1>
+                        <div class="blocks display-flex owl-carousel">
+                            {% set index = 0 %}
+                            {% for latestProduct in latestProducts %}
+                                <div class="block card">
+                                    <div class="card-img">
+                                        {% if latestProduct.productImage is not null %}
+                                            <img class="card-img-top"
+                                                 src="{{ vich_uploader_asset(latestProduct.productImage, 'imageFile') }}"
+                                                 alt="Image du produit">
+                                        {% else %}
+                                            <img class="card-img-top" src="{{ asset('assets/produits/default.png') }}" alt="image par défaut pour un produit">
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-title text-center">{{ latestProduct.name }}</h4>
+                                        <p class="card-text text-center">{{ latestProduct.price }}</p>
+                                        <p class="card-text text-center">{{ latestProduct.description }}</p>
+                                    </div>
+                                </div>
+                                {% set index = index + 1 %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,4 +73,9 @@
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 {% endblock %}

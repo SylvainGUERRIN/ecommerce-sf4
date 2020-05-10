@@ -33,4 +33,20 @@ class CategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @param $slug
+     * @return Category
+     * @throws NonUniqueResultException
+     */
+    public function findCategoryWithSlug($slug): Category
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

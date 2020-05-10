@@ -29,13 +29,25 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllRecent(): Query
     {
-
         return $this->createQueryBuilder('p')
             ->where('p.created_at <= :date')
             ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
             ->orderBy('p.created_at','DESC')
             ->getQuery();
 //            ->getResult();
+    }
+
+    /**
+     * @return int|mixed|string
+     */
+    public function findLatest()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.created_at','DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     /**

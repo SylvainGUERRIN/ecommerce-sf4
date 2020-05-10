@@ -1,7 +1,30 @@
 {% extends 'site/partials/base.html.twig' %}
 
-{% block title %}Catégorie - Ecommerce{% endblock %}
+{% block title %}Catégorie {{ slug }} - Ecommerce{% endblock %}
 
 {% block body %}
-
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>{{ slug }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <p>mettre un slider pour donner envi sur différents thémes de la catégorie</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p>mettre tous les produits 4 cards sur 3 rangées avec une pagination</p>
+                {% for product in products %}
+                    {{ product.name }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
