@@ -62,6 +62,58 @@
                 <h1>grille des produits</h1>
                 <small>quelques catégories pour faire le tri</small>
                 <p>grille des produits, 4 produits sur 2 lignes</p>
+
+                <ul>
+                    <!-- For filtering controls add -->
+                    <li data-filter="all"> All items </li>
+                    <li data-filter="1"> Category 1 </li>
+                    <li data-filter="2"> Category 2 </li>
+                    <li data-filter="3"> Category 3 </li>
+                    <!-- For a shuffle control add -->
+{#                    <li data-shuffle> Shuffle items </li>#}
+                    <!-- For sorting controls add -->
+{#                    <li data-sortAsc> Ascending </li>#}
+{#                    <li data-sortDesc> Descending </li>#}
+                </ul>
+                <!-- To choose the value by which you want to sort add -->
+                <select data-sortOrder>
+                    <option value="index"> Position </option>
+                    <option value="sortData"> Custom Data </option>
+                </select>
+                <!-- To create a search control -->
+                <input type="text" name="filtr-search" value="" placeholder="Your search" data-search="">
+                <div class="filter-container">
+                    <div class="filtr-item" data-category="1" data-sort="value">
+                        <img class="img-fluid" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                    </div>
+                    <div class="filtr-item" data-category="2" data-sort="value">
+                        <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                    </div>
+{#                    <div class="filtr-item" data-category="3" data-sort="value">#}
+{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
+{#                    </div>#}
+{#                    <div class="filtr-item" data-category="1" data-sort="value">#}
+{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
+{#                    </div>#}
+                    <div class="filtr-item" data-category="1" data-sort="value">
+                        <img class="img-fluid" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                    </div>
+                    <div class="filtr-item" data-category="2" data-sort="value">
+                        <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                    </div>
+{#                    <div class="filtr-item" data-category="3" data-sort="value">#}
+{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
+{#                    </div>#}
+{#                    <div class="filtr-item" data-category="1" data-sort="value">#}
+{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
+{#                    </div>#}
+                    <div class="filtr-item" data-category="1" data-sort="value">
+                        <img class="img-fluid" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                    </div>
+                    <div class="filtr-item" data-category="2" data-sort="value">
+                        <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -77,5 +129,6 @@
 
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{{ asset('js/filterizr-jquery.js') }}"></script>
     <script src="{{ asset('js/home.js') }}"></script>
 {% endblock %}
