@@ -65,10 +65,10 @@
 
                 <ul>
                     <!-- For filtering controls add -->
-                    <li data-filter="all"> All items </li>
-                    <li data-filter="1"> Category 1 </li>
-                    <li data-filter="2"> Category 2 </li>
-                    <li data-filter="3"> Category 3 </li>
+                    <li data-filter="all" class="btn btn-color"> Tous </li>
+                    <li data-filter="1" class="btn btn-color"> Livres </li>
+                    <li data-filter="2" class="btn btn-color"> Films </li>
+                    <li data-filter="3" class="btn btn-color"> Jeux </li>
                     <!-- For a shuffle control add -->
 {#                    <li data-shuffle> Shuffle items </li>#}
                     <!-- For sorting controls add -->
@@ -76,18 +76,42 @@
 {#                    <li data-sortDesc> Descending </li>#}
                 </ul>
                 <!-- To choose the value by which you want to sort add -->
-                <select data-sortOrder>
-                    <option value="index"> Position </option>
-                    <option value="sortData"> Custom Data </option>
-                </select>
+{#                <select data-sortOrder>#}
+{#                    <option value="index"> Position </option>#}
+{#                    <option value="sortData"> Custom Data </option>#}
+{#                </select>#}
                 <!-- To create a search control -->
                 <input type="text" name="filtr-search" value="" placeholder="Your search" data-search="">
                 <div class="filter-container">
                     <div class="filtr-item" data-category="1" data-sort="value">
-                        <img class="img-fluid" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                        <div class="card">
+                            <div class="card-img">
+                                <img class="card-img-top" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-center">wonderfull article</h4>
+                                <p class="card-text text-center">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
+                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
+                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="filtr-item" data-category="2" data-sort="value">
-                        <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                        <div class="card">
+                            <div class="card-img">
+                                <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-center">wonderfull article</h4>
+                                <p class="card-text text-center">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
+                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
+                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 {#                    <div class="filtr-item" data-category="3" data-sort="value">#}
 {#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
@@ -96,10 +120,34 @@
 {#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
 {#                    </div>#}
                     <div class="filtr-item" data-category="1" data-sort="value">
-                        <img class="img-fluid" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                        <div class="card">
+                            <div class="card-img">
+                                <img class="card-img-top" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-center">wonderfull world</h4>
+                                <p class="card-text text-center">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
+                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
+                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="filtr-item" data-category="2" data-sort="value">
-                        <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                        <div class="card">
+                            <div class="card-img">
+                                <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-center">wonderfull world</h4>
+                                <p class="card-text text-center">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
+                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
+                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 {#                    <div class="filtr-item" data-category="3" data-sort="value">#}
 {#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
@@ -108,10 +156,34 @@
 {#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
 {#                    </div>#}
                     <div class="filtr-item" data-category="1" data-sort="value">
-                        <img class="img-fluid" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                        <div class="card">
+                            <div class="card-img">
+                                <img class="card-img-top" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-center">wonderfull article</h4>
+                                <p class="card-text text-center">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
+                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
+                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="filtr-item" data-category="2" data-sort="value">
-                        <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                        <div class="card">
+                            <div class="card-img">
+                                <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-center">wonderfull article</h4>
+                                <p class="card-text text-center">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
+                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
+                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
