@@ -83,13 +83,20 @@
                 <!-- To create a search control -->
                 <input type="text" name="filtr-search" value="" placeholder="Your search" data-search="">
                 <div class="filter-container">
-                    <div class="filtr-item" data-category="1" data-sort="value">
+                    {% for product in products %}
+                    <div class="filtr-item" data-category="{{ product.category.id }}" data-sort="value">
                         <div class="card">
                             <div class="card-img">
-                                <img class="card-img-top" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
+                                {% if product.productImage is not null %}
+                                    <img class="card-img-top"
+                                         src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}"
+                                         alt="Image du produit">
+                                {% else %}
+                                    <img class="card-img-top" src="{{ asset('assets/produits/default.png') }}" alt="image par défaut pour un produit">
+                                {% endif %}
                             </div>
                             <div class="card-body">
-                                <h4 class="card-title text-center">wonderfull article</h4>
+                                <h4 class="card-title text-center">{{ product.name }}</h4>
                                 <p class="card-text text-center">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
                                     Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
@@ -98,93 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="filtr-item" data-category="2" data-sort="value">
-                        <div class="card">
-                            <div class="card-img">
-                                <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title text-center">wonderfull article</h4>
-                                <p class="card-text text-center">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
-                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
-                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-{#                    <div class="filtr-item" data-category="3" data-sort="value">#}
-{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
-{#                    </div>#}
-{#                    <div class="filtr-item" data-category="1" data-sort="value">#}
-{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
-{#                    </div>#}
-                    <div class="filtr-item" data-category="1" data-sort="value">
-                        <div class="card">
-                            <div class="card-img">
-                                <img class="card-img-top" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title text-center">wonderfull world</h4>
-                                <p class="card-text text-center">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
-                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
-                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="filtr-item" data-category="2" data-sort="value">
-                        <div class="card">
-                            <div class="card-img">
-                                <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title text-center">wonderfull world</h4>
-                                <p class="card-text text-center">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
-                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
-                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-{#                    <div class="filtr-item" data-category="3" data-sort="value">#}
-{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
-{#                    </div>#}
-{#                    <div class="filtr-item" data-category="1" data-sort="value">#}
-{#                        <img class="img-fluid" src="{{ asset('produits/tests-images/fog-4969649_640.jpg') }}" alt="sample" />#}
-{#                    </div>#}
-                    <div class="filtr-item" data-category="1" data-sort="value">
-                        <div class="card">
-                            <div class="card-img">
-                                <img class="card-img-top" src="{{ asset('produits/tests-images/cinema-5069314_640.jpg') }}" alt="sample" />
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title text-center">wonderfull article</h4>
-                                <p class="card-text text-center">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
-                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
-                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="filtr-item" data-category="2" data-sort="value">
-                        <div class="card">
-                            <div class="card-img">
-                                <img class="img-fluid" src="{{ asset('produits/tests-images/compass-5137269_640.jpg') }}" alt="sample" />
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title text-center">wonderfull article</h4>
-                                <p class="card-text text-center">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
-                                    Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi
-                                    distinctio doloribus minus nobis quis repudiandae sequi tempora.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@ class SiteController extends AbstractController
 
         return $this->render('site/home.html.twig',[
             'categories' => $categoryRepository->findAll(),
-            'products' => $productRepository->findAllRecent(),
+            'products' => $productRepository->findAll(),
             'latestProducts' => $productRepository->findLatest()
         ]);
     }
