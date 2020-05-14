@@ -38,13 +38,14 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $limit
      * @return int|mixed|string
      */
-    public function findLatest()
+    public function findLatestWithLimit($limit)
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.created_at','DESC')
-            ->setMaxResults(3)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
             ;
@@ -61,5 +62,18 @@ class ProductRepository extends ServiceEntityRepository
             ->select('COUNT(p)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $limit
+     * @return int|mixed|string
+     */
+    public function findAllWithLimit(int $limit)
+    {
+        return $this->createQueryBuilder('p')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

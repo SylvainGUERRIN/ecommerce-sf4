@@ -21,6 +21,7 @@
                                     {{ categorie.name }}
                                 </a> <br>
                             {% endfor %}
+                            <br>
                         </div>
                     </div>
                 </div>
@@ -44,8 +45,8 @@
                                     </div>
                                     <div class="card-body">
                                         <h4 class="card-title text-center">{{ latestProduct.name }}</h4>
-                                        <p class="card-text text-center">{{ latestProduct.price }}</p>
-                                        <p class="card-text text-center">{{ latestProduct.description }}</p>
+                                        <p class="card-price text-center">{{ latestProduct.price }} €</p>
+                                        <p class="card-text text-justify">{{ latestProduct.description }}</p>
                                     </div>
                                 </div>
                                 {% set index = index + 1 %}
@@ -59,29 +60,29 @@
     <section class="container">
         <div class="row">
             <div class="col-12">
-                <h1>grille des produits</h1>
-                <small>quelques catégories pour faire le tri</small>
-                <p>grille des produits, 4 produits sur 2 lignes</p>
+                <div class="filters text-center">
+                    <h1>grille des produits</h1>
 
-                <ul>
-                    <!-- For filtering controls add -->
-                    <li data-filter="all" class="btn btn-color"> Tous </li>
-                    <li data-filter="1" class="btn btn-color"> Livres </li>
-                    <li data-filter="2" class="btn btn-color"> Films </li>
-                    <li data-filter="3" class="btn btn-color"> Jeux </li>
-                    <!-- For a shuffle control add -->
-{#                    <li data-shuffle> Shuffle items </li>#}
-                    <!-- For sorting controls add -->
-{#                    <li data-sortAsc> Ascending </li>#}
-{#                    <li data-sortDesc> Descending </li>#}
-                </ul>
-                <!-- To choose the value by which you want to sort add -->
-{#                <select data-sortOrder>#}
-{#                    <option value="index"> Position </option>#}
-{#                    <option value="sortData"> Custom Data </option>#}
-{#                </select>#}
-                <!-- To create a search control -->
-                <input type="text" name="filtr-search" value="" placeholder="Your search" data-search="">
+                    <ul>
+                        <!-- For filtering controls add -->
+                        <li data-filter="all" class="btn btn-color"> Tous </li>
+                        <li data-filter="1" class="btn btn-color"> Livres </li>
+                        <li data-filter="2" class="btn btn-color"> Films </li>
+                        <li data-filter="3" class="btn btn-color"> Jeux </li>
+                        <!-- For a shuffle control add -->
+                        {#                    <li data-shuffle> Shuffle items </li>#}
+                        <!-- For sorting controls add -->
+                        {#                    <li data-sortAsc> Ascending </li>#}
+                        {#                    <li data-sortDesc> Descending </li>#}
+                    </ul>
+                    <!-- To choose the value by which you want to sort add -->
+                    {#                <select data-sortOrder>#}
+                    {#                    <option value="index"> Position </option>#}
+                    {#                    <option value="sortData"> Custom Data </option>#}
+                    {#                </select>#}
+                    <!-- To create a search control -->
+                    <input class="form-control" type="text" name="filtr-search" value="" placeholder="Rechercher un produit..." data-search="">
+                </div>
                 <div class="filter-container">
                     {% for product in products %}
                     <div class="filtr-item" data-category="{{ product.category.id }}" data-sort="value">
@@ -97,6 +98,7 @@
                             </div>
                             <div class="card-body">
                                 <h4 class="card-title text-center">{{ product.name }}</h4>
+                                <p class="card-text text-center">{{ product.price }} €</p>
                                 <p class="card-text text-center">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, assumenda enim?
                                     Consequuntur eligendi eveniet illum natus nesciunt odio quidem repellendus? A commodi

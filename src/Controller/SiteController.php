@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +26,8 @@ class SiteController extends AbstractController
 
         return $this->render('site/home.html.twig',[
             'categories' => $categoryRepository->findAll(),
-            'products' => $productRepository->findAll(),
-            'latestProducts' => $productRepository->findLatest()
+            'products' => $productRepository->findAllWithLimit(12),
+            'latestProducts' => $productRepository->findLatestWithLimit(6)
         ]);
     }
 
@@ -45,27 +46,32 @@ class SiteController extends AbstractController
      * @Route("/categorie/{slug}", name="products_category")
      * @param $slug
      * @param CategoryRepository $categoryRepository
+     * @param PaginatorInterface $paginator
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function productCategory($slug, CategoryRepository $categoryRepository): Response
+    public function productCategory($slug, CategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
     {
         $category = $categoryRepository->findCategoryWithSlug($slug);
 //        dd($category->getProducts());
+//        $paginator->paginate($category->getProducts(),1,10);
         return $this->render('site/products-category.html.twig',[
             'slug' => $slug,
-            'products' => $category->getProducts()
+            'products' => $paginator->paginate($category->getProducts(),1,8)
         ]);
     }
 
     /**
      * page d'un produit dans le détail
-     * @Route("/nom-du-produit", name="single-product")
+     * @Route("/produit/{slug}", name="single-product")
+     * @param $slug
      * @return Response
      */
-    public function singleProduct(): Response
+    public function singleProduct($slug): Response
     {
-        return $this->render('site/single-product.html.twig',[]);
+        return $this->render('site/single-product.html.twig',[
+            'slug' => $slug
+        ]);
     }
 
     /**

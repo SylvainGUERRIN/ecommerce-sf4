@@ -2,29 +2,121 @@
 
 {% block title %}Catégorie {{ slug }} - Ecommerce{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/swiper.min.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="container">
+    <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-12 text-center">
                 <h1>{{ slug }}</h1>
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid mt-5 mb-5">
         <div class="row">
             <div class="col-12">
-                <p>mettre un slider pour donner envi sur différents thémes de la catégorie</p>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        {% for product in products %}
+                        <div class="swiper-slide">
+                            <div class="card card-swiper-hover">
+                                {% if product.productImage is not null %}
+                                    <img class="card-img-swip img-swip-contain"
+                                         src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}"
+                                         alt="Image du produit">
+                                {% else %}
+                                    <img class="card-img-swip img-swip-contain"
+                                         src="{{ asset('assets/produits/default.png') }}"
+                                         alt="image par défaut pour un produit">
+                                {% endif %}
+                                <div class="card-body card-style text-center">
+                                    <div class="card-txt black-txt">
+                                        <h1 class="card-title hr">{{ product.name }}</h1>
+                                        <p class="card-text text-justify">
+                                            {{ product.description }}
+                                        </p>
+                                        <a href="{{ path('single-product', {'slug': product.slug}) }}"
+                                           class="button btn-white a-width">En savoir plus</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {#<div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>#}
+                </div>
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-12">
-                <p>mettre tous les produits 4 cards sur 3 rangées avec une pagination</p>
-                {% for product in products %}
-                    {{ product.name }}
-                {% endfor %}
+            <div class="col-12 text-center mt-5 mb-5">
+                <h1>Les produits de la catégorie {{ slug }}</h1>
             </div>
         </div>
+        <div class="row">
+            {% for product in products %}
+                <div class="col-3">
+                <div class="card category-product">
+                    <div class="card-img">
+                        {% if product.productImage is not null %}
+                            <img class="card-img-top"
+                                 src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}"
+                                 alt="Image du produit">
+                        {% else %}
+                            <img class="card-img-top" src="{{ asset('assets/produits/default.png') }}" alt="image par défaut pour un produit">
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title text-center">{{ product.name }}</h4>
+                        <p class="card-price text-center">{{ product.price }} €</p>
+                        <p class="card-text text-justify">{{ product.description }}</p>
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/swiper.min.js') }}"></script>
+    <script>
+        //changer le rotate et le depth pour donner un effet de profondeur différent
+        let swiper = new Swiper('.swiper-container', {
+            effect: 'coverflow',
+            initialSlide: 0,
+            grabCursor: true,
+            loop: true,
+            clickable: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            autoplay: {
+                delay: 10000,
+                disableOnInteraction: true,
+            },
+            coverflowEffect: {
+                rotate: 30,
+                stretch: 0,
+                depth: 500,
+                modifier: 1,
+                slideShadows: true,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                renderBullet: function (index, className) {
+                    return '<span class="' + className + '">' + (index + 1) + '</span>';
+                },
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        })
+    </script>
 {% endblock %}
