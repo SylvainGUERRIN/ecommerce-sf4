@@ -86,6 +86,11 @@ class Product
      */
     private $quantity;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $excerpt;
+
     public function __construct()
     {
         $this->product_images = new ArrayCollection();
@@ -275,6 +280,18 @@ class Product
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getExcerpt(): ?string
+    {
+        return $this->excerpt;
+    }
+
+    public function setExcerpt(string $excerpt): self
+    {
+        $this->excerpt = $excerpt;
 
         return $this;
     }

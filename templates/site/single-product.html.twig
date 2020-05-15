@@ -1,7 +1,33 @@
 {% extends 'site/partials/base.html.twig' %}
 
-{% block title %}Nom du produit - Ecommerce{% endblock %}
+{% block title %}{{ product.name}} - Ecommerce{% endblock %}
 
 {% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-8">
+            <img class="img-product" src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}" alt="image du produit">
+        </div>
+        <div class="col-4 text-center">
+            <h1 class="mb-3">{{ product.name|capitalize }}</h1>
+            <p class="text-justify">
+                {{ product.description }}
+            </p>
+            <span>
+                {{ product.price }}
+            </span>
+            <br>
+            <a class="btn btn-color mt-5" href="">
+                Ajouter au panier
+            </a>
+        </div>
+    </div>
+    {% if  %}
+    <div class="row">
+        <div class="col-12">
 
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

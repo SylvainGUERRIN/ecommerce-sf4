@@ -41,6 +41,10 @@ class ProductType extends AbstractType
                 'label' => "Description du produit",
                 'attr' => ['placeholder' => "Mettez une description de votre produit la plus compléte possible pour vos clients."],
             ])
+            ->add('excerpt', TextType::class, [
+                'label' => "Extrait de la description du produit / texte d'accroche",
+                'attr' => ['placeholder' => "Mettez un extrait (il ne doit pas dépasser 255 caractères) qui accroche le client."],
+            ])
             ->add('dispo', CheckboxType::class, [
                 'label' => "Disponibilité du produit",
                 'label_attr' => ['class' => 'switch-custom'],

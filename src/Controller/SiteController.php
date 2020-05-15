@@ -47,17 +47,30 @@ class SiteController extends AbstractController
      * @param $slug
      * @param CategoryRepository $categoryRepository
      * @param PaginatorInterface $paginator
+     * @param ProductRepository $productRepository
+     * @param Request $request
      * @return Response
      * @throws NonUniqueResultException
+     * @throws \Exception
      */
-    public function productCategory($slug, CategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
+    public function productCategory(
+        $slug,
+        CategoryRepository $categoryRepository,
+        PaginatorInterface $paginator,
+        ProductRepository $productRepository,
+        Request $request
+    ): Response
     {
         $category = $categoryRepository->findCategoryWithSlug($slug);
-//        dd($category->getProducts());
-//        $paginator->paginate($category->getProducts(),1,10);
+        $products = $paginator->paginate(
+            $productRepository->findAllRecentWithCategory($category),
+            $request->query->getInt('page',1),
+            8
+        );
         return $this->render('site/products-category.html.twig',[
             'slug' => $slug,
-            'products' => $paginator->paginate($category->getProducts(),1,8)
+            'slideProducts' => $category->getProducts(),
+            'products' => $products
         ]);
     }
 
@@ -65,12 +78,18 @@ class SiteController extends AbstractController
      * page d'un produit dans le détail
      * @Route("/produit/{slug}", name="single-product")
      * @param $slug
+     * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function singleProduct($slug): Response
+    public function singleProduct($slug, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
+//        $product = $productRepository->findProductWithSlug($slug);
+//        dd($productRepository->findProductWithSlug($slug));
         return $this->render('site/single-product.html.twig',[
-            'slug' => $slug
+            'slug' => $slug,
+            'product' => $productRepository->findProductWithSlug($slug)
         ]);
     }
 

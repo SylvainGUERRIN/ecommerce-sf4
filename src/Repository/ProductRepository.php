@@ -38,6 +38,24 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @method Product[]
+     * @param $category
+     * @return Query
+     * @throws \Exception
+     */
+    public function findAllRecentWithCategory($category): Query
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.created_at <= :date')
+            ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
+            ->andWhere('p.category = :category')
+            ->setParameter('category', $category)
+            ->orderBy('p.created_at','DESC')
+            ->getQuery();
+//            ->getResult();
+    }
+
+    /**
      * @param $limit
      * @return int|mixed|string
      */
@@ -74,6 +92,21 @@ class ProductRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
+            ;
+    }
+
+    /**
+     * @param $slug
+     * @return Product
+     * @throws NonUniqueResultException
+     */
+    public function findProductWithSlug($slug): Product
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
             ;
     }
 }

@@ -20,6 +20,7 @@
                     <tr>
                         <th>Nom</th>
                         <th>Image</th>
+                        <th>Extrait</th>
                         <th>description</th>
                         <th>Disponibilité</th>
                         <th>catégorie</th>
@@ -43,6 +44,7 @@
                                     Cet article n'a pas encore d'image
                                 {% endif %}
                             </td>
+                            <td>{{ product.excerpt | slice(0,30) }}</td>
                             <td>{{ product.description | slice(0,30) }}...</td>
                             <td>{% if product.dispo == 1 %}
                                     Produit disponible
