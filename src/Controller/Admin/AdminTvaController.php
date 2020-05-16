@@ -98,7 +98,7 @@ class AdminTvaController extends AbstractController
     /**
      * @param Tva $tva
      * @return Response
-     * @Route("/delete-category/{id}", name="tva_delete")
+     * @Route("/delete-tva/{id}", name="tva_delete")
      */
     public function delete(Tva $tva): Response
     {

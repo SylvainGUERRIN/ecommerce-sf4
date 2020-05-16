@@ -22,23 +22,29 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for tva in tvas %}
+                    {% if tvas is not empty %}
+                        {% for tva in tvas %}
+                            <tr>
+                                <td>{{ tva.multiplicate }}</td>
+                                <td>{{ tva.name }}</td>
+                                <td>{{ tva.value }}</td>
+                                <td>
+                                    <a href="{{ path('tva_edit', {'id': tva.id}) }}" class="btn btn-color">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <form action="{{ path('tva_delete', {'id': tva.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cette TVA ?')">
+                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td>{{ tva.multiplicate }}</td>
-                            <td>{{ tva.name }}</td>
-                            <td>{{ tva.value }} €</td>
-                            <td>
-                                <a href="{{ path('tva_edit', {'id': tva.id}) }}" class="btn btn-color">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <form action="{{ path('tva_delete', {'id': tva.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cette TVA ?')">
-                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                </form>
-                            </td>
+                            <td colspan="5">Il n'y a pas encore de TVA enregistrée</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>

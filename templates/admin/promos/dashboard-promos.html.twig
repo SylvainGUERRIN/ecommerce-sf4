@@ -1,0 +1,69 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Dashboard pour la promo{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5 mb-3">
+            <div class="col-12 text-center">
+                <a href="{{ path('promo_create') }}" class="btn btn-color">Ajouter une nouvelle promo</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mt-5 mb-5">La liste des promos</h1>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>nom</th>
+                        <th>pourcentage de réduction</th>
+                        <th>activation</th>
+                        <th>code</th>
+                        <th>editer</th>
+                        <th>supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if promos is not empty %}
+                        {% for promo in promos %}
+                            <tr>
+                                <td>{{ promo.name }}</td>
+                                <td>{{ promo.percent }} €</td>
+                                <td>{% if promo.activated == 1 %}
+                                        Promotion activée
+                                    {% else %}
+                                        Promotion désactivée
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if promo.code is empty %}
+                                        Cette promotion n'a pas de code utilisateur pour être activée
+                                    {% else %}
+                                        {{ promo.code }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('promo_edit', {'id': promo.id}) }}" class="btn btn-color">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <form action="{{ path('promo_delete', {'id': promo.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cette promo ?')">
+                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Il n'y a pas encore de promotions</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+{% endblock %}

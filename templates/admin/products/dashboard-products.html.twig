@@ -26,6 +26,7 @@
                         <th>catégorie</th>
                         <th>Prix</th>
                         <th>Quantité</th>
+                        <th>Promotion</th>
                         <th>TVA</th>
                         <th>date de création</th>
                         <th>date de modification</th>
@@ -34,68 +35,81 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for product in products %}
+                    {% if products is not empty %}
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{% if product.productImage is not null %}
+                                        <img src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}" alt="image du produit" width="100px">
+    {#                                    <img src="{{ vich_uploader_asset(product, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
+                                    {% else %}
+                                        Cet article n'a pas encore d'image
+                                    {% endif %}
+                                </td>
+                                <td>{{ product.excerpt | slice(0,30) }}</td>
+                                <td>{{ product.description | slice(0,30) }}...</td>
+                                <td>{% if product.dispo == 1 %}
+                                        Produit disponible
+                                    {% else %}
+                                        Produit indisponible
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if product.category is not null %}
+                                        {{ product.category.name }}
+                                    {% else %}
+                                        Ce produit n'a pas encore de catégorie
+                                    {% endif %}
+                                </td>
+                                <td>{{ product.price }} €</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>
+                                    {% if product.promo is empty or null %}
+                                        pas de promotion appliquée sur ce produit
+                                    {% else %}
+                                        {{ product.promo }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if product.tva is not null %}
+                                        {{ product.tva.name }}
+                                    {% else %}
+                                        Ce produit n'a pas encore de tva
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ product.createdAt | date("d/m/Y H:i:s") }}
+                                </td>
+                                <td>
+                                    {% if product.updatedAt is not null %}
+                                        {{ product.updatedAt | date("d/m/Y H:i:s") }}
+                                    {% else %}
+                                        Ce produit n'a pas encore été modifié
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('product_edit', {'slug': product.slug}) }}" class="btn btn-color">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <form action="{{ path('product_delete', {'slug': product.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+    {#                                    <a href="{{ path('product_delete', {'slug': product.slug}) }}" class="btn btn-danger" onsubmit="executeWarning()">#}
+    {#                                        <i class="fas fa-trash"></i>#}
+    {#                                    </a>#}
+    {#                                <a href="#" class="btn btn-danger" onclick="executeWarning()">#}
+    {#                                    <i class="fas fa-trash"></i>#}
+    {#                                </a>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td>{{ product.name }}</td>
-                            <td>{% if product.productImage is not null %}
-                                    <img src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}" alt="image du produit" width="100px">
-{#                                    <img src="{{ vich_uploader_asset(product, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
-                                {% else %}
-                                    Cet article n'a pas encore d'image
-                                {% endif %}
-                            </td>
-                            <td>{{ product.excerpt | slice(0,30) }}</td>
-                            <td>{{ product.description | slice(0,30) }}...</td>
-                            <td>{% if product.dispo == 1 %}
-                                    Produit disponible
-                                {% else %}
-                                    Produit indisponible
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if product.category is not null %}
-                                    {{ product.category.name }}
-                                {% else %}
-                                    Ce produit n'a pas encore de catégorie
-                                {% endif %}
-                            </td>
-                            <td>{{ product.price }} €</td>
-                            <td>{{ product.quantity }}</td>
-                            <td>
-                                {% if product.tva is not null %}
-                                    {{ product.tva.name }}
-                                {% else %}
-                                    Ce produit n'a pas encore de tva
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ product.createdAt | date("d/m/Y H:i:s") }}
-                            </td>
-                            <td>
-                                {% if product.updatedAt is not null %}
-                                    {{ product.updatedAt | date("d/m/Y H:i:s") }}
-                                {% else %}
-                                    Ce produit n'a pas encore été modifié
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ path('product_edit', {'slug': product.slug}) }}" class="btn btn-color">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <form action="{{ path('product_delete', {'slug': product.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
-                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                </form>
-{#                                    <a href="{{ path('product_delete', {'slug': product.slug}) }}" class="btn btn-danger" onsubmit="executeWarning()">#}
-{#                                        <i class="fas fa-trash"></i>#}
-{#                                    </a>#}
-{#                                <a href="#" class="btn btn-danger" onclick="executeWarning()">#}
-{#                                    <i class="fas fa-trash"></i>#}
-{#                                </a>#}
-                            </td>
+                            <td colspan="14">Il n'y a pas encore de produits en base de données</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>

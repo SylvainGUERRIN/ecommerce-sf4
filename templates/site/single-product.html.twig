@@ -13,19 +13,31 @@
             <p class="text-justify">
                 {{ product.description }}
             </p>
-            <span>
-                {{ product.price }}
-            </span>
+            {% if product.promo is not null %}
+                <del>
+                    {{ product.price|number_format(2, ',') }} €
+                </del>
+                <br> <br>
+                <span class="price-color">
+                    {# calcul pour appliquer le pourcentage de reduction#}
+                    {% set pourcentPromo = product.price - (product.price*product.promo.percent/100) %}
+                    {{ pourcentPromo|number_format(2, ',') }} €
+                </span>
+            {% else %}
+                <span class="price-color">
+                    {{ product.price }} €
+                </span>
+            {% endif %}
             <br>
             <a class="btn btn-color mt-5" href="">
                 Ajouter au panier
             </a>
         </div>
     </div>
-    {% if  %}
+    {% if product.productImages is not empty or null %}
     <div class="row">
         <div class="col-12">
-
+            <p>faire un carousel des différentes images du produit (qui ne sont pas à la une)</p>
         </div>
     </div>
     {% endif %}

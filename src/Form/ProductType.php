@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Promo;
 use App\Entity\Tva;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -90,6 +91,14 @@ class ProductType extends AbstractType
             ])
             ->add('price', NumberType::class, [
                 'label' => "Prix du produit",
+            ])
+            ->add('promo', EntityType::class, [
+                'label' => "Choississez la promotion que vous voulez appliquer au produit",
+                'required' => false,
+                'class' => Promo::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Aucunes promotions sur ce produit'
+                //'multiple' => true
             ])
         ;
     }

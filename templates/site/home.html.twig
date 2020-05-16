@@ -45,7 +45,23 @@
                                     </div>
                                     <div class="card-body">
                                         <h4 class="card-title text-center">{{ latestProduct.name }}</h4>
-                                        <p class="card-price text-center">{{ latestProduct.price }} €</p>
+                                        <p class="card-text text-center">
+                                            {% if latestProduct.promo is not null %}
+                                                <del>
+                                                    {{ latestProduct.price|number_format(2, ',') }} €
+                                                </del>
+                                                <br> <br>
+                                                <span class="price-color">
+                                            {# calcul pour appliquer le pourcentage de reduction#}
+                                                    {% set pourcentPromo = latestProduct.price - (latestProduct.price*latestProduct.promo.percent/100) %}
+                                                    {{ pourcentPromo|number_format(2, ',') }} €
+                                        </span>
+                                            {% else %}
+                                                <span class="price-color">
+                                            {{ latestProduct.price }} €
+                                        </span>
+                                            {% endif %}
+                                        </p>
                                         <p class="card-text text-justify">{{ latestProduct.excerpt }}</p>
                                         <div class="text-center">
                                             <a href="{{ path('single-product', {'slug': latestProduct.slug}) }}"
@@ -102,9 +118,25 @@
                             </div>
                             <div class="card-body">
                                 <h4 class="card-title text-center">{{ product.name }}</h4>
-                                <p class="card-text text-center">{{ product.price }} €</p>
                                 <p class="card-text text-center">
                                     {{ product.excerpt }}
+                                </p>
+                                <p class="card-text text-center">
+                                    {% if product.promo is not null %}
+                                        <del>
+                                            {{ product.price|number_format(2, ',') }} €
+                                        </del>
+                                        <br> <br>
+                                        <span>
+                                            {# calcul pour appliquer le pourcentage de reduction#}
+                                            {% set pourcentPromo = product.price - (product.price*product.promo.percent/100) %}
+                                            {{ pourcentPromo|number_format(2, ',') }} €
+                                        </span>
+                                    {% else %}
+                                        <span>
+                                            {{ product.price }} €
+                                        </span>
+                                    {% endif %}
                                 </p>
                                 <div class="text-center">
                                     <a href="{{ path('single-product', {'slug': product.slug}) }}"

@@ -91,6 +91,11 @@ class Product
      */
     private $excerpt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Promo", inversedBy="products")
+     */
+    private $promo;
+
     public function __construct()
     {
         $this->product_images = new ArrayCollection();
@@ -294,5 +299,25 @@ class Product
         $this->excerpt = $excerpt;
 
         return $this;
+    }
+
+    public function getPromo(): ?Promo
+    {
+        return $this->promo;
+    }
+
+    public function setPromo(?Promo $promo): self
+    {
+        $this->promo = $promo;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->name;
     }
 }

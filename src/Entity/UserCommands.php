@@ -61,6 +61,11 @@ class UserCommands
      */
     private $sent_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Promo", inversedBy="userCommands")
+     */
+    private $promo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,6 +175,18 @@ class UserCommands
     public function setSentAt(?\DateTimeInterface $sent_at): self
     {
         $this->sent_at = $sent_at;
+
+        return $this;
+    }
+
+    public function getPromo(): ?Promo
+    {
+        return $this->promo;
+    }
+
+    public function setPromo(?Promo $promo): self
+    {
+        $this->promo = $promo;
 
         return $this;
     }

@@ -1,0 +1,20 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Créer une nouvelle promotion{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-5">
+                <h1 class="text-center">Création d'une nouvelle promotion</h1>
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-12">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-color">Enregistrer la nouvelle promotion</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

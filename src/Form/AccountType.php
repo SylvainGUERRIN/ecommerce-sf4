@@ -20,7 +20,7 @@ class AccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, [
+            ->add('firstname', TextType::class, [
                 'required' => true,
                 'label' =>'Votre nom',
                 'attr' => ['placeholder' => 'Veuillez mettre votre nom']
