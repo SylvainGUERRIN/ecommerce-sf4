@@ -22,6 +22,11 @@ class AccountType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'required' => true,
+                'label' =>'Votre prénom',
+                'attr' => ['placeholder' => 'Veuillez mettre votre prénom']
+            ])
+            ->add('lastname', TextType::class, [
+                'required' => true,
                 'label' =>'Votre nom',
                 'attr' => ['placeholder' => 'Veuillez mettre votre nom']
             ])

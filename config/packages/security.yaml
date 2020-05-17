@@ -32,7 +32,7 @@ security:
                 path: admin_deconnexion
                 target: admin_connexion
         user:
-            pattern: ^/user/account
+            pattern: ^/
             anonymous: true
 
             provider: in_database

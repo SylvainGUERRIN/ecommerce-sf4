@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Form\ContactType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -96,11 +97,34 @@ class SiteController extends AbstractController
     /**
      * page contact
      * @Route("/contact", name="contact")
+     * @param Request $request
      * @return Response
      */
-    public function contact(): Response
+    public function contact(Request $request): Response
     {
-        return $this->render('site/contact.html.twig',[]);
+        $form = $this->createForm(ContactType::class);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $nom = $form['nom']->getData();
+            $email = $form['email']->getData();
+            $sujet = $form['sujet']->getData();
+            $description = $form['description']->getData();
+
+            //envoyer un mail en créant un service pour les mails
+
+            $this->addFlash(
+                'success',
+                "Votre demande a bien été prise en compte. Nous vous répondrons dans les plus bref délais."
+            );
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('site/contact.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 
     /**
