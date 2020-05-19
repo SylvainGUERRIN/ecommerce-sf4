@@ -41,7 +41,7 @@
                 <li id="cart-nav-item" class="nav-item cart-nav-item">
                     <a href="{{ path('cart') }}" class="nav-link cart-link">
                         <i class="fas fa-shopping-cart"></i>
-                        <span id="cart-count" class="cart-count">2</span>
+                        <span id="cart-count" class="cart-count">{{ quantityProducts|default }}</span>
                         Panier
                     </a>
                 </li>

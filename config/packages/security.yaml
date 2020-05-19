@@ -5,7 +5,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: mail
-        in_memory: { memory: null }
+#        in_memory: { memory: null }
 
     encoders:
         App\Entity\User:

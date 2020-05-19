@@ -11,6 +11,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SiteController extends AbstractController
@@ -81,13 +82,20 @@ class SiteController extends AbstractController
      * @param $slug
      * @param ProductRepository $productRepository
      * @param CategoryRepository $categoryRepository
+     * @param SessionInterface $session
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function singleProduct($slug, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    public function singleProduct(
+        $slug,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        SessionInterface $session
+    ): Response
     {
 //        $product = $productRepository->findProductWithSlug($slug);
 //        dd($productRepository->findProductWithSlug($slug));
+        //dd($session->get('panier')); //just for test remove session interface after
         return $this->render('site/single-product.html.twig',[
             'slug' => $slug,
             'product' => $productRepository->findProductWithSlug($slug)

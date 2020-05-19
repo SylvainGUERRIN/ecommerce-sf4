@@ -2,6 +2,19 @@
 
 {% block title %}Panier - Ecommerce{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
+{% endblock %}
 
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white">Votre panier</h1>
+            </div>
+        </div>
+        <div id="table-cart" class="row">
+            {{ include('site/partials/_cart-tab.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

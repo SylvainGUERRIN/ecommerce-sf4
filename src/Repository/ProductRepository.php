@@ -109,4 +109,19 @@ class ProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    /**
+     * @param $productName
+     * @return Product
+     * @throws NonUniqueResultException
+     */
+    public function findByName($productName): Product
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.name = :name')
+            ->setParameter('name', $productName)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

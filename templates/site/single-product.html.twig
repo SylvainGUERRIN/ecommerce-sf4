@@ -29,7 +29,7 @@
                 </span>
             {% endif %}
             <br>
-            <a class="btn btn-color mt-5" href="">
+            <a id="{{ product.name }}" class="btn btn-color mt-5 data-product" href="#" onclick="return false">
                 Ajouter au panier
             </a>
         </div>
@@ -42,4 +42,8 @@
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/singleProduct.js') }}"></script>
 {% endblock %}
