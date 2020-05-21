@@ -124,4 +124,19 @@ class ProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    /**
+     * @param $productSlug
+     * @return Product
+     * @throws NonUniqueResultException
+     */
+    public function findBySlug($productSlug): Product
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $productSlug)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

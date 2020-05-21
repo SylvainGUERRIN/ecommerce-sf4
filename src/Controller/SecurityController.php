@@ -11,6 +11,8 @@ use App\Form\PasswordUpdateType;
 use App\Repository\UserRepository;
 use App\Entity\PasswordUpdate;
 use App\Entity\PasswordRecup;
+use App\Service\CartService;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +30,17 @@ use \DateTime;
  */
 class SecurityController extends AbstractController
 {
+    protected $quantityProducts;
+
+    /**
+     * SecurityController constructor.
+     * @param CartService $cartService
+     * @throws NonUniqueResultException
+     */
+    public function __construct(CartService $cartService)
+    {
+        $this->quantityProducts = $cartService->getQuantity();
+    }
 
     /**
      * @Route("/connexion", name="user_connexion")
@@ -51,6 +64,7 @@ class SecurityController extends AbstractController
             'last_username' => $helper->getLastUsername(),
             // last authentication error (if any)
             'error' => $helper->getLastAuthenticationError(),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -106,7 +120,8 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('user/account/inscription.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -142,7 +157,8 @@ class SecurityController extends AbstractController
 
         return $this->render('user/account/profil.html.twig', [
             'controller_name' => 'AccountController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -186,7 +202,8 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('user/account/pass.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 

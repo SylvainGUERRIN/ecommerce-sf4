@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Form\ContactType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Service\CartService;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SiteController extends AbstractController
 {
+    protected $quantityProducts;
+
+    /**
+     * SiteController constructor.
+     * @param CartService $cartService
+     * @throws NonUniqueResultException
+     */
+    public function __construct(CartService $cartService)
+    {
+        $this->quantityProducts = $cartService->getQuantity();
+    }
+
     /**
      * @Route("/", name="home")
      * @param CategoryRepository $categoryRepository
@@ -25,11 +38,11 @@ class SiteController extends AbstractController
      */
     public function home(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
     {
-
         return $this->render('site/home.html.twig',[
             'categories' => $categoryRepository->findAll(),
             'products' => $productRepository->findAllWithLimit(12),
-            'latestProducts' => $productRepository->findLatestWithLimit(6)
+            'latestProducts' => $productRepository->findLatestWithLimit(6),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -40,7 +53,9 @@ class SiteController extends AbstractController
      */
     public function products(): Response
     {
-        return $this->render('site/products.html.twig',[]);
+        return $this->render('site/products.html.twig',[
+            'quantityProducts' => $this->quantityProducts
+        ]);
     }
 
     /**
@@ -72,7 +87,8 @@ class SiteController extends AbstractController
         return $this->render('site/products-category.html.twig',[
             'slug' => $slug,
             'slideProducts' => $category->getProducts(),
-            'products' => $products
+            'products' => $products,
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -98,7 +114,8 @@ class SiteController extends AbstractController
         //dd($session->get('panier')); //just for test remove session interface after
         return $this->render('site/single-product.html.twig',[
             'slug' => $slug,
-            'product' => $productRepository->findProductWithSlug($slug)
+            'product' => $productRepository->findProductWithSlug($slug),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -131,7 +148,8 @@ class SiteController extends AbstractController
         }
 
         return $this->render('site/contact.html.twig',[
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'quantityProducts' => $this->quantityProducts
         ]);
     }
 
@@ -142,6 +160,8 @@ class SiteController extends AbstractController
      */
     public function mentions(): Response
     {
-        return $this->render('site/mentions-legales.html.twig',[]);
+        return $this->render('site/mentions-legales.html.twig',[
+            'quantityProducts' => $this->quantityProducts
+        ]);
     }
 }
