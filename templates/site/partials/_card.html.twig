@@ -1,0 +1,41 @@
+<div class="card">
+    {% if product.productImage is not null %}
+        <img class="img-products"
+             src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}"
+             alt="Image du produit">
+    {% else %}
+        <img class="card-img-top" src="{{ asset('assets/produits/default.png') }}" alt="image par défaut pour un produit">
+    {% endif %}
+    <div class="card-body">
+        <h2 class="card-title text-center">{{ product.name }}</h2>
+        <div class="card-title card-title-price text-center">
+            {% if product.promo is not null %}
+                <div class="text text-warning mb-3">Promo !</div>
+                <del class="mr-2">
+                    {{ product.price|number_format(2, ',', ' ') }} €
+                </del>
+                <span class="price-color">
+                    {% set pourcentPromo = product.price - (product.price*product.promo.percent/100) %}
+                    {{ pourcentPromo|number_format(2, ',', ' ') }} €
+                </span>
+            {% else %}
+                <span class="price-color">
+                    {{ product.price }} €
+                </span>
+            {% endif %}
+        </div>
+        <p class="text text-muted text-justify">
+            {{ product.excerpt }}
+        </p>
+        <div>
+            <em class="text-muted text-primary text-italic">
+                {{ product.category.name }}
+            </em>
+        </div>
+        <div class="text-center">
+            <a id="{{ product.name }}" class="btn btn-color mt-5 data-product" href="#" onclick="return false">
+                Ajouter au panier
+            </a>
+        </div>
+    </div>
+</div>

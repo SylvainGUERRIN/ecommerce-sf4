@@ -1,34 +1,44 @@
 {% extends 'site/partials/base.html.twig' %}
 
-{% block title %}Nos produits - Ecommerce{% endblock %}
+{% block title %}Tous nos produits - Ecommerce{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/products.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.css">
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-3">
-            <div class="row">
-                <div class="col-12">
-                    <h1>Nos catégories</h1>
-                    <p>liste des catégories</p>
-                    <hr>
-                    <h1>prix</h1>
-                    <p>tri par prix</p>
-                    <p>ajout d'autres tri (en option)</p>
-                </div>
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-xs-12 col-md-4 col-lg-3 mb-5">
+                {% include 'site/partials/_filter.html.twig' with {form: form, min: min, max: max} only %}
             </div>
-        </div>
-        <div class="col-9">
-            <div class="row">
-                <div class="col-12">
-                    <h1>Nos produits en promo</h1>
-                    <p>carousel avec les 6 derniers produits en promo</p>
-                    <hr>
-                    <h1>Nos derniers produits</h1>
-                    <p>grille avec 3 elements par ligne sur 4 lignes, pagination ?</p>
+            <div class="col-xs-12 col-md-8 col-lg-9">
+                <div class="d-flex justify-content-end mb-2">
+                    {{ knp_pagination_sortable(products, 'Prix', 'p.price') }}
+                    {{ knp_pagination_sortable(products, 'Categories', 'c.name') }}
+{#                    {{ knp_pagination_sortable(products, 'Promo', 'p.promo.id') }}#}
                 </div>
-
+                <div class="grid">
+{#                    {{ dump(products.count) }}#}
+                    {% if products.count >= 1 %}
+                        {% for product in products %}
+                            {% include 'site/partials/_card.html.twig' with {product: product} only %}
+                        {% endfor %}
+                    {% else %}
+                        <p>Aucuns produits trouvés pour cette recherche.</p>
+                    {% endif %}
+                </div>
+                <div class="mt-5 nav-pagination">
+                    {{ knp_pagination_render(products) }}
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.js"></script>
+    <script src="{{ asset('js/products.js') }}"></script>
+    <script src="{{ asset('js/addToCart.js') }}"></script>
 {% endblock %}

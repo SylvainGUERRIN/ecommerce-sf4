@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 
+use App\Data\SearchData;
 use App\Form\ContactType;
+use App\Form\SearchType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
@@ -49,12 +51,28 @@ class SiteController extends AbstractController
     /**
      * page de la liste de produits
      * @Route("/produits", name="products")
+     * @param ProductRepository $productRepository
+     * @param Request $request
      * @return Response
      */
-    public function products(): Response
+    public function products(ProductRepository $productRepository, Request $request): Response
     {
+        $data = new SearchData();
+        $data->page = $request->get('page', 1);
+        $form = $this->createForm(SearchType::class, $data);
+        $form->handleRequest($request);
+        [$min, $max] = $productRepository->findMinMax($data);
+//        dd($data);
+
+        $products = $productRepository->findSearch($data);
+        //dd($products);
+
         return $this->render('site/products.html.twig',[
-            'quantityProducts' => $this->quantityProducts
+            'quantityProducts' => $this->quantityProducts,
+            'products' => $products,
+            'form' => $form->createView(),
+            'min' => $min,
+            'max' => $max
         ]);
     }
 
