@@ -12,6 +12,7 @@ use App\Service\CartService;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -66,6 +67,19 @@ class SiteController extends AbstractController
 
         $products = $productRepository->findSearch($data);
         //dd($products);
+        if($request->get('ajax')){
+            return new JsonResponse([
+                'content' => $this->renderView('site/partials/products/_products.html.twig', ['products' => $products]),
+                'sorting' => $this->renderView('site/partials/products/_sorting.html.twig', ['products' => $products]),
+                'pagination' => $this->renderView('site/partials/products/_pagination.html.twig', ['products' => $products])
+            ]);
+        }
+//        if($request->isXmlHttpRequest()){
+//            return new JsonResponse([
+//                'content' => $this->renderView('site/partials/products/_products.html.twig', ['products' => $products]),
+//                'sorting' => $this->renderView('site/partials/products/_sorting.html.twig', ['products' => $products]),
+//            ]);
+//        }
 
         return $this->render('site/products.html.twig',[
             'quantityProducts' => $this->quantityProducts,

@@ -1,0 +1,7 @@
+{% if products.count >= 1 %}
+    {% for product in products %}
+        {% include 'site/partials/_card.html.twig' with {product: product} only %}
+    {% endfor %}
+{% else %}
+    <p>Aucuns produits trouvés pour cette recherche.</p>
+{% endif %}

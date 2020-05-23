@@ -8,29 +8,32 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5 mb-5">
+    <div class="container mt-5 mb-5 js-filter">
         <div class="row">
             <div class="col-xs-12 col-md-4 col-lg-3 mb-5">
                 {% include 'site/partials/_filter.html.twig' with {form: form, min: min, max: max} only %}
             </div>
             <div class="col-xs-12 col-md-8 col-lg-9">
-                <div class="d-flex justify-content-end mb-2">
-                    {{ knp_pagination_sortable(products, 'Prix', 'p.price') }}
-                    {{ knp_pagination_sortable(products, 'Categories', 'c.name') }}
+                <div class="d-flex justify-content-end mb-2 js-filter-sorting">
+                    {% include 'site/partials/products/_sorting.html.twig' %}
+{#                    {{ knp_pagination_sortable(products, 'Prix', 'p.price') }}#}
+{#                    {{ knp_pagination_sortable(products, 'Categories', 'c.name') }}#}
 {#                    {{ knp_pagination_sortable(products, 'Promo', 'p.promo.id') }}#}
                 </div>
-                <div class="grid">
+                <div class="grid js-filter-content">
 {#                    {{ dump(products.count) }}#}
-                    {% if products.count >= 1 %}
+                    {% include 'site/partials/products/_products.html.twig' %}
+                    {#{% if products.count >= 1 %}
                         {% for product in products %}
                             {% include 'site/partials/_card.html.twig' with {product: product} only %}
                         {% endfor %}
                     {% else %}
                         <p>Aucuns produits trouvés pour cette recherche.</p>
-                    {% endif %}
+                    {% endif %}#}
                 </div>
-                <div class="mt-5 nav-pagination">
-                    {{ knp_pagination_render(products) }}
+                <div class="mt-5 nav-pagination js-filter-pagination">
+                    {% include 'site/partials/products/_pagination.html.twig' %}
+                    {#{{ knp_pagination_render(products) }}#}
                 </div>
             </div>
         </div>
@@ -39,6 +42,7 @@
 
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.js"></script>
+    <script src="{{ asset('js/filter.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
     <script src="{{ asset('js/addToCart.js') }}"></script>
 {% endblock %}

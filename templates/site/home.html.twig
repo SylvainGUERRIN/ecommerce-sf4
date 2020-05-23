@@ -11,7 +11,7 @@
 {% block body %}
     <section class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-3">
+            <div class="col-xs-12 col-md-12 col-lg-3">
                 <div class="row">
                     <div class="col-12">
                         <div class="case">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-xs-12 col-md-12 col-lg-9">
                 <div class="row">
                     <div class="col-12">
                         <h1 class="text-center">Nos derniers produits</h1>
@@ -65,7 +65,10 @@
                                         <p class="card-text text-justify">{{ latestProduct.excerpt }}</p>
                                         <div class="text-center">
                                             <a href="{{ path('single-product', {'slug': latestProduct.slug}) }}"
-                                               class="btn btn-color">En savoir plus</a>
+                                               class="">En savoir plus</a>
+                                            <a id="{{ latestProduct.name }}" class="btn btn-color mb-3 data-product" href="#" onclick="return false">
+                                                Ajouter au panier
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +143,10 @@
                                 </p>
                                 <div class="text-center">
                                     <a href="{{ path('single-product', {'slug': product.slug}) }}"
-                                       class="btn btn-color">En savoir plus</a>
+                                       class="">En savoir plus</a>
+                                    <a id="{{ product.name }}" class="btn btn-color data-product" href="#" onclick="return false">
+                                        Ajouter au panier
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -164,4 +170,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="{{ asset('js/filterizr-jquery.js') }}"></script>
     <script src="{{ asset('js/home.js') }}"></script>
+    <script src="{{ asset('js/addToCart.js') }}"></script>
 {% endblock %}
