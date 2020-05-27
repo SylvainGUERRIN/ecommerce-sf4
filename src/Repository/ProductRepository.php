@@ -73,6 +73,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.created_at','DESC')
+            ->join('p.product_image', 'pi')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -99,6 +100,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllWithLimit(int $limit)
     {
         return $this->createQueryBuilder('p')
+            ->join('p.product_image', 'pi')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

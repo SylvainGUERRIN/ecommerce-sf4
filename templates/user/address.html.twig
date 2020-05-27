@@ -3,6 +3,36 @@
 {% block title %}Mes adresses - Ecommerce{% endblock %}
 
 {% block body %}
-
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-4">
+                <div class="case">
+                    <h1 class="case-title">Vos adresses :</h1>
+                    {% for userAddress in userAddresses %}
+                        <a href="{{ path('modify_address',{'id': userAddress.id}) }}">
+                            {{ userAddress.address }}
+                        </a>
+                        <br>
+                    {% endfor %}
+                    <br>
+                </div>
+            </div>
+            <div class="col-8">
+                {{ form_errors(form) }}
+                <h1 class="mb-3">Ajouter une adresse pour la livraison</h1>
+                <small>Les adresses sont limitées à 5 par utilisateurs.</small>
+                {{ form_start(form) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.cp) }}
+                {{ form_row(form.town) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.complement) }}
+                {{ form_row(form.for_command) }}
+                <button type="submit" class="btn btn-color">Enregistrer la nouvelle adresse</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
 

@@ -28,3 +28,7 @@ services:
     App\Listener\ImageCacheSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
+
+    App\Listener\RedirectionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

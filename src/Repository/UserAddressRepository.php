@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\UserAddress;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,49 @@ class UserAddressRepository extends ServiceEntityRepository
         parent::__construct($registry, UserAddress::class);
     }
 
-    // /**
-    //  * @return UserAddress[] Returns an array of UserAddress objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $user
+     * @return int|mixed|string
+     */
+    public function findByUser($user)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('ua')
+            ->where('ua.user = :user')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?UserAddress
+    /**
+     * @param $user
+     * @return int|mixed|string
+     */
+    public function findByUserAndCheck($user)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('ua')
+            ->where('ua.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('ua.for_command = 1')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult()
+            ;
     }
-    */
+
+    /**
+     * @param $user
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findByUserAndCount($user)
+    {
+        return $this->createQueryBuilder('ua')
+            ->select('COUNT(ua)')
+            ->where('ua.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
 }
