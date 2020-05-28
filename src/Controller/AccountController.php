@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class AccountController
@@ -45,9 +46,6 @@ class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-
-//        dd($user);
-//        dd($userAddressRepository->findByUser($user));
 
         $newUserAddress = new UserAddress();
         $form = $this->createForm(UserAddressType::class, $newUserAddress);
@@ -94,12 +92,64 @@ class AccountController extends AbstractController
     }
 
     /**
+     * @param $id
+     * @param Request $request
+     * @param UserAddressRepository $userAddressRepository
      * @return Response
      * @Route("/modifier-adresse/{id}", name="modify_address")
      */
-    public function modifyAddress($id): Response
+    public function modifyAddress($id, Request $request, UserAddressRepository $userAddressRepository): Response
     {
-        return $this->render('user/modifyAddress.html.twig');
+        /** @var User $user */
+        $user = $this->getUser();
+        $addressToModify = $userAddressRepository->find($id);
+
+        $form = $this->createForm(UserAddressType::class, $addressToModify);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            //vérifier si le user n'a pas d'autres adresses déjà checkées et enléve le check
+            if($form['for_command']->getData() === true){
+                $oldAddresses = $userAddressRepository->findByUserAndCheck($user);
+                foreach ($oldAddresses as $oldAddress){
+                    if($oldAddress->getForCommand() === true){
+                        $oldAddress->setForCommand(false);
+                        $this->em->flush();
+                    }
+                }
+            }
+
+            $this->em->persist($addressToModify);
+            $this->em->flush();
+
+            $this->addFlash('success',
+                "L'adresse a bien été modifiée !"
+            );
+
+            return $this->redirectToRoute('address');
+        }
+
+        return $this->render('user/modifyAddress.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param UserAddress $userAddress
+     * @return Response
+     * @Route("/delete-address/{id}", name="user_address_delete")
+     */
+    public function delete(UserAddress $userAddress): Response
+    {
+        $this->em->remove($userAddress);
+        $this->em->flush();
+
+        $this->addFlash(
+            'success',
+            "L'adresse a  bien été supprimée !"
+        );
+        return $this->redirectToRoute('address');
     }
 
     /**

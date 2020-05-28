@@ -1,0 +1,14 @@
+{% for userAddress in userAddresses %}
+    <div class="display-address">
+        <a href="{{ path('modify_address',{'id': userAddress.id}) }}" class="address-link">
+            {{ userAddress.address }}
+        </a>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch{{ userAddress.id }}" {% if userAddress.forCommand == true %}checked{% endif %}>
+            <label class="custom-control-label" for="customSwitch{{ userAddress.id }}"></label>
+        </div>
+        <a href="{{ path('user_address_delete',{'id': userAddress.id}) }}">
+            <i class="fas fa-trash fa-xs"></i>
+        </a>
+    </div>
+{% endfor %}

@@ -2,24 +2,68 @@
 
 {% block title %}Mes adresses - Ecommerce{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/address.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-4">
                 <div class="case">
                     <h1 class="case-title">Vos adresses :</h1>
-                    {% for userAddress in userAddresses %}
-                        <a href="{{ path('modify_address',{'id': userAddress.id}) }}">
-                            {{ userAddress.address }}
-                        </a>
-                        <br>
-                    {% endfor %}
-                    <br>
+                    <div class="js-address-check">
+                        {% for userAddress in userAddresses %}
+                            <div class="display-address">
+                                <a href="{{ path('modify_address',{'id': userAddress.id}) }}" class="address-link">
+                                    {{ userAddress.address }}
+                                </a>
+                                {#<div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch{{ userAddress.id }}" {% if userAddress.forCommand == true %}checked{% endif %}>
+                                    <label class="custom-control-label" for="customSwitch{{ userAddress.id }}"></label>
+                                </div>#}
+                                <a href="{{ path('user_address_delete',{'id': userAddress.id}) }}">
+                                    <i class="fas fa-trash fa-xs"></i>
+                                </a>
+                            </div>
+                        {% endfor %}
+{#                        {% include 'site/partials/address/_addresses.html.twig' with {userAddresses: userAddresses} only %}#}
+                    </div>
+                </div>
+                <div class="case">
+                    <h1 class="case-title">Adresse de livraison :</h1>
+                    <div class="js-address-check">
+                        {% for userAddress in userAddresses %}
+                            <div class="display-address">
+                                <a href="{{ path('modify_address',{'id': userAddress.id}) }}" class="address-link">
+                                    {{ userAddress.address }}
+                                </a>
+                                <a href="{{ path('user_address_delete',{'id': userAddress.id}) }}">
+                                    <i class="fas fa-trash fa-xs"></i>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="case">
+                    <h1 class="case-title">Adresse de facturation :</h1>
+                    <div class="js-address-check">
+                        {% for userAddress in userAddresses %}
+                            <div class="display-address">
+                                <a href="{{ path('modify_address',{'id': userAddress.id}) }}" class="address-link">
+                                    {{ userAddress.address }}
+                                </a>
+                                <a href="{{ path('user_address_delete',{'id': userAddress.id}) }}">
+                                    <i class="fas fa-trash fa-xs"></i>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div class="col-8">
                 {{ form_errors(form) }}
-                <h1 class="mb-3">Ajouter une adresse pour la livraison</h1>
+                <h1 class="mb-3">Ajouter une adresse :</h1>
                 <small>Les adresses sont limitées à 5 par utilisateurs.</small>
                 {{ form_start(form) }}
                 {{ form_row(form.phone) }}
@@ -36,3 +80,6 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/address.js') }}"></script>
+{% endblock %}

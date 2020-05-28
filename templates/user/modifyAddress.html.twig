@@ -1,10 +1,26 @@
 {% extends 'site/partials/base.html.twig' %}
 
+{% block title %}Modification de l'adresse - Ecommerce{% endblock %}
+
 {% block body %}
-
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-8">
+                {{ form_errors(form) }}
+                <h1 class="mb-3">Modifier cette adresse</h1>
+                {{ form_start(form) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.cp) }}
+                {{ form_row(form.town) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.complement) }}
+                {{ form_row(form.for_command) }}
+                <button type="submit" class="btn btn-color">Enregistrer les modifications sur cette adresse</button>
+                <br>
+                <a href="{{ path('address') }}">Retourner sur les adresses</a>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-

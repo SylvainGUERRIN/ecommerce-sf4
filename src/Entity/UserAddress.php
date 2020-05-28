@@ -73,6 +73,11 @@ class UserAddress
      */
     private $userCommands;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $for_billing;
+
     public function __construct()
     {
         $this->userCommands = new ArrayCollection();
@@ -230,6 +235,18 @@ class UserAddress
                 $userCommand->setUserAddress(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getForBilling(): ?bool
+    {
+        return $this->for_billing;
+    }
+
+    public function setForBilling(?bool $for_billing): self
+    {
+        $this->for_billing = $for_billing;
 
         return $this;
     }
