@@ -33,31 +33,35 @@
                 <div class="case">
                     <h1 class="case-title">Adresse de livraison :</h1>
                     <div class="js-address-check">
-                        {% for userAddress in userAddresses %}
                             <div class="display-address">
-                                <a href="{{ path('modify_address',{'id': userAddress.id}) }}" class="address-link">
-                                    {{ userAddress.address }}
+                                {% if deliveryAddress is not empty %}
+                                <a href="{{ path('modify_address',{'id': deliveryAddress.id}) }}" class="address-link">
+                                    {{ deliveryAddress.address }}
                                 </a>
-                                <a href="{{ path('user_address_delete',{'id': userAddress.id}) }}">
+                                <a href="{{ path('user_address_delete',{'id': deliveryAddress.id}) }}">
                                     <i class="fas fa-trash fa-xs"></i>
                                 </a>
+                                {% else %}
+                                    <p>Vous n'avez pas encore paramétrer une adresse pour la livraison.</p>
+                                {% endif %}
                             </div>
-                        {% endfor %}
                     </div>
                 </div>
                 <div class="case">
                     <h1 class="case-title">Adresse de facturation :</h1>
                     <div class="js-address-check">
-                        {% for userAddress in userAddresses %}
+                        {% if billingAddress is not empty %}
                             <div class="display-address">
-                                <a href="{{ path('modify_address',{'id': userAddress.id}) }}" class="address-link">
-                                    {{ userAddress.address }}
+                                <a href="{{ path('modify_address',{'id': billingAddress.id}) }}" class="address-link">
+                                    {{ billingAddress.address }}
                                 </a>
-                                <a href="{{ path('user_address_delete',{'id': userAddress.id}) }}">
+                                <a href="{{ path('user_address_delete',{'id': billingAddress.id}) }}">
                                     <i class="fas fa-trash fa-xs"></i>
                                 </a>
                             </div>
-                        {% endfor %}
+                        {% else %}
+                            <p>Vous n'avez pas encore paramétrer une adresse pour la facturation.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -73,6 +77,7 @@
                 {{ form_row(form.country) }}
                 {{ form_row(form.complement) }}
                 {{ form_row(form.for_command) }}
+                {{ form_row(form.for_billing) }}
                 <button type="submit" class="btn btn-color">Enregistrer la nouvelle adresse</button>
                 {{ form_end(form) }}
             </div>

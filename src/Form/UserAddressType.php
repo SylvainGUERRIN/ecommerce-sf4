@@ -63,6 +63,10 @@ class UserAddressType extends AbstractType
                 'label' => 'Adresse pour la livraison',
                 'required' => false,
             ])
+            ->add('for_billing', CheckboxType::class, [
+                'label' => 'Adresse pour la facturation',
+                'required' => false,
+            ])
 //            ->add('user')
         ;
     }

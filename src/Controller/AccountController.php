@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\UserAddress;
 use App\Form\UserAddressType;
 use App\Repository\UserAddressRepository;
+use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -27,10 +28,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AccountController extends AbstractController
 {
     public $em;
+    protected $quantityProducts;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * AccountController constructor.
+     * @param EntityManagerInterface $em
+     * @param CartService $cartService
+     * @throws NonUniqueResultException
+     */
+    public function __construct(EntityManagerInterface $em, CartService $cartService)
     {
         $this->em = $em;
+        $this->quantityProducts = $cartService->getQuantity();
     }
 
     /**
@@ -61,12 +70,23 @@ class AccountController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
 
-            //vérifier si le user n'a pas d'autres adresses déjà checkées et enléve le check
+            //vérifier si le user n'a pas d'autres adresses déjà checkées sur for_command et enléve le check
             if($form['for_command']->getData() === true){
-                $oldAddresses = $userAddressRepository->findByUserAndCheck($user);
-                foreach ($oldAddresses as $oldAddress){
-                    if($oldAddress->getForCommand() === true){
-                        $oldAddress->setForCommand(false);
+                $oldCommandAddresses = $userAddressRepository->findByUserAndCommandWithArray($user);
+                foreach ($oldCommandAddresses as $oldCommandAddress){
+                    if($oldCommandAddress->getForCommand() === true){
+                        $oldCommandAddress->setForCommand(false);
+                        $this->em->flush();
+                    }
+                }
+            }
+
+            //vérifier si le user n'a pas d'autres adresses déjà checkées sur for_billing et enléve le check
+            if($form['for_billing']->getData() === true){
+                $oldBillingAddresses = $userAddressRepository->findByUserAndBillingWithArray($user);
+                foreach ($oldBillingAddresses as $oldBillingAddress){
+                    if($oldBillingAddress->getForBilling() === true){
+                        $oldBillingAddress->setForBilling(false);
                         $this->em->flush();
                     }
                 }
@@ -86,7 +106,10 @@ class AccountController extends AbstractController
         }
 
         return $this->render('user/address.html.twig',[
+            'quantityProducts' => $this->quantityProducts,
             'userAddresses' => $userAddresses = $userAddressRepository->findByUser($user),
+            'deliveryAddress' => $deliveryAddress = $userAddressRepository->findByUserAndCommand($user),
+            'billingAddress' => $billingAddress = $userAddressRepository->findByUserAndBilling($user),
             'form' => $form->createView()
         ]);
     }
@@ -97,6 +120,7 @@ class AccountController extends AbstractController
      * @param UserAddressRepository $userAddressRepository
      * @return Response
      * @Route("/modifier-adresse/{id}", name="modify_address")
+     * @throws NonUniqueResultException
      */
     public function modifyAddress($id, Request $request, UserAddressRepository $userAddressRepository): Response
     {
@@ -111,13 +135,21 @@ class AccountController extends AbstractController
 
             //vérifier si le user n'a pas d'autres adresses déjà checkées et enléve le check
             if($form['for_command']->getData() === true){
-                $oldAddresses = $userAddressRepository->findByUserAndCheck($user);
-                foreach ($oldAddresses as $oldAddress){
-                    if($oldAddress->getForCommand() === true){
-                        $oldAddress->setForCommand(false);
+                $oldCommandAddress = $userAddressRepository->findByUserAndCommand($user);
+                    if($oldCommandAddress !== null && $oldCommandAddress->getForCommand() === true){
+                        $oldCommandAddress->setForCommand(false);
                         $this->em->flush();
                     }
-                }
+            }
+
+
+            //vérifier si le user n'a pas d'autres adresses déjà checkées sur for_billing et enléve le check
+            if($form['for_billing']->getData() === true){
+                $oldBillingAddress = $userAddressRepository->findByUserAndBilling($user);
+                    if($oldBillingAddress !== null && $oldBillingAddress->getForBilling() === true){
+                        $oldBillingAddress->setForBilling(false);
+                        $this->em->flush();
+                    }
             }
 
             $this->em->persist($addressToModify);
@@ -131,6 +163,7 @@ class AccountController extends AbstractController
         }
 
         return $this->render('user/modifyAddress.html.twig', [
+            'quantityProducts' => $this->quantityProducts,
             'form' => $form->createView()
         ]);
     }
@@ -159,6 +192,8 @@ class AccountController extends AbstractController
      */
     public function invoices(): Response
     {
-        return $this->render('user/invoices.html.twig',[]);
+        return $this->render('user/invoices.html.twig',[
+            'quantityProducts' => $this->quantityProducts,
+        ]);
     }
 }

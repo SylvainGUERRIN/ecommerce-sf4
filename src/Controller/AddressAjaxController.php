@@ -35,7 +35,7 @@ class AddressAjaxController extends AbstractController
             $user = $this->getUser();
 
             //vérifier si le user n'a pas d'autres adresses déjà checkées et enléve le check
-            $oldAddresses = $userAddressRepository->findByUserAndCheck($user);
+            $oldAddresses = $userAddressRepository->findByUserAndCommand($user);
             foreach ($oldAddresses as $oldAddress){
                 if($oldAddress->getForCommand() === true){
                     $oldAddress->setForCommand(false);

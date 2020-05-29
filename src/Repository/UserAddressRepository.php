@@ -37,14 +37,61 @@ class UserAddressRepository extends ServiceEntityRepository
 
     /**
      * @param $user
-     * @return int|mixed|string
+     * @return null|UserAddress
+     * @throws NonUniqueResultException
      */
-    public function findByUserAndCheck($user)
+    public function findByUserAndCommand($user): ? UserAddress
     {
         return $this->createQueryBuilder('ua')
             ->where('ua.user = :user')
             ->setParameter('user', $user)
             ->andWhere('ua.for_command = 1')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /**
+     * @param $user
+     * @return int|mixed|string
+     */
+    public function findByUserAndCommandWithArray($user)
+    {
+        return $this->createQueryBuilder('ua')
+            ->where('ua.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('ua.for_command = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $user
+     * @return null|UserAddress
+     * @throws NonUniqueResultException
+     */
+    public function findByUserAndBilling($user): ? userAddress
+    {
+        return $this->createQueryBuilder('ua')
+            ->where('ua.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('ua.for_billing = 1')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /**
+     * @param $user
+     * @return int|mixed|string
+     */
+    public function findByUserAndBillingWithArray($user)
+    {
+        return $this->createQueryBuilder('ua')
+            ->where('ua.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('ua.for_billing = 1')
             ->getQuery()
             ->getResult()
             ;
