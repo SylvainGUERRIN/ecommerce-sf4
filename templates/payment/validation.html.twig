@@ -3,17 +3,75 @@
 {% block title %}Validation - Ecommerce{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-4">
-                <p>adresse livraison avec case</p>
-                <p>adresse facturation avec case</p>
-
-                <p>bouton pour rajouter adresse</p>
-            </div>
             <div class="col-8">
-                <p>tableau avec la commande</p>
-                <p>en bas à droite bouton de paiement</p>
+                <div class="row">
+                    <div class="col-1">
+                        <span>1</span>
+                    </div>
+                    <div class="col-3">
+                        Adresse de livraison
+                    </div>
+                    <div class="col-6">
+                        <p>afficher l'adresse pour la livraison</p>
+                        <a href="" class="">
+                            ajouter des instructions à la livraison
+                        </a>
+                    </div>
+                    <div class="col-2">
+                        <a href="" class="btn btn-color">Modifier</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-1">
+                        <span>2</span>
+                    </div>
+                    <div class="col-3">
+                        Méthode de paiement
+                    </div>
+                    <div class="col-6">
+                        <p>afficher la méthode de paiement choisie par l'utilisateur</p>
+                        <a href="" class="">
+                            Adresse de facturation:
+                        </a>
+                        <p>afficher l'adresse de facturation</p>
+                    </div>
+                    <div class="col-2">
+                        <a href="" class="btn btn-color">Modifier</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-1">
+                        <span>3</span>
+                    </div>
+                    <div class="col-11">
+                        Vérification et validation de la commande
+                    </div>
+                </div>
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body text-center">
+                        <a href="#" class="card-link btn btn-color">Acheter</a>
+                        <p class="card-text mt-2">
+                            Vous devez accepter nos conditions générales de vente.
+                            Mettre lien pourles conditions génerales de vente.
+                        </p>
+                        <hr>
+                        <h6 class="card-subtitle">Récapitulatif de votre commande</h6>
+                        <span>Articles: </span> <span>prix des articles</span>
+                        <br>
+                        <span>Livraison: </span> <span>prix de la livraison</span>
+                        <hr>
+                        <span>Montant total: </span> <span>prix total</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

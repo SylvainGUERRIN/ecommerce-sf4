@@ -45,17 +45,17 @@ class PaymentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/livraison", name="delivery")
-     * @Security("is_granted('ROLE_USER')")
-     * @return Response
-     */
-    public function delivery(): Response
-    {
-        return $this->render('payment/delivery.html.twig',[
-            'quantityProducts' => $this->quantityProducts,
-        ]);
-    }
+//    /**
+//     * @Route("/livraison", name="delivery")
+//     * @Security("is_granted('ROLE_USER')")
+//     * @return Response
+//     */
+//    public function delivery(): Response
+//    {
+//        return $this->render('payment/delivery.html.twig',[
+//            'quantityProducts' => $this->quantityProducts,
+//        ]);
+//    }
 
     /**
      * @Route("/validation", name="validation")

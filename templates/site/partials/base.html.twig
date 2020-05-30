@@ -1,3 +1,4 @@
+{% set route = app.request.attributes.get("_route") %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,7 +17,11 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-{% include 'site/partials/header.html.twig' %}
+{% if route == 'delivery' or route == 'validation' %}
+    {% include 'site/partials/no-menu-header.html.twig' %}
+{% else %}
+    {% include 'site/partials/header.html.twig' %}
+{% endif %}
 {% block body %}{% endblock %}
 {% include 'site/partials/footer.html.twig' %}
 
