@@ -4,11 +4,13 @@
 namespace App\Controller;
 
 
+use App\Repository\ProductRepository;
 use App\Service\CartService;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentController extends AbstractController
@@ -64,6 +66,8 @@ class PaymentController extends AbstractController
      */
     public function validation(): Response
     {
+        //call prepare command with command service
+
         return $this->render('payment/validation.html.twig',[]);
     }
 }

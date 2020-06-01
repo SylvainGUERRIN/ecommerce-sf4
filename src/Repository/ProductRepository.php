@@ -138,6 +138,20 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $productName
+     * @return array
+     */
+    public function findAllByName($productName): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.name IN (:name)')
+            ->setParameter('name', $productName)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
      * @param $productSlug
      * @return Product
      * @throws NonUniqueResultException

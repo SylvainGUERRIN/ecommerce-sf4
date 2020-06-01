@@ -32,7 +32,7 @@ class UserCommands
     private $reference;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
     private $products;
 
@@ -107,12 +107,12 @@ class UserCommands
         return $this;
     }
 
-    public function getProducts(): ?string
+    public function getProducts(): ?array
     {
         return $this->products;
     }
 
-    public function setProducts(string $products): self
+    public function setProducts(?array $products): self
     {
         $this->products = $products;
 
