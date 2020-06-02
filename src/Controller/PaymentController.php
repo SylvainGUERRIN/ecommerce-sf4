@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Repository\ProductRepository;
+use App\Repository\UserAddressRepository;
 use App\Service\CartService;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -62,12 +63,25 @@ class PaymentController extends AbstractController
     /**
      * @Route("/validation", name="validation")
      * @Security("is_granted('ROLE_USER')")
+     * @param UserAddressRepository $userAddressRepository
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function validation(): Response
+    public function validation(UserAddressRepository $userAddressRepository): Response
     {
         //call prepare command with command service
 
-        return $this->render('payment/validation.html.twig',[]);
+        $user = $this->getUser();
+
+        $panierWithData = $this->cartService->getFullCart();
+        $total = $this->cartService->getTotalPrice();
+
+        return $this->render('payment/validation.html.twig',[
+            'deliveryAddress' => $userAddressRepository->findByUserAndCommand($user),
+            'billingAddress' => $userAddressRepository->findByUserAndBilling($user),
+            'quantityProducts' => $this->quantityProducts,
+            'items' => $panierWithData,
+            'total' => $total
+        ]);
     }
 }

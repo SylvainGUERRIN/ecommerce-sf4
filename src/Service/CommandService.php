@@ -41,7 +41,7 @@ class CommandService
     /**
      * @throws NonUniqueResultException
      */
-    public function facture(): void
+    public function facture()
     {
         //generer un token find method in service
 //        $generator = $this->container->get('security.secure_random');
