@@ -49,19 +49,85 @@ class CommandService
         $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
         $deliveryAddress = $this->em->getRepository(UserAddress::class)->findByUserAndCommand($user);
         $billingAddress = $this->em->getRepository(UserAddress::class)->findByUserAndBilling($user);
-        $amountHT = $this->cartService->getTotalPrice();
         $command = [];
 
         //trouver tous les produits du panier
         $products = $this->em->getRepository(Product::class)->findAllByName(array_keys($this->session->get('panier')));
 
+        $totalHT = 0;
+        $totalTTC = 0;
+        $totalTTCWithPromo = 0;
         //pour faire un foreach et tout mettre dans le json en bdd
+        foreach ($products as $product){
+            $quantityOfProduct = $this->cartService->getQuantityOfOneProduct($product->getName());
+            $priceHT = $product->getPrice();
 
+            //prix ttc
+            if($product->getTva() !== null){
+                $productTVA = $product->getTva()->getMultiplicate();
+                if($productTVA > 0){
+                    $priceTTC = $priceHT + (($priceHT * $productTVA) / 100);
+//                    dd($priceTTC);
+                }else{
+                    $priceTTC = $priceHT;
+                }
+            }else{
+                $priceTTC = $priceHT;
+                $productTVA = null;
+            }
+
+            if($product->getPromo() !== null){
+                $priceTTCWithPromo = $priceTTC - (($priceTTC * $product->getPromo()->getPercent()) / 100);
+            }else{
+                $priceTTCWithPromo = 0;
+            }
+
+            $totalHT += round($priceHT * $quantityOfProduct, 2);
+            $totalTTC += round($priceTTC * $quantityOfProduct, 2);
+            $totalTTCWithPromo += round($priceTTCWithPromo * $quantityOfProduct, 2);
+
+            $command['product'][$product->getId()] = array(
+                'reference' => $product->getName(),
+                'quantity' => $quantityOfProduct,
+                'tva' => $productTVA,
+                'priceHT' => round($priceHT, 2),
+                'priceTTC' => round($priceTTC, 2)
+            );
+            $command['delivery'] = array(
+                'firstname' => $deliveryAddress->getFirstname(),
+                'lastname' => $deliveryAddress->getLastname(),
+                'phone' => $deliveryAddress->getPhone(),
+                'address' => $deliveryAddress->getAddress(),
+                'town' => $deliveryAddress->getTown(),
+                'cp' => $deliveryAddress->getCp(),
+                'country' => $deliveryAddress->getCountry(),
+                'complement' => $deliveryAddress->getComplement()
+            );
+            $command['billing'] = array(
+                'firstname' => $billingAddress->getFirstname(),
+                'lastname' => $billingAddress->getLastname(),
+                'phone' => $billingAddress->getPhone(),
+                'address' => $billingAddress->getAddress(),
+                'town' => $billingAddress->getTown(),
+                'cp' => $billingAddress->getCp(),
+                'country' => $billingAddress->getCountry(),
+                'complement' => $billingAddress->getComplement()
+            );
+        }
+
+        $command['amount'] = array(
+            'totalHT' => $totalHT,
+            'totalTTC' => $totalTTC,
+            'totalTTCWithPromo' => $totalTTCWithPromo
+        );
+
+        return $command;
     }
 
     /**
      * @return Response
      * @throws NonUniqueResultException
+     * @throws \Exception
      */
     public function prepareCommand(): Response
     {
@@ -72,14 +138,15 @@ class CommandService
             $command = $this->em->getRepository(UserCommands::class)->find($this->session->get('command'));
         }
 
-        //renvooi l'objet user ou null si pas authentifié
-        $command->setUser($this->user);
+        $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
+        $command->setUser($user);
 //        $command->setUser($this->token_storage->getToken()->getUser());
-        //$command->setUserAddress();
+        $command->setUserAddress($this->em->getRepository(UserAddress::class)->findByUserAndCommand($user));
         $command->setCommandAt(new \DateTime('now'));
         $command->setValidate(false);
-        //$command->setReference();
+        $command->setReference(random_int(10, 20));//definir une methode pour la reference
         $command->setProducts($this->facture());
+        $command->setTotalAmount($this->cartService->getTotalPrice());
 
         if(!$this->session->has('command')){
             $this->em->persist($command);

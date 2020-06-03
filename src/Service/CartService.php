@@ -96,6 +96,24 @@ class CartService
 
     /**
      * @param $productName
+     * @return null
+     * @throws NonUniqueResultException
+     */
+    public function getQuantityOfOneProduct($productName)
+    {
+        $quantityOfOneProduct = null;
+        $panierWithData = $this->getFullCart();
+
+        foreach ($panierWithData as $oneProduct){
+            if($oneProduct['product']->getName() === $productName){
+                $quantityOfOneProduct = $oneProduct['quantity'];
+            }
+        }
+        return $quantityOfOneProduct;
+    }
+
+    /**
+     * @param $productName
      * @param $quantity
      * @return mixed|null
      */
@@ -117,24 +135,24 @@ class CartService
     {
         $total = 0;
         $panierWithData = $this->getFullCart();
-//        dd($panierWithData);
         foreach ($panierWithData as  $product) {
-            //si le produit est en promo
-            //dd($product['product']->getName());
             $item = $this->productRepository->findByName($product['product']->getName());
             $originalPrice = $product['product']->getPrice();
-            //dd($item);
+            //si le produit a une tva
+            if($item->getTva() !== null){
+                $multiplicate = $item->getTva()->getMultiplicate();
+                $priceWithTva = round($originalPrice + ($originalPrice * $multiplicate / 100), 2);
+            }else{
+                $priceWithTva = $originalPrice;
+            }
+            //si le produit est en promo
             if($item->getPromo() !== null){
                 $percent = $this->promoRepository->find($item->getPromo())->getPercent();
                 //dd($percent);
-                $price = round($originalPrice - ($originalPrice * $percent / 100), 2);
-            }else{
-                $price = $originalPrice;
+                $priceWithTva = round($priceWithTva - ($priceWithTva * $percent / 100), 2);
             }
-            //dd($price);
-
             //retravailler dessus pour choper les prix des produits
-            $totalProduct = $price * $product['quantity'];
+            $totalProduct = $priceWithTva * $product['quantity'];
             $total += $totalProduct;
         }
         return $total;

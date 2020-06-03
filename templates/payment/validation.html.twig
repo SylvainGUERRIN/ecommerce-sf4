@@ -118,6 +118,12 @@
                         {% endif %}
                     </div>
                 {% endfor %}
+                <hr>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <span>Total ({{ quantityProducts }} article{% if quantityProducts > 1 %}s{% endif %}): {{ total }} €</span>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 text-center mt-5 mb-3">
                         <a href="#" class="card-link btn btn-color">Acheter</a>
@@ -138,7 +144,7 @@
                         <br>
                         <span>Livraison: </span> <span>prix de la livraison</span>
                         <hr>
-                        <span>Montant total: </span> <span>prix total</span>
+                        <span>Montant total: </span> <span>{{ total }} €</span>
                     </div>
                 </div>
             </div>
