@@ -77,19 +77,24 @@
                             {{ product.excerpt }}
                         </p>
                         <p class="card-text text-center">
+                            {% if (product.tva is not null) and (product.tva.multiplicate > 0) %}
+                                {% set price = product.price + ((product.price*product.tva.multiplicate)/100) %}
+                            {% else %}
+                                {% set price = product.price|number_format(2, ',') %}
+                            {% endif %}
                             {% if product.promo is not null %}
                                 <del>
-                                    {{ product.price|number_format(2, ',') }} €
+                                    {{ price|number_format(2, ',') }} €
                                 </del>
                                 <br> <br>
                                 <span>
                                     {# calcul pour appliquer le pourcentage de reduction#}
-                                    {% set pourcentPromo = product.price - (product.price*product.promo.percent/100) %}
+                                    {% set pourcentPromo = price - (price*product.promo.percent/100) %}
                                     {{ pourcentPromo|number_format(2, ',') }} €
                                 </span>
                             {% else %}
                                 <span>
-                                    {{ product.price }} €
+                                    {{ price|number_format(2, ',') }} €
                                 </span>
                             {% endif %}
                         </p>

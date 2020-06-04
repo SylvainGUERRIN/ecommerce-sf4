@@ -140,7 +140,6 @@ class CommandService
 
         $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
         $command->setUser($user);
-//        $command->setUser($this->token_storage->getToken()->getUser());
         $command->setUserAddress($this->em->getRepository(UserAddress::class)->findByUserAndCommand($user));
         $command->setCommandAt(new \DateTime('now'));
         $command->setValidate(false);

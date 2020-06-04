@@ -9,18 +9,23 @@
     <div class="card-body">
         <h2 class="card-title text-center">{{ product.name }}</h2>
         <div class="card-title card-title-price text-center">
+            {% if (product.tva is not null) and (product.tva.multiplicate > 0) %}
+                {% set price = product.price + ((product.price*product.tva.multiplicate)/100) %}
+            {% else %}
+                {% set price = product.price|number_format(2, ',') %}
+            {% endif %}
             {% if product.promo is not null %}
                 <div class="text text-warning mb-3">Promo !</div>
                 <del class="mr-2">
-                    {{ product.price|number_format(2, ',', ' ') }} €
+                    {{ price|number_format(2, ',', ' ') }} €
                 </del>
                 <span class="price-color">
-                    {% set pourcentPromo = product.price - (product.price*product.promo.percent/100) %}
+                    {% set pourcentPromo = price - (price*product.promo.percent/100) %}
                     {{ pourcentPromo|number_format(2, ',', ' ') }} €
                 </span>
             {% else %}
                 <span class="price-color">
-                    {{ product.price }} €
+                    {{ price|number_format(2, ',', ' ') }} €
                 </span>
             {% endif %}
         </div>

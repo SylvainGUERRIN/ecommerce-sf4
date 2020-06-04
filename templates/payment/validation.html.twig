@@ -89,25 +89,30 @@
                         <div class="col-xs-12 col-md-3 text-center">
                             <img class="thumb" src="{{ vich_uploader_asset(item.product.productImage, 'imageFile') }}" alt="image du produit {{ item.product.name }}">
                         </div>
-                        <div class="col-xs-12 col-md-7">
+                        <div class="col-xs-12 col-md-6">
                             <h2 id="product-name">{{ item.product.name }}</h2>
 
                             <div class="actions">
                                 <p>Quantité: {{ item.quantity }} | Il reste {{ item.product.quantity }} produits en stock.</p>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-md-2 price-flex">
+                        <div class="col-xs-12 col-md-3 price-flex">
+                            {% if (item.product.tva is not null) and (item.product.tva.multiplicate > 0) %}
+                                {% set price = item.product.price + ((item.product.price*item.product.tva.multiplicate)/100) %}
+                            {% else %}
+                                {% set price = item.product.price|number_format(2, ',') %}
+                            {% endif %}
                             {% if item.product.promo is not null %}
                                 <del>
-                                    {{ item.product.price|number_format(2, ',') }} €
+                                    {{ price|number_format(2, ',') }} €
                                 </del>
                                 <span>
-                                    {% set pourcentPromo = item.product.price - (item.product.price*item.product.promo.percent/100) %}
+                                    {% set pourcentPromo = price - (price*item.product.promo.percent/100) %}
                                     {{ pourcentPromo|number_format(2, ',') }} €
                                 </span>
                             {% else %}
                                 <span>
-                                    {{ item.product.price }} €
+                                    {{ price|number_format(2, ',') }} €
                                 </span>
                             {% endif %}
                         </div>
