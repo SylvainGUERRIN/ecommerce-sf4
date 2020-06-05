@@ -116,9 +116,9 @@ class CommandService
         }
 
         $command['amount'] = array(
-            'totalHT' => $totalHT,
-            'totalTTC' => $totalTTC,
-            'totalTTCWithPromo' => $totalTTCWithPromo
+            'totalHT' => round($totalHT, 2),
+            'totalTTC' => round($totalTTC, 2),
+            'totalTTCWithPromo' => round($totalTTCWithPromo, 2)
         );
 
         return $command;
@@ -146,6 +146,7 @@ class CommandService
         $command->setReference(random_int(10, 20));//definir une methode pour la reference
         $command->setProducts($this->facture());
         $command->setTotalAmount($this->cartService->getTotalPrice());
+        $command->setPaid(false);
 
         if(!$this->session->has('command')){
             $this->em->persist($command);

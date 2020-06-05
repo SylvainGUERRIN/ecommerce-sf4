@@ -66,6 +66,11 @@ class UserCommands
      */
     private $promo;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $paid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -187,6 +192,18 @@ class UserCommands
     public function setPromo(?Promo $promo): self
     {
         $this->promo = $promo;
+
+        return $this;
+    }
+
+    public function getPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): self
+    {
+        $this->paid = $paid;
 
         return $this;
     }

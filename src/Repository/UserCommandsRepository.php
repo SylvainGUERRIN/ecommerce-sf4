@@ -36,6 +36,19 @@ class UserCommandsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $user
+     * @return int|mixed|string|null
+     */
+    public function findByUser($user)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @method Product[]
      * @return Query
      * @throws \Exception
@@ -69,5 +82,37 @@ class UserCommandsRepository extends ServiceEntityRepository
             ->orderBy('u.command_at','DESC')
             ->getQuery();
 //            ->getResult();
+    }
+
+    /**
+     * @param $user
+     * @return int|mixed|string
+     * @throws NonUniqueResultException
+     */
+    public function findByUserNoValidateNoPaid($user)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.user = :user')
+            ->andWhere('u.validate = false')
+            ->andWhere('u.paid = false')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param $user
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function findByUserValidateNoPaid($user)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.user = :user')
+            ->andWhere('u.validate = true')
+            ->andWhere('u.paid = false')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

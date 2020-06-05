@@ -83,21 +83,22 @@ class PaymentController extends AbstractController
     {
         $user = $this->getUser();
 
+        if(empty($this->session->get('panier'))){
+            $this->addFlash(
+                'danger',
+                "Il doit y avoir des produits dans votre panier pour le validé."
+            );
+
+            return $this->redirectToRoute('cart');
+        }
+
         //dd($this->session->get('command'));
         //call prepare command with command service
         $commandID = $commandService->prepareCommand()->getContent();
-        $userCommand = $userCommandsRepository->find($commandID);
+        dump($userCommand = $userCommandsRepository->find($commandID));
         //dd($userCommand);
 
         $panierWithData = $this->cartService->getFullCart();
-        //tests
-//        $products = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAllByName(array_keys($this->session->get('panier')));
-//        dd($products);
-//        foreach ($panierWithData as $product){
-//            dd($product['product']->getTva());
-//        }
-//        dd($this->cartService->getTotalPrice());
-//        dd($commandService->facture());
 
         $total = $this->cartService->getTotalPrice();
 
