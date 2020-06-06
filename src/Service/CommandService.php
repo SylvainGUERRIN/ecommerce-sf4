@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Entity\User;
 use App\Entity\UserAddress;
 use App\Entity\UserCommands;
+use App\Repository\UserCommandsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ class CommandService
     protected $em;
     protected $user;
     protected $cartService;
+    protected $userCommandsRepository;
 
     /**
      * CommandService constructor.
@@ -29,13 +31,20 @@ class CommandService
      * @param EntityManagerInterface $em
      * @param Security $security
      * @param CartService $cartService
+     * @param UserCommandsRepository $userCommandsRepository
      */
-    public function __construct(SessionInterface $session, EntityManagerInterface $em, Security $security, CartService $cartService)
+    public function __construct(
+        SessionInterface $session,
+        EntityManagerInterface $em,
+        Security $security,
+        CartService $cartService,
+        UserCommandsRepository $userCommandsRepository)
     {
         $this->session = $session;
         $this->em = $em;
         $this->user = $security->getUser();
         $this->cartService = $cartService;
+        $this->userCommandsRepository = $userCommandsRepository;
     }
 
     /**
@@ -127,18 +136,19 @@ class CommandService
     /**
      * @return Response
      * @throws NonUniqueResultException
-     * @throws \Exception
      */
     public function prepareCommand(): Response
     {
-        if(!$this->session->has('command')){
+        $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
+
+        if(!$this->session->has('command') || !empty($this->userCommandsRepository->findByUserNoValidateNoPaid($user))){
             $command = new UserCommands();
         }else{
             //regarder comment s'est enregistré en session
             $command = $this->em->getRepository(UserCommands::class)->find($this->session->get('command'));
         }
 
-        $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
+        //dump($user);
         $command->setUser($user);
         $command->setUserAddress($this->em->getRepository(UserAddress::class)->findByUserAndCommand($user));
         $command->setCommandAt(new \DateTime('now'));

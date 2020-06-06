@@ -41,7 +41,6 @@ class StripeController extends AbstractController
         $this->em->flush();
 
 
-
         //récupérer le tableau de la userCommand pour l'injecter dans la session stripe
         dump($userCommand);
         dump($userCommand->getProducts());//mettre les produits dans le tableau line_items

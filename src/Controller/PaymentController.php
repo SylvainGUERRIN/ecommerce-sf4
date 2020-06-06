@@ -81,8 +81,6 @@ class PaymentController extends AbstractController
         UserCommandsRepository $userCommandsRepository
     ): Response
     {
-        $user = $this->getUser();
-
         if(empty($this->session->get('panier'))){
             $this->addFlash(
                 'danger',
@@ -91,6 +89,11 @@ class PaymentController extends AbstractController
 
             return $this->redirectToRoute('cart');
         }
+
+        $user = $this->getUser();
+        dump($this->session);
+        //$alreadyCommand = $userCommandsRepository->findByUserNoValidateNoPaid($user);
+        //dump($alreadyCommand);
 
         //dd($this->session->get('command'));
         //call prepare command with command service
