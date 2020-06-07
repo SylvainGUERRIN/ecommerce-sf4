@@ -4,7 +4,9 @@
 namespace App\Controller;
 
 
+use App\Entity\LostCart;
 use App\Entity\Product;
+use App\Repository\LostCartRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserAddressRepository;
 use App\Repository\UserCommandsRepository;
@@ -52,6 +54,36 @@ class PaymentController extends AbstractController
             'items' => $panierWithData,
             'total' => $total
         ]);
+    }
+
+    /**
+     * Use it just before deconnexion route
+     * @Route("/panier-perdu", name="lost_cart")
+     * @param LostCartRepository $lostCartRepository
+     * @throws NonUniqueResultException
+     */
+    public function lostCart(LostCartRepository $lostCartRepository): void
+    {
+        if($this->session->has('panier')){
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $userLostCart = $lostCartRepository->findByUser($user);
+            $userCart = $this->session->get('panier');
+
+            if($userLostCart !== null){
+                $em->remove($userLostCart);
+                $em->flush();
+            }
+
+            //enregistrer le panier dans la table lostCart
+            $lostCart = new LostCart();
+            $lostCart->setUser($user);
+            $lostCart->setProducts($userCart);
+            $em->persist($lostCart);
+            $em->flush();
+        }
+
+        $this->redirectToRoute('user_deconnexion');
     }
 
 //    /**

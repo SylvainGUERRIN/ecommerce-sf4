@@ -64,6 +64,11 @@ class User implements UserInterface, \Serializable
      */
     private $userAddresses;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\LostCart", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $lostCart;
+
     public function __construct()
     {
         $this->userCommands = new ArrayCollection();
@@ -282,5 +287,23 @@ class User implements UserInterface, \Serializable
     public function __toString()
     {
         return (string) $this->firstname;
+    }
+
+    public function getLostCart(): ?LostCart
+    {
+        return $this->lostCart;
+    }
+
+    public function setLostCart(?LostCart $lostCart): self
+    {
+        $this->lostCart = $lostCart;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = null === $lostCart ? null : $this;
+        if ($lostCart->getUser() !== $newUser) {
+            $lostCart->setUser($newUser);
+        }
+
+        return $this;
     }
 }
