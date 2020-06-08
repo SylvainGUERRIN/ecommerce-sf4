@@ -141,7 +141,7 @@ class CommandService
     {
         $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
 
-        if(!$this->session->has('command') || !empty($this->userCommandsRepository->findByUserNoValidateNoPaid($user))){
+        if(!$this->session->has('command')){
             $command = new UserCommands();
         }else{
             //regarder comment s'est enregistré en session
@@ -160,6 +160,7 @@ class CommandService
 
         if(!$this->session->has('command')){
             $this->em->persist($command);
+            //ajout de la commande à la session
             $this->session->set('command', $command);
         }
 

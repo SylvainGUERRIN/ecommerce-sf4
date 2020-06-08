@@ -60,9 +60,10 @@ class PaymentController extends AbstractController
      * Use it just before deconnexion route
      * @Route("/panier-perdu", name="lost_cart")
      * @param LostCartRepository $lostCartRepository
+     * @return Response
      * @throws NonUniqueResultException
      */
-    public function lostCart(LostCartRepository $lostCartRepository): void
+    public function lostCart(LostCartRepository $lostCartRepository): Response
     {
         if($this->session->has('panier')){
             $user = $this->getUser();
@@ -70,20 +71,24 @@ class PaymentController extends AbstractController
             $userLostCart = $lostCartRepository->findByUser($user);
             $userCart = $this->session->get('panier');
 
-            if($userLostCart !== null){
-                $em->remove($userLostCart);
-                $em->flush();
+            if($userLostCart === null){
+                $lostCart = new LostCart();
+            }else{
+                $lostCart = $lostCartRepository->findByUser($user);
             }
 
             //enregistrer le panier dans la table lostCart
-            $lostCart = new LostCart();
             $lostCart->setUser($user);
             $lostCart->setProducts($userCart);
-            $em->persist($lostCart);
+
+            if($userLostCart === null){
+                $em->persist($lostCart);
+            }
+
             $em->flush();
         }
 
-        $this->redirectToRoute('user_deconnexion');
+        return $this->redirectToRoute('user_deconnexion');
     }
 
 //    /**
@@ -130,6 +135,7 @@ class PaymentController extends AbstractController
         //dd($this->session->get('command'));
         //call prepare command with command service
         $commandID = $commandService->prepareCommand()->getContent();
+        dump($commandID);
         dump($userCommand = $userCommandsRepository->find($commandID));
         //dd($userCommand);
 

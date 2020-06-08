@@ -8,6 +8,7 @@ use App\Form\InscriptionType;
 use App\Form\AccountType;
 use App\Form\PassRecupType;
 use App\Form\PasswordUpdateType;
+use App\Repository\LostCartRepository;
 use App\Repository\UserRepository;
 use App\Entity\PasswordUpdate;
 use App\Entity\PasswordRecup;
@@ -31,6 +32,7 @@ use \DateTime;
 class SecurityController extends AbstractController
 {
     protected $quantityProducts;
+    protected $cartService;
 
     /**
      * SecurityController constructor.
@@ -39,6 +41,7 @@ class SecurityController extends AbstractController
      */
     public function __construct(CartService $cartService)
     {
+        $this->cartService = $cartService;
         $this->quantityProducts = $cartService->getQuantity();
     }
 
@@ -128,12 +131,23 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profil", name="user_profil")
      * @param Request $request
+     * @param LostCartRepository $lostCartRepository
      * @return Response
-     * @throws \Exception
+     * @throws NonUniqueResultException
      */
-    public function profil(Request $request): Response
+    public function profil(Request $request, LostCartRepository $lostCartRepository): Response
     {
         $user = $this->getUser();
+        //récupérer le panier perdu lors de la dernière déconnexion
+        if($lostCartRepository->findByUser($user) !== null){
+            $products = $lostCartRepository->findByUser($user)->getProducts();
+            foreach ($products as $key => $quantity) {
+                $this->cartService->addToCartWithQuantity($key, $quantity);
+                //dd($quantity);
+            }
+            //dd($lostCartRepository->findByUser($user));
+        }
+
 //        $oldImage = $user->getAvatarUrl();
 //        $avatar = new Avatar();
 
@@ -158,7 +172,7 @@ class SecurityController extends AbstractController
         return $this->render('user/account/profil.html.twig', [
             'controller_name' => 'AccountController',
             'form' => $form->createView(),
-            'quantityProducts' => $this->quantityProducts
+            'quantityProducts' => $this->cartService->getQuantity()
         ]);
     }
 

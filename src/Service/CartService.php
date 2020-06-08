@@ -62,6 +62,22 @@ class CartService
     }
 
     /**
+     * @param $productName
+     * @return mixed
+     */
+    public function addToCartWithQuantity($productName, $quantity)
+    {
+        $panier = $this->session->get('panier',[]);
+        if(!empty($panier[$productName])){
+            $panier[$productName] += $quantity;
+        }else{
+            $panier[$productName] = $quantity;
+        }
+        $this->session->set('panier', $panier);
+        return $panier;
+    }
+
+    /**
      * @param int $id
      * @return mixed
      */
