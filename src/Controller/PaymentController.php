@@ -128,15 +128,15 @@ class PaymentController extends AbstractController
         }
 
         $user = $this->getUser();
-        dump($this->session);
+        //dump($this->session);
         //$alreadyCommand = $userCommandsRepository->findByUserNoValidateNoPaid($user);
         //dump($alreadyCommand);
 
         //dd($this->session->get('command'));
         //call prepare command with command service
         $commandID = $commandService->prepareCommand()->getContent();
-        dump($commandID);
-        dump($userCommand = $userCommandsRepository->find($commandID));
+        //dump($commandID);
+        //dump($userCommand = $userCommandsRepository->find($commandID));
         //dd($userCommand);
 
         $panierWithData = $this->cartService->getFullCart();

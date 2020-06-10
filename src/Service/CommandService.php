@@ -100,7 +100,8 @@ class CommandService
                 'quantity' => $quantityOfProduct,
                 'tva' => $productTVA,
                 'priceHT' => round($priceHT, 2),
-                'priceTTC' => round($priceTTC, 2)
+                'priceTTC' => round($priceTTC, 2),
+                'priceTTCWithPromo' => round($priceTTCWithPromo, 2)
             );
             $command['delivery'] = array(
                 'firstname' => $deliveryAddress->getFirstname(),
@@ -136,16 +137,27 @@ class CommandService
     /**
      * @return Response
      * @throws NonUniqueResultException
+     * @throws \Exception
      */
     public function prepareCommand(): Response
     {
         $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
+        //dump($this->em->getRepository(UserCommands::class)->find($this->session->get('command')));
+        $oldCommand = $this->em->getRepository(UserCommands::class)->findByUserNoValidateNoPaid($user);
 
         if(!$this->session->has('command')){
-            $command = new UserCommands();
+            if(!empty($oldCommand)){
+                $command = $oldCommand;
+            }else{
+                $command = new UserCommands();
+            }
         }else{
             //regarder comment s'est enregistré en session
-            $command = $this->em->getRepository(UserCommands::class)->find($this->session->get('command'));
+            if(!empty($oldCommand)){
+                $command = $oldCommand;
+            }else{
+                $command = $this->em->getRepository(UserCommands::class)->find($this->session->get('command'));
+            }
         }
 
         //dump($user);
@@ -159,7 +171,9 @@ class CommandService
         $command->setPaid(false);
 
         if(!$this->session->has('command')){
-            $this->em->persist($command);
+            if(empty($oldCommand)){
+                $this->em->persist($command);
+            }
             //ajout de la commande à la session
             $this->session->set('command', $command);
         }

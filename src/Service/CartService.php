@@ -190,10 +190,24 @@ class CartService
         return $panier;
     }
 
-    public function empty(): bool
+    /**
+     * @return bool
+     */
+    public function emptyCart(): bool
     {
-        // le but est de vider le panier
+        // le but est de vider le panier qui est dans la session
         $this->session->remove('panier');
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function emptyCartAndCommand(): bool
+    {
+        // le but est de vider le panier et la commande qui sont dans la session
+        $this->session->remove('panier');
+        $this->session->remove('command');
         return true;
     }
 }
