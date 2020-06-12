@@ -31,7 +31,37 @@
 {#                        </a>#}
                     </div>
                     <div class="col-2">
-                        <a href="" class="btn btn-color">Modifier</a>
+                        <button type="button" class="btn btn-color" data-toggle="modal" data-target="#modalDelivery">Modifier</button>
+                    </div>
+                    <div class="modal fade" id="modalDelivery" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Choisir une adresse de livraison:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{{ path('validation') }}" method="post">
+                                    <div class="modal-body">
+                                            {% set countDelivery = 1 %}
+                                            {% for userAddress in userAddresses %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="deliveryAddress{{ userAddress.id }}" id="deliveryAddress{{ userAddress.id }}" value="option{{ countDelivery }}" >
+                                                <label class="form-check-label" for="deliveryAddress{{ userAddress.id }}">
+                                                    {{ userAddress.address }}, {{ userAddress.town }} {{ userAddress.cp }}
+                                                </label>
+                                            </div>
+                                                {% set countDelivery = countDelivery + 1 %}
+                                            {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Enregistrer la modification</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -53,7 +83,37 @@
                         </p>
                     </div>
                     <div class="col-2">
-                        <a href="" class="btn btn-color">Modifier</a>
+                        <button type="button" class="btn btn-color" data-toggle="modal" data-target="#modalBilling">Modifier</button>
+                    </div>
+                    <div class="modal fade" id="modalBilling" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Choisir une adresse de facturation:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{{ path('validation') }}" method="post">
+                                    <div class="modal-body">
+                                            {% set countBilling = 1 %}
+                                            {% for userAddress in userAddresses %}
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="deliveryAddress{{ userAddress.id }}" id="deliveryAddress{{ userAddress.id }}" value="option{{ countBilling }}" >
+                                                    <label class="form-check-label" for="deliveryAddress{{ userAddress.id }}">
+                                                        {{ userAddress.address }}, {{ userAddress.town }} {{ userAddress.cp }}
+                                                    </label>
+                                                </div>
+                                                {% set countBilling = countBilling + 1 %}
+                                            {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Enregistrer la modification</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>

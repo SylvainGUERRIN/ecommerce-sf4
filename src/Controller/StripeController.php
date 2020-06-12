@@ -128,6 +128,8 @@ class StripeController extends AbstractController
         //vider la session du le panier et de la commande
         $cartService->emptyCartAndCommand();
 
+        //enlever du stock en recupérant la commande validée sur le validate et le paid
+
         //set paid to true in userCommand
         $user = $this->getUser();
         $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);

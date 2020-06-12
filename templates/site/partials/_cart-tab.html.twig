@@ -19,7 +19,7 @@
                     <div class="actions">
                         <select name="{{ item.product.name }}" class="select-quantities">
                             {% if item.product.quantity < 10 %}
-                                {% for i in 0..item.product.quantity %}
+                                {% for i in 1..item.product.quantity %}
                                     <option value="{{ i }}"{% if item.quantity == i %} selected="selected"{% endif %}>Qté: {{ i }}</option>
                                 {% endfor %}
                             {% else %}

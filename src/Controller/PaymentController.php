@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\LostCart;
 use App\Entity\Product;
+use App\Form\DeliveryChoiceType;
 use App\Repository\LostCartRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserAddressRepository;
@@ -15,6 +16,7 @@ use App\Service\CommandService;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,13 +111,15 @@ class PaymentController extends AbstractController
      * @param UserAddressRepository $userAddressRepository
      * @param CommandService $commandService
      * @param UserCommandsRepository $userCommandsRepository
+     * @param Request $request
      * @return Response
      * @throws NonUniqueResultException
      */
     public function validation(
         UserAddressRepository $userAddressRepository,
         CommandService $commandService,
-        UserCommandsRepository $userCommandsRepository
+        UserCommandsRepository $userCommandsRepository,
+        Request $request
     ): Response
     {
         if(empty($this->session->get('panier'))){
@@ -134,7 +138,7 @@ class PaymentController extends AbstractController
 
         //dd($this->session->get('command'));
         //call prepare command with command service
-        $commandID = $commandService->prepareCommand()->getContent();
+        //$commandID = $commandService->prepareCommand()->getContent();
         //dump($commandID);
         //dump($userCommand = $userCommandsRepository->find($commandID));
         //dd($userCommand);
@@ -144,6 +148,7 @@ class PaymentController extends AbstractController
         $total = $this->cartService->getTotalPrice();
 
         return $this->render('payment/validation.html.twig',[
+            'userAddresses' => $userAddressRepository->findAll(),
             'deliveryAddress' => $userAddressRepository->findByUserAndCommand($user),
             'billingAddress' => $userAddressRepository->findByUserAndBilling($user),
             'quantityProducts' => $this->quantityProducts,
