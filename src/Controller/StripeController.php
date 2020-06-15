@@ -5,6 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\UserCommands;
+use App\Repository\LostCartRepository;
+use App\Repository\UserAddressRepository;
 use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,13 +30,38 @@ class StripeController extends AbstractController
      * @Route("/paiement", name="paiement")
      * @Security("is_granted('ROLE_USER')")
      * @param UserCommandsRepository $userCommandsRepository
+     * @param UserAddressRepository $userAddressRepository
      * @return Response
      * @throws ApiErrorException
      * @throws NonUniqueResultException
      */
-    public function paymentWithCheckout(UserCommandsRepository $userCommandsRepository): Response
+    public function paymentWithCheckout(
+        UserCommandsRepository $userCommandsRepository,
+        UserAddressRepository $userAddressRepository
+    ): Response
     {
         $user = $this->getUser();
+
+        //vérifier que l'utilisateur a bien defini ses 2 adresses
+        $oldCommandAddresses = $userAddressRepository->findByUserAndCommandWithArray($user);
+        if($oldCommandAddresses === null){
+            $this->addFlash(
+                'danger',
+                "Vous n'avez pas configurer votre adresse de livraison."
+            );
+            return $this->redirectToRoute('validation');
+        }
+
+
+        $oldBillingAddresses = $userAddressRepository->findByUserAndBillingWithArray($user);
+        if($oldBillingAddresses === null){
+            $this->addFlash(
+                'danger',
+                "Vous n'avez pas configurer votre adresse de facturation."
+            );
+            return $this->redirectToRoute('validation');
+        }
+
 
         //mettre la commande sur validate
         $userCommand = $userCommandsRepository->findByUserNoValidateNoPaid($user);
@@ -52,7 +79,7 @@ class StripeController extends AbstractController
         $lineItems = [];
 
         foreach ($products['product'] as $product){
-            dump($product);
+//            dump($product);
             //manipuler le prix pour que ça corresponde avec stripe
             /*$decimals = explode(".", $product['priceTTC']);
             dump($decimals[0]);
@@ -63,7 +90,7 @@ class StripeController extends AbstractController
             }else{
                 $finalPrice = round($product['priceTTCWithPromo'] * 100, 0);
             }
-            dump((int)$finalPrice);
+//            dump((int)$finalPrice);
 
             //pour le prix, il faut rajouter le prix avec la promo !!!!
 
@@ -75,7 +102,7 @@ class StripeController extends AbstractController
             );
         }
 
-        dump($lineItems);
+//        dump($lineItems);
         //die();
 
         $publicKEY = $_ENV['STRIPE_PUBLIC_KEY'];
@@ -120,15 +147,34 @@ class StripeController extends AbstractController
      * @Security("is_granted('ROLE_USER')")
      * @param CartService $cartService
      * @param UserCommandsRepository $userCommandsRepository
+     * @param LostCartRepository $lostCartRepository
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function success(CartService $cartService, UserCommandsRepository $userCommandsRepository): Response
+    public function success(
+        CartService $cartService,
+        UserCommandsRepository $userCommandsRepository,
+        LostCartRepository $lostCartRepository
+    ): Response
     {
+        $user = $this->getUser();
+
         //vider la session du le panier et de la commande
         $cartService->emptyCartAndCommand();
 
         //enlever du stock en recupérant la commande validée sur le validate et le paid
+
+        //supprimer le lostCart si présent
+        if($lostCartRepository->findByUser($user) !== null){
+            $this->em->remove($lostCartRepository);
+            $this->em->flush();
+//            $products = $lostCartRepository->findByUser($user)->getProducts();
+//            foreach ($products as $key => $quantity) {
+//                $this->cartService->addToCartWithQuantity($key, $quantity);
+//                //dd($quantity);
+//            }
+            //dd($lostCartRepository->findByUser($user));
+        }
 
         //set paid to true in userCommand
         $user = $this->getUser();

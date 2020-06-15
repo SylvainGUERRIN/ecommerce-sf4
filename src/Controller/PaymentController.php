@@ -13,6 +13,7 @@ use App\Repository\UserAddressRepository;
 use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
 use App\Service\CommandService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,7 @@ class PaymentController extends AbstractController
     protected $cartService;
     protected $quantityProducts;
     protected $session;
+    protected $em;
 
     /**
      * PaymentController constructor.
@@ -33,11 +35,12 @@ class PaymentController extends AbstractController
      * @param SessionInterface $session
      * @throws NonUniqueResultException
      */
-    public function __construct(CartService $cartService, SessionInterface $session)
+    public function __construct(CartService $cartService, SessionInterface $session, EntityManagerInterface $em)
     {
         $this->cartService = $cartService;
         $this->quantityProducts = $cartService->getQuantity();
         $this->session = $session;
+        $this->em = $em;
     }
 
     /**
@@ -133,15 +136,57 @@ class PaymentController extends AbstractController
 
         $user = $this->getUser();
         //dump($this->session);
-        //$alreadyCommand = $userCommandsRepository->findByUserNoValidateNoPaid($user);
-        //dump($alreadyCommand);
+        $alreadyCommand = $userCommandsRepository->findByUserNoValidateNoPaid($user);
+        dump($alreadyCommand);
 
         //dd($this->session->get('command'));
         //call prepare command with command service
-        //$commandID = $commandService->prepareCommand()->getContent();
+        $commandID = $commandService->prepareCommand()->getContent();
         //dump($commandID);
         //dump($userCommand = $userCommandsRepository->find($commandID));
         //dd($userCommand);
+
+        dump($this->session->get('panier'));
+
+        if($request->isMethod('post')) {
+            $requests = $request->request->all();
+//            dump($requests);
+            if(array_key_exists('deliveryAddress', $requests) === true){
+                $oldCommandAddresses = $userAddressRepository->findByUserAndCommandWithArray($user);
+                foreach ($oldCommandAddresses as $oldCommandAddress){
+                    if($oldCommandAddress->getForCommand() === true){
+                        $oldCommandAddress->setForCommand(false);
+                        $this->em->flush();
+                    }
+                }
+
+//                dump($requests['deliveryAddress']);
+                $deliveryAddressID = (int)preg_replace('~\D~', '', $requests['deliveryAddress']);
+//                dump($deliveryAddressID);
+                $changeAddressDelivery = $userAddressRepository->find($deliveryAddressID);
+                $changeAddressDelivery->setForCommand(true);
+                $this->em->flush();
+
+            }
+
+            if(array_key_exists('billingAddress', $requests) === true){
+                $oldCommandAddresses = $userAddressRepository->findByUserAndBillingWithArray($user);
+                foreach ($oldCommandAddresses as $oldCommandAddress){
+                    if($oldCommandAddress->getForBilling() === true){
+                        $oldCommandAddress->setForBilling(false);
+                        $this->em->flush();
+                    }
+                }
+
+//                dump($requests['billingAddress']);
+                $billingAddressID = (int)preg_replace('~\D~', '', $requests['billingAddress']);
+//                dump($billingAddressID);
+                $changeAddressBilling = $userAddressRepository->find($billingAddressID);
+                $changeAddressBilling->setForBilling(true);
+                $this->em->flush();
+            }
+
+        }
 
         $panierWithData = $this->cartService->getFullCart();
 

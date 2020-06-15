@@ -18,14 +18,18 @@
                         Adresse de livraison:
                     </div>
                     <div class="col-6">
-                        <p>{{ deliveryAddress.address }}, {{ deliveryAddress.town|capitalize }} {{ deliveryAddress.cp }}</p>
-                        <p>
-                            {% if deliveryAddress.complement is not empty %}
-                                {{ deliveryAddress.complement }}
-                            {% else %}
-                                Vous n'avez mis aucunes instructions pour cette adresse.
-                            {% endif %}
-                        </p>
+                        {% if deliveryAddress is not null %}
+                            <p>{{ deliveryAddress.address }}, {{ deliveryAddress.town|capitalize }} {{ deliveryAddress.cp }}</p>
+                            <p>
+                                {% if deliveryAddress.complement is not empty %}
+                                    {{ deliveryAddress.complement }}
+                                {% else %}
+                                    Vous n'avez mis aucunes instructions pour cette adresse.
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <p>Vous n'avez pas mis d'adresse de livraison.</p>
+                        {% endif %}
 {#                        <a href="" class="">#}
 {#                            ajouter des instructions à la livraison#}
 {#                        </a>#}
@@ -47,7 +51,11 @@
                                             {% set countDelivery = 1 %}
                                             {% for userAddress in userAddresses %}
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="deliveryAddress{{ userAddress.id }}" id="deliveryAddress{{ userAddress.id }}" value="option{{ countDelivery }}" >
+                                                {% if userAddress.forCommand == true %}
+                                                    <input class="form-check-input" type="radio" name="deliveryAddress" id="deliveryAddress{{ userAddress.id }}" value="option{{ userAddress.id }}" checked="checked">
+                                                {% else %}
+                                                    <input class="form-check-input" type="radio" name="deliveryAddress" id="deliveryAddress{{ userAddress.id }}" value="option{{ userAddress.id }}">
+                                                {% endif %}
                                                 <label class="form-check-label" for="deliveryAddress{{ userAddress.id }}">
                                                     {{ userAddress.address }}, {{ userAddress.town }} {{ userAddress.cp }}
                                                 </label>
@@ -73,14 +81,18 @@
                         Adresse de facturation:
                     </div>
                     <div class="col-6">
-                        <p>{{ billingAddress.address }}, {{ billingAddress.town|capitalize }} {{ billingAddress.cp }}</p>
-                        <p>
-                            {% if billingAddress.complement is not empty %}
-                                {{ billingAddress.complement }}
-                            {% else %}
-                                Vous n'avez mis aucunes instructions pour cette adresse.
-                            {% endif %}
-                        </p>
+                        {% if billingAddress is not null %}
+                            <p>{{ billingAddress.address }}, {{ billingAddress.town|capitalize }} {{ billingAddress.cp }}</p>
+                            <p>
+                                {% if billingAddress.complement is not empty %}
+                                    {{ billingAddress.complement }}
+                                {% else %}
+                                    Vous n'avez mis aucunes instructions pour cette adresse.
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <p>Vous n'avez pas mis d'adresse de facturation.</p>
+                        {% endif %}
                     </div>
                     <div class="col-2">
                         <button type="button" class="btn btn-color" data-toggle="modal" data-target="#modalBilling">Modifier</button>
@@ -99,8 +111,12 @@
                                             {% set countBilling = 1 %}
                                             {% for userAddress in userAddresses %}
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="deliveryAddress{{ userAddress.id }}" id="deliveryAddress{{ userAddress.id }}" value="option{{ countBilling }}" >
-                                                    <label class="form-check-label" for="deliveryAddress{{ userAddress.id }}">
+                                                    {% if userAddress.forBilling == true %}
+                                                        <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress{{ userAddress.id }}" value="option{{ userAddress.id }}" checked="checked">
+                                                    {% else %}
+                                                        <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress{{ userAddress.id }}" value="option{{ userAddress.id }}">
+                                                    {% endif %}
+                                                        <label class="form-check-label" for="billingAddress{{ userAddress.id }}">
                                                         {{ userAddress.address }}, {{ userAddress.town }} {{ userAddress.cp }}
                                                     </label>
                                                 </div>
