@@ -137,7 +137,7 @@ class PaymentController extends AbstractController
         $user = $this->getUser();
         //dump($this->session);
         $alreadyCommand = $userCommandsRepository->findByUserNoValidateNoPaid($user);
-        dump($alreadyCommand);
+//        dump($alreadyCommand);
 
         //dd($this->session->get('command'));
         //call prepare command with command service
@@ -146,7 +146,7 @@ class PaymentController extends AbstractController
         //dump($userCommand = $userCommandsRepository->find($commandID));
         //dd($userCommand);
 
-        dump($this->session->get('panier'));
+//        dump($this->session->get('panier'));
 
         if($request->isMethod('post')) {
             $requests = $request->request->all();
@@ -193,6 +193,7 @@ class PaymentController extends AbstractController
         $total = $this->cartService->getTotalPrice();
 
         return $this->render('payment/validation.html.twig',[
+            'nbProducts' => $this->cartService->getQuantity(),
             'userAddresses' => $userAddressRepository->findAll(),
             'deliveryAddress' => $userAddressRepository->findByUserAndCommand($user),
             'billingAddress' => $userAddressRepository->findByUserAndBilling($user),

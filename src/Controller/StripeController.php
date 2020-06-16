@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\UserCommands;
 use App\Repository\LostCartRepository;
+use App\Repository\ProductRepository;
 use App\Repository\UserAddressRepository;
 use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
@@ -15,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class StripeController extends AbstractController
@@ -31,13 +33,15 @@ class StripeController extends AbstractController
      * @Security("is_granted('ROLE_USER')")
      * @param UserCommandsRepository $userCommandsRepository
      * @param UserAddressRepository $userAddressRepository
+     * @param ProductRepository $productRepository
      * @return Response
      * @throws ApiErrorException
      * @throws NonUniqueResultException
      */
     public function paymentWithCheckout(
         UserCommandsRepository $userCommandsRepository,
-        UserAddressRepository $userAddressRepository
+        UserAddressRepository $userAddressRepository,
+        ProductRepository $productRepository
     ): Response
     {
         $user = $this->getUser();
@@ -69,41 +73,36 @@ class StripeController extends AbstractController
         $this->em->flush();
 
         //a enlever une fois les tests terminés
-        //$userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
+//        $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
 
-        //récupérer le tableau de la userCommand pour l'injecter dans la session stripe
-        //dump($userCommand);
-        //dump($userCommand->getProducts());//mettre les produits dans le tableau line_items
 
         $products = $userCommand->getProducts();
         $lineItems = [];
 
         foreach ($products['product'] as $product){
-//            dump($product);
-            //manipuler le prix pour que ça corresponde avec stripe
-            /*$decimals = explode(".", $product['priceTTC']);
-            dump($decimals[0]);
-            dump($decimals[1]);
-            $finalPrice = (int)$decimals[0] . ',' . (int)$decimals[1];*/
             if($product['priceTTCWithPromo'] === 0 || empty($product['priceTTCWithPromo'])){
                 $finalPrice = round($product['priceTTC'] * 100, 0);
             }else{
                 $finalPrice = round($product['priceTTCWithPromo'] * 100, 0);
             }
-//            dump((int)$finalPrice);
 
-            //pour le prix, il faut rajouter le prix avec la promo !!!!
+            //recupére le produit dans productRepository pour l'image
+            $productImage = $productRepository->findByName($product['reference'])->getProductImage();
+            if($productImage !== null){
+                $urlImage = 'http://localhost:8000/produits/image' . $productImage->getUrlImage();
+            }else{
+                $urlImage = 'http://localhost:8000/assets/produits/default.png';
+            }
+//            dump($productImage->getProductImage()->getUrlImage());
 
             $lineItems[] = array(
                 'name' => $product['reference'],
                 'amount' => (int)$finalPrice, //probléme avec les entiers faire une fonction pour stripe
                 'currency' => 'eur',
                 'quantity' => $product['quantity'],
+                'images' => [$urlImage],
             );
         }
-
-//        dump($lineItems);
-        //die();
 
         $publicKEY = $_ENV['STRIPE_PUBLIC_KEY'];
         $secretKEY = $_ENV['STRIPE_SECRET_KEY'];
@@ -113,27 +112,10 @@ class StripeController extends AbstractController
         $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
-//            'line_items' => [
-//                [
-//                    'name' => 'book',
-//                    'amount' => 700,
-//                    'currency' => 'eur',
-//                    'quantity' => 1,
-//                ],
-//                [
-//                    'name' => 'dvd',
-//                    'amount' => 500,
-//                    'currency' => 'eur',
-//                    'quantity' => 2,
-//                ]
-//            ],
             'mode' => 'payment',
             'success_url' => 'http://localhost:8000/success?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => 'http://localhost:8000/cancel',
         ]);
-
-        //dump($session);
-        //die();
 
         return $this->render('payment/purchase-sca.html.twig', [
             'id' => $session->id,
@@ -148,32 +130,48 @@ class StripeController extends AbstractController
      * @param CartService $cartService
      * @param UserCommandsRepository $userCommandsRepository
      * @param LostCartRepository $lostCartRepository
+     * @param SessionInterface $session
+     * @param ProductRepository $productRepository
      * @return Response
      * @throws NonUniqueResultException
      */
     public function success(
         CartService $cartService,
         UserCommandsRepository $userCommandsRepository,
-        LostCartRepository $lostCartRepository
+        LostCartRepository $lostCartRepository,
+        SessionInterface $session,
+        ProductRepository $productRepository
     ): Response
     {
         $user = $this->getUser();
 
+        //enlever du stock en recupérant la commande sur la session
+        if($session->has('command')){
+            $command = $session->get('command')->getProducts();
+            foreach ($command['product'] as $k => $item){
+                //dump($k);
+                //dump($item['quantity']);
+                $product = $productRepository->find($k);
+                $quantityBefore = $product->getQuantity();
+                $finalQuantity = $quantityBefore - $item['quantity'];
+                //dump($finalQuantity);
+                if($finalQuantity <= 0){
+                    $product->setQuantity(0);
+                }else{
+                    $product->setQuantity($finalQuantity);
+                }
+                $this->em->flush();
+            }
+        }
+
         //vider la session du le panier et de la commande
         $cartService->emptyCartAndCommand();
 
-        //enlever du stock en recupérant la commande validée sur le validate et le paid
-
         //supprimer le lostCart si présent
+        //dump($lostCartRepository->findByUser($user));
         if($lostCartRepository->findByUser($user) !== null){
-            $this->em->remove($lostCartRepository);
+            $this->em->remove($lostCartRepository->findByUser($user));
             $this->em->flush();
-//            $products = $lostCartRepository->findByUser($user)->getProducts();
-//            foreach ($products as $key => $quantity) {
-//                $this->cartService->addToCartWithQuantity($key, $quantity);
-//                //dd($quantity);
-//            }
-            //dd($lostCartRepository->findByUser($user));
         }
 
         //set paid to true in userCommand

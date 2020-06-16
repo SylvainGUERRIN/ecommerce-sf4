@@ -9,6 +9,7 @@ use App\Form\SearchType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
