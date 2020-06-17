@@ -42,6 +42,7 @@ class ProductRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->where('p.created_at <= :date')
             ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
+            ->andWhere('p.quantity > 0')
             ->orderBy('p.created_at','DESC')
             ->getQuery();
 //            ->getResult();
@@ -60,6 +61,7 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
             ->andWhere('p.category = :category')
             ->setParameter('category', $category)
+            ->andWhere('p.quantity > 0')
             ->orderBy('p.created_at','DESC')
             ->getQuery();
 //            ->getResult();
@@ -72,6 +74,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findLatestWithLimit($limit)
     {
         return $this->createQueryBuilder('p')
+            ->where('p.quantity > 0')
             ->orderBy('p.created_at','DESC')
             ->join('p.product_image', 'pi')
             ->setMaxResults($limit)
@@ -202,6 +205,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->select('c','p','pi')
+            ->where('p.quantity > 0')
             ->join('p.category', 'c')
             ->join('p.product_image', 'pi');
         if(!empty($search->q)){

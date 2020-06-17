@@ -97,6 +97,7 @@ class CommandService
 
             $command['product'][$product->getId()] = array(
                 'reference' => $product->getName(),
+                'image' => $product->getProductImage()->getUrlImage(),
                 'quantity' => $quantityOfProduct,
                 'tva' => $productTVA,
                 'priceHT' => round($priceHT, 2),

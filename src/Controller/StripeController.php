@@ -73,7 +73,7 @@ class StripeController extends AbstractController
         $this->em->flush();
 
         //a enlever une fois les tests terminés
-//        $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
+        //$userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
 
 
         $products = $userCommand->getProducts();
@@ -145,6 +145,8 @@ class StripeController extends AbstractController
     {
         $user = $this->getUser();
 
+        //créer la facture au format pdf
+
         //enlever du stock en recupérant la commande sur la session
         if($session->has('command')){
             $command = $session->get('command')->getProducts();
@@ -167,19 +169,21 @@ class StripeController extends AbstractController
         //vider la session du le panier et de la commande
         $cartService->emptyCartAndCommand();
 
-        //supprimer le lostCart si présent
-        //dump($lostCartRepository->findByUser($user));
-        if($lostCartRepository->findByUser($user) !== null){
-            $this->em->remove($lostCartRepository->findByUser($user));
-            $this->em->flush();
-        }
-
         //set paid to true in userCommand
-        $user = $this->getUser();
         $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
         $userCommand->setPaid(true);
         $this->em->flush();
 
+        //supprimer le lostCart si présent
+        //dump($lostCartRepository->findByUser($user));
+        $userLostCart = $lostCartRepository->findByUser($user);
+        if($userLostCart !== null){
+            //dump($userLostCart);
+            $this->em->remove($userLostCart);
+            $this->em->flush();
+        }
+
+        //dump($userLostCart);
         $this->addFlash(
             'success',
             "Votre commande a bien été validée."

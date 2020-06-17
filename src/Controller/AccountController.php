@@ -8,10 +8,12 @@ use App\Entity\User;
 use App\Entity\UserAddress;
 use App\Form\UserAddressType;
 use App\Repository\UserAddressRepository;
+use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -173,7 +175,7 @@ class AccountController extends AbstractController
      * @return Response
      * @Route("/delete-address/{id}", name="user_address_delete")
      */
-    public function delete(UserAddress $userAddress): Response
+    public function deleteAddress(UserAddress $userAddress): Response
     {
         $this->em->remove($userAddress);
         $this->em->flush();
@@ -183,6 +185,35 @@ class AccountController extends AbstractController
             "L'adresse a  bien été supprimée !"
         );
         return $this->redirectToRoute('address');
+    }
+
+    /**
+     * page de la liste des commandes de l'utilisateur
+     * @Route("/mes-commandes", name="order_history")
+     * @param UserCommandsRepository $userCommandsRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    public function orderHistory(
+        UserCommandsRepository $userCommandsRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response
+    {
+        $user = $this->getUser();
+//        $userCommands = $userCommandsRepository->findByUser($user);
+//        dump($userCommands);
+        $userCommands = $paginator->paginate(
+            $userCommandsRepository->findByUser($user),
+            $request->query->getInt('page',1),
+            4
+        );
+
+        return $this->render('user/order-history.html.twig',[
+            'quantityProducts' => $this->quantityProducts,
+            'userCommands' => $userCommands,
+        ]);
     }
 
     /**

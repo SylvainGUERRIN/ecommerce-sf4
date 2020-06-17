@@ -1,0 +1,91 @@
+{% extends 'site/partials/base.html.twig' %}
+
+{% block title %}Mes commandes - Ecommerce{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center">Vos commandes</h1>
+            </div>
+        </div>
+        {% if userCommands is not null or userCommands is not empty %}
+            {% for userCommand in userCommands %}
+            <div class="row mt-5 mb-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-2">
+                                    <p>Commande effectuée le {{ userCommand.commandAt|date('d/m/Y') }} à {{ userCommand.commandAt|date('H:m') }}</p>
+                                </div>
+                                <div class="col-2">
+                                    <p>Total: {{ userCommand.totalAmount }} €</p>
+                                </div>
+                                <div class="col-2">
+                                    <p>
+                                        Adresse de livraison: {{ userCommand.userAddress.address }} <br>
+                                        {{ userCommand.userAddress.cp }} {{ userCommand.userAddress.town|capitalize }}, {{ userCommand.userAddress.country }}
+                                    </p>
+                                </div>
+                                <div class="col-6 d-flex flex-row align-items-start justify-content-end">
+                                    <div>
+                                        <p>
+                                            N° de commande: {{ userCommand.reference }}
+                                        </p>
+                                        <a href="#" class="btn btn-color">Facture de la commande</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {% if userCommand.sent is null %}
+                                    Livraison: en cours
+                                {% else %}
+                                    {% if userCommand.sentAt is null %}
+                                        Livraison: en cours
+                                    {% else %}
+                                        {% set shippingDate = userCommand.sentAt|date_modify("+3 day") %}
+                                        {% if shippingDate > 'now'|date('d/m/Y') %}
+                                            Livré le: {{ shippingDate }}
+                                        {% else %}
+                                            Livraison prévue le {{ shippingDate|date('d/m/Y') }}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </h5>
+                            <h5>Produits de la commande:</h5>
+                            <div class="row">
+                                {% for product in userCommand.products.product %}
+                                    <div class="col-2">
+                                        {% if product.image|default %}
+                                            <img src="{{ asset('produits/image/' ~ product.image) | imagine_filter('thumb') }}" alt="">
+                                        {% endif %}
+                                        <p>
+                                            {{ product.reference }} <br>
+                                            qté: {{ product.quantity }} <br>
+                                            {{ product.priceTTC }} €
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="row">
+                <div class="col-12">
+                    <p>Vous n'avez pas de commandes.</p>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12 nav-pagination">
+                {{ knp_pagination_render(userCommands) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

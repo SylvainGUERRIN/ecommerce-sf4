@@ -44,8 +44,9 @@ class UserCommandsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->where('u.user = :user')
             ->setParameter('user', $user)
-            ->getQuery()
-            ->getResult();
+            ->orderBy('u.command_at','DESC')
+            ->getQuery();
+//            ->getResult();
     }
 
     /**
