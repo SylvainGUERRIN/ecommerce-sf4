@@ -78,9 +78,15 @@ class UserAddress
      */
     private $for_billing;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserCommands", mappedBy="billing_address")
+     */
+    private $billingCommands;
+
     public function __construct()
     {
         $this->userCommands = new ArrayCollection();
+        $this->billingCommands = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -247,6 +253,37 @@ class UserAddress
     public function setForBilling(?bool $for_billing): self
     {
         $this->for_billing = $for_billing;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserCommands[]
+     */
+    public function getBillingCommands(): Collection
+    {
+        return $this->billingCommands;
+    }
+
+    public function addBillingCommand(UserCommands $billingCommand): self
+    {
+        if (!$this->billingCommands->contains($billingCommand)) {
+            $this->billingCommands[] = $billingCommand;
+            $billingCommand->setBillingAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBillingCommand(UserCommands $billingCommand): self
+    {
+        if ($this->billingCommands->contains($billingCommand)) {
+            $this->billingCommands->removeElement($billingCommand);
+            // set the owning side to null (unless already changed)
+            if ($billingCommand->getBillingAddress() === $this) {
+                $billingCommand->setBillingAddress(null);
+            }
+        }
 
         return $this;
     }

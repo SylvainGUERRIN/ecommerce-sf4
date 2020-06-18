@@ -136,11 +136,12 @@ class CommandService
     }
 
     /**
+     * @param Helpers $helpers
      * @return Response
      * @throws NonUniqueResultException
      * @throws \Exception
      */
-    public function prepareCommand(): Response
+    public function prepareCommand(Helpers $helpers): Response
     {
         $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
         //dump($this->em->getRepository(UserCommands::class)->find($this->session->get('command')));
@@ -164,9 +165,10 @@ class CommandService
         //dump($user);
         $command->setUser($user);
         $command->setUserAddress($this->em->getRepository(UserAddress::class)->findByUserAndCommand($user));
+        $command->setBillingAddress($this->em->getRepository(UserAddress::class)->findByUserAndBilling($user));
         $command->setCommandAt(new \DateTime('now'));
         $command->setValidate(false);
-        $command->setReference(random_int(10, 20));//definir une methode pour la reference
+        $command->setReference($helpers->random_str(20));
         $command->setProducts($this->facture());
         $command->setTotalAmount($this->cartService->getTotalPrice());
         $command->setPaid(false);

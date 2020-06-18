@@ -71,6 +71,11 @@ class UserCommands
      */
     private $paid;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserAddress", inversedBy="billingCommands")
+     */
+    private $billing_address;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -204,6 +209,18 @@ class UserCommands
     public function setPaid(bool $paid): self
     {
         $this->paid = $paid;
+
+        return $this;
+    }
+
+    public function getBillingAddress(): ?UserAddress
+    {
+        return $this->billing_address;
+    }
+
+    public function setBillingAddress(?UserAddress $billing_address): self
+    {
+        $this->billing_address = $billing_address;
 
         return $this;
     }

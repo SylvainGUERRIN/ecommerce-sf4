@@ -169,10 +169,16 @@ class StripeController extends AbstractController
         //vider la session du le panier et de la commande
         $cartService->emptyCartAndCommand();
 
-        //set paid to true in userCommand
+        //catch userCommand
         $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
+
+        //récupérer la commande et faire la facture dans un dossier avec id user
+
+
+        //set paid to true in userCommand
         $userCommand->setPaid(true);
         $this->em->flush();
+
 
         //supprimer le lostCart si présent
         //dump($lostCartRepository->findByUser($user));
