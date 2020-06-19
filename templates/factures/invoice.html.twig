@@ -2,23 +2,62 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facture</title>
 </head>
+<style>
+    .container{
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .title{
+        text-align: center;
+    }
+    /*.entete{*/
+    /*    display: flex;*/
+    /*    flex-direction: row;*/
+    /*}*/
+    .block-delivery{
+        width: 45%;
+        float: left;
+        text-align: left;
+    }
+    .block-paid{
+        width: 45%;
+        float: right;
+        text-align: right;
+        border: 1px solid #000000;
+        border-radius: 5px;
+    }
+</style>
 <body>
-<h1>{{ Facture }}</h1>
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-
-        </div>
-        <div class="col-6">
-            <p>
-                Payé le
-                Référence de paiement
-            </p>
+    <div class="container">
+        <h1 class="title">Facture</h1>
+        <div class="entete">
+            <div class="block-delivery">
+{#                {{ user.lastname }} {{ user.firstname }} <br>#}
+{#                {{ deliveryAddress.address }} <br>#}
+{#                {{ deliveryAddress.town|capitalize }}, {{ deliveryAddress.cp }}#}
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dolor est illo nam quam quisquam
+                    reprehenderit. Deleniti dolor earum esse facere, laboriosam nobis, odit possimus quasi qui
+                    quia sapiente ullam?
+                </p>
+            </div>
+            <div class="block-paid">
+                <p>
+{#                    Payé le {{ invoice.commandAt|date('d m Y H:m:s') }}#}
+{#                    Référence de paiement#}
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores eius eveniet fuga quae quia
+                    sed sunt suscipit vero voluptatibus. Aliquam facilis minima nisi officia rem soluta tempore?
+                    Amet ducimus, nobis!
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<p>Lorem Ipsum</p>
+    <p>Lorem Ipsum</p>
+
 </body>
 </html>
