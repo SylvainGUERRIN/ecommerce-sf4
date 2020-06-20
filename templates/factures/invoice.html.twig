@@ -8,28 +8,92 @@
 </head>
 <style>
     .container{
-        width: 80%;
+        width: 90%;
         margin-left: auto;
         margin-right: auto;
     }
     .title{
         text-align: center;
     }
-    /*.entete{*/
-    /*    display: flex;*/
-    /*    flex-direction: row;*/
-    /*}*/
+    /*entete*/
+    .entete{
+        width: 100%;
+        text-align: center;
+        margin: auto;
+    }
     .block-delivery{
-        width: 45%;
+        display: block;
         float: left;
+        width: 40%;
+        /*margin: auto;*/
         text-align: left;
+        padding-left: 1rem;
+        padding-right: 2.5rem;
     }
     .block-paid{
-        width: 45%;
+        display: block;
         float: right;
+        width: 40%;
+        /*margin: auto;*/
         text-align: right;
         border: 1px solid #000000;
         border-radius: 5px;
+        background-color: #73b582;
+        padding-left: 3.5rem;
+        padding-right: 1.5rem;
+    }
+    hr{
+        clear: both;
+        margin-top: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+    .adresses{
+        width: 100%;
+        text-align: center;
+    }
+    .block-1, .block-2, .block-3{
+        width: 30%;
+        display: block;
+        /*float: left;*/
+        margin: auto;
+    }
+    .block-1 p, .block-2 p, .block-3 p{
+        text-align: justify;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    table{
+        width: 100%;
+        border-collapse: unset;
+        padding: 0;
+        margin: 0;
+        border-spacing: unset;
+    }
+    thead{
+        margin-bottom: 2rem;
+    }
+    thead th, tbody td{
+        border-bottom: solid 1px #000000;
+        padding: 24px;
+    }
+    .col-1{
+        text-align: left;
+        width: 400px;
+    }
+    .col-2{
+        width: 50px;
+    }
+    .col-3, .col-4, .col-5, .col-6{
+        width: 225px;
+        text-align: center;
+    }
+    tfoot td{
+        column-span: all;
+        padding: 24px;
+        text-align: right;
+    }
+    .grey{
+        background-color: #f8f8f8;
     }
 </style>
 <body>
@@ -56,8 +120,81 @@
                 </p>
             </div>
         </div>
+        <hr>
+        <div class="adresses">
+            <div class="block-1">
+                <h3>Adresse de facturation</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
+                    dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur veniam? Qui?
+                </p>
+            </div>
+            <div class="block-2">
+                <h3>Adresse de livraison</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
+                    dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur veniam? Qui?
+                </p>
+            </div>
+            <div class="block-3">
+                <h3>Vendu par </h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
+                    dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur veniam? Qui?
+                </p>
+            </div>
+        </div>
+        <hr>
+        <!--<div class="infos">
+            <h3>Informations sur la commande</h3>
+            <span>Date de la commande: 30 juin 2020</span> <br>
+            <span>Numéro de la commande: 54d564f5sd4f54fsfsf8d</span>
+        </div>
+        <hr>
+        <div class="details-invoice">
+            <h3>Détails de la facture</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="35" class="col-1">Description</th>
+                        <th colspan="1" class="col-2">Qté</th>
+                        <th colspan="1" class="col-3">Prix Unitaire HT</th>
+                        <th colspan="1" class="col-4">Taux TVA</th>
+                        <th colspan="1" class="col-5">Prix Unitaire TTC</th>
+                        <th colspan="1" class="col-6">Total TTC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#faire la boucle pour les produits ici#}
+                    {#classe grey à mettre une fois sur deux#}
+                    <tr class="grey">
+                        <td colspan="35" class="col-1">fdggfggg</td>
+                        <td colspan="1" class="col-2">gfgfdgg</td>
+                        <td colspan="1" class="col-3">fggfdggfgf</td>
+                        <td colspan="1" class="col-4">fggfdggfgf</td>
+                        <td colspan="1" class="col-5">fggfdggfgf</td>
+                        <td colspan="1" class="col-6">fggfdggfgf</td>
+                    </tr>
+{#                fin de la boucle#}
+                    <tr>
+                        <td colspan="35" class="col-1"><strong>Livraison :</strong></td>
+                        <td colspan="1" class="col-2"></td>
+                        <td colspan="1" class="col-3">prix HT</td>
+                        <td colspan="1" class="col-4"></td>
+                        <td colspan="1" class="col-5">prix TTC</td>
+                        <td colspan="1" class="col-6">Total</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="40"><strong>Facture Total : </strong> <strong>152.25€</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>-->
+
     </div>
-    <p>Lorem Ipsum</p>
+
 
 </body>
 </html>
