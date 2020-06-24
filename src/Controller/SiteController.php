@@ -66,16 +66,6 @@ class SiteController extends AbstractController
     }
 
     /**
-     * remove after style pdf
-     * @return Response
-     * @Route("/test-fac", name="test-facture")
-     */
-    public function testpdf()
-    {
-        return $this->render('factures/invoice.html.twig');
-    }
-
-    /**
      * page de la liste de produits
      * @Route("/produits", name="products")
      * @param ProductRepository $productRepository

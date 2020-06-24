@@ -63,6 +63,25 @@ class PdfService
 
         $dompdf->render();
 
+        // Parameters
+        $x          = 505;
+        $y          = 790;
+        $text       = "{PAGE_NUM} of {PAGE_COUNT}";
+//        $font       = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
+        $font       = $dompdf->getFontMetrics()->getFont('Helvetica', 'normal');
+        $size       = 10;
+        $color      = array(0,0,0);
+        $word_space = 0.0;
+        $char_space = 0.0;
+        $angle      = 0.0;
+
+        $dompdf->getCanvas()->page_text(
+            $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
+        );
+
+        // stream en direct pour l'utilisateur
+//        $dompdf->stream('pdf_out.pdf', array('Attachment' => false));
+
         $output = $dompdf->output();
 
         //write file in factures directory
