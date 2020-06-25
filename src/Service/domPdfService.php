@@ -13,7 +13,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class PdfService
+class domPdfService
 {
     private $templating;
     private $kernel;

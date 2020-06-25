@@ -10,10 +10,12 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
+use App\Service\htmlToPdfService;
 use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,18 +44,18 @@ class SiteController extends AbstractController
      * @Route("/", name="home")
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
-     * @param PdfService $pdfService
      * @return Response
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws Html2PdfException
      */
-    public function home(CategoryRepository $categoryRepository, ProductRepository $productRepository, PdfService $pdfService, UserCommandsRepository $userCommandsRepository): Response
+    public function home(CategoryRepository $categoryRepository, ProductRepository $productRepository, htmlToPdfService $htmlToPdfService, UserCommandsRepository $userCommandsRepository): Response
     {
         $user = $this->getUser();
         $invoice = $userCommandsRepository->find(19);
 
-        $pdfService->create($user, $invoice);
+        $htmlToPdfService->createPDF($user, $invoice);
 
         die();
 

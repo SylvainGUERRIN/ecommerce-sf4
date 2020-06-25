@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <style>
+        .container {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        /*entete*/
+        .entete {
+            width: 100%;
+            text-align: center;
+            margin: auto;
+        }
+
+        .block-delivery {
+            display: block;
+            float: left;
+            width: 40%;
+            /*margin: auto;*/
+            text-align: left;
+            padding-left: 1rem;
+            padding-right: 2.5rem;
+        }
+
+        .block-paid {
+            display: block;
+            float: right;
+            width: 40%;
+            /*margin: auto;*/
+            text-align: right;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            background-color: #73b582;
+            padding-left: 3.5rem;
+            padding-right: 1.5rem;
+        }
+
+        hr {
+            clear: both;
+            margin-top: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .adresses {
+            width: 100%;
+            text-align: center;
+        }
+
+        .block-1 {
+            float: left;
+        }
+
+        .block-2 {
+            float: left;
+        }
+
+        .block-3 {
+            float: right;
+        }
+
+        .block-1, .block-2, .block-3 {
+            width: 30%;
+            display: block;
+            /*float: left;*/
+            /*margin: auto;*/
+        }
+
+        .block-1 p, .block-2 p, .block-3 p {
+            text-align: justify;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        /*details facture*/
+        .total {
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="title">Facture</h1>
+    <div class="entete">
+        <div class="block-delivery">
+            {#                {{ user.lastname }} {{ user.firstname }} <br>#}
+            {#                {{ deliveryAddress.address }} <br>#}
+            {#                {{ deliveryAddress.town|capitalize }}, {{ deliveryAddress.cp }}#}
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dolor est illo nam quam quisquam
+                reprehenderit. Deleniti dolor earum esse facere, laboriosam nobis, odit possimus quasi qui
+                quia sapiente ullam?
+            </p>
+        </div>
+        <div class="block-paid">
+            <p>
+                {#                    Payé le {{ invoice.commandAt|date('d m Y H:m:s') }}#}
+                {#                    Référence de paiement#}
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores eius eveniet fuga quae quia
+                sed sunt suscipit vero voluptatibus. Aliquam facilis minima nisi officia rem soluta tempore?
+                Amet ducimus, nobis!
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="adresses">
+        <div class="block-1">
+            <h3>Adresse de facturation</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
+                dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur
+                veniam? Qui?
+            </p>
+        </div>
+        <div class="block-2">
+            <h3>Adresse de livraison</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
+                dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur
+                veniam? Qui?
+            </p>
+        </div>
+        <div class="block-3">
+            <h3>Vendu par </h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
+                dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur
+                veniam? Qui?
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="infos">
+        <h3>Informations sur la commande</h3>
+        <span>Date de la commande: 30 juin 2020</span> <br>
+        <span>Numéro de la commande: 54d564f5sd4f54fsfsf8d</span>
+    </div>
+    <hr>
+    <h3>Détails de la facture</h3>
+    {#        faire boucle pour les produits#}
+    <div class="product">
+        <div class="block-1">
+            <img class="vignettte-product" src="" alt="">
+        </div>
+        <div class="block-2">
+            <p>
+                Qté: <br>
+                Prix Unitaire HT: <br>
+                Taux TVA: <br>
+                Prix Unitaire TTC: <br>
+                Total TTC:
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="product">
+        <div class="block-1">
+            <img class="vignettte-product" src="" alt="">
+        </div>
+        <div class="block-2">
+            <p>
+                Qté: <br>
+                Prix Unitaire HT: <br>
+                Taux TVA: <br>
+                Prix Unitaire TTC: <br>
+                Total TTC:
+            </p>
+        </div>
+    </div>
+    <hr>
+    <p class="delivery">
+        <strong>Livraison : prix HT prix TTC Total</strong>
+    </p>
+    <p class="total">
+        <strong>Facture Total : </strong> <strong>152.25€</strong>
+    </p>
+</div>
+
+
+</body>
+</html>

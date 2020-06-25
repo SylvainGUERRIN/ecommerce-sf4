@@ -1,177 +1,181 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Facture</title>
+{#    <link href="./css/facture.css" rel="stylesheet" type="text/css" />#}
+    <style>
+        h1 {
+            position:absolute;
+            color:#0088cc;
+            font-size:50px;
+        }
+
+        .center {
+            text-align:center;
+        }
+
+        .color {
+            color:#0088cc;
+        }
+
+        .strong {
+            font-weight:bold;
+        }
+        .min {
+            font-size:10px;
+        }
+
+        img {
+            position:absolute;
+            top:80px;
+            left:30px;
+        }
+
+        ul#coordonnes {
+            float:left;
+            margin-top:30px;
+            margin-left:400px;
+            list-style:none;
+        }
+
+        ul#coordonnes li {
+            height:20px;
+        }
+
+        table#enTete {
+            position:absolute;
+            top:5px;
+            right:330px;
+            text-align:center;
+        }
+
+        table#enTete h1 {
+            color:#0088cc;
+            font-weight:bold;
+            font-size:20px;
+        }
+
+        table#entity {
+            float:left;
+            margin-top:30px;
+            text-align:center;
+        }
+
+        table#entity td {
+            height:45px;
+            border-bottom:1px solid #0088cc;
+        }
+
+        /*.vignette-product{*/
+        /*    width: 150px;*/
+        /*    height: 150px;*/
+        /*}*/
+
+        table#total {
+            float:right;
+            margin-top: 12px;
+            margin-left:495px;
+            border: 1px solid #0088cc;
+        }
+
+        table#total td {
+            height:20px;
+        }
+
+        #footer {
+            position:absolute;
+            bottom:0px;width:100%;
+            text-align:center;
+            line-height:25px;
+        }
+    </style>
 </head>
-<style>
-    .container{
-        width: 90%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .title{
-        text-align: center;
-    }
-    /*entete*/
-    .entete{
-        width: 100%;
-        text-align: center;
-        margin: auto;
-    }
-    .block-delivery{
-        display: block;
-        float: left;
-        width: 40%;
-        /*margin: auto;*/
-        text-align: left;
-        padding-left: 1rem;
-        padding-right: 2.5rem;
-    }
-    .block-paid{
-        display: block;
-        float: right;
-        width: 40%;
-        /*margin: auto;*/
-        text-align: right;
-        border: 1px solid #000000;
-        border-radius: 5px;
-        background-color: #73b582;
-        padding-left: 3.5rem;
-        padding-right: 1.5rem;
-    }
-    hr{
-        clear: both;
-        margin-top: 2.5rem;
-        margin-bottom: 2.5rem;
-    }
-    .adresses{
-        width: 100%;
-        text-align: center;
-    }
-    .block-1{
-        float: left;
-    }
-    .block-2{
-        float: left;
-    }
-    .block-3{
-        float: right;
-    }
-    .block-1, .block-2, .block-3{
-        width: 30%;
-        display: block;
-        /*float: left;*/
-        /*margin: auto;*/
-    }
-    .block-1 p, .block-2 p, .block-3 p{
-        text-align: justify;
-        padding-left: 8px;
-        padding-right: 8px;
-    }
-    /*details facture*/
-    .total{
-        text-align: right;
-    }
-
-</style>
 <body>
-    <div class="container">
-        <h1 class="title">Facture</h1>
-        <div class="entete">
-            <div class="block-delivery">
-{#                {{ user.lastname }} {{ user.firstname }} <br>#}
-{#                {{ deliveryAddress.address }} <br>#}
-{#                {{ deliveryAddress.town|capitalize }}, {{ deliveryAddress.cp }}#}
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dolor est illo nam quam quisquam
-                    reprehenderit. Deleniti dolor earum esse facere, laboriosam nobis, odit possimus quasi qui
-                    quia sapiente ullam?
-                </p>
-            </div>
-            <div class="block-paid">
-                <p>
-{#                    Payé le {{ invoice.commandAt|date('d m Y H:m:s') }}#}
-{#                    Référence de paiement#}
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores eius eveniet fuga quae quia
-                    sed sunt suscipit vero voluptatibus. Aliquam facilis minima nisi officia rem soluta tempore?
-                    Amet ducimus, nobis!
-                </p>
-            </div>
-        </div>
-        <hr>
-        <div class="adresses">
-            <div class="block-1">
-                <h3>Adresse de facturation</h3>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
-                    dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur veniam? Qui?
-                </p>
-            </div>
-            <div class="block-2">
-                <h3>Adresse de livraison</h3>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
-                    dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur veniam? Qui?
-                </p>
-            </div>
-            <div class="block-3">
-                <h3>Vendu par </h3>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid amet consequatur debitis deleniti
-                    dolores, ducimus error id laborum magnam neque nostrum odio officia omnis pariatur placeat tenetur veniam? Qui?
-                </p>
-            </div>
-        </div>
-        <hr>
-        <div class="infos">
-            <h3>Informations sur la commande</h3>
-            <span>Date de la commande: 30 juin 2020</span> <br>
-            <span>Numéro de la commande: 54d564f5sd4f54fsfsf8d</span>
-        </div>
-        <hr>
-        <h3>Détails de la facture</h3>
-{#        faire boucle pour les produits#}
-        <div class="product">
-            <div class="block-1">
-                <img class="vignettte-product" src="" alt="">
-            </div>
-            <div class="block-2">
-                <p>
-                    Qté: <br>
-                    Prix Unitaire HT: <br>
-                    Taux TVA: <br>
-                    Prix Unitaire TTC: <br>
-                    Total TTC:
-                </p>
-            </div>
-        </div>
-        <hr>
-        <div class="product">
-            <div class="block-1">
-                <img class="vignettte-product" src="" alt="">
-            </div>
-            <div class="block-2">
-                <p>
-                    Qté: <br>
-                    Prix Unitaire HT: <br>
-                    Taux TVA: <br>
-                    Prix Unitaire TTC: <br>
-                    Total TTC:
-                </p>
-            </div>
-        </div>
-        <hr>
-        <p class="delivery">
-            <strong>Livraison : prix HT prix TTC Total</strong>
-        </p>
-        <p class="total">
-            <strong>Facture Total : </strong> <strong>152.25€</strong>
-        </p>
-    </div>
-
-
+{#    <page>#}
+        <page_header>
+            <h1>My Entreprise</h1>
+        </page_header>
+        <table id="enTete">
+            <tr>
+                <td colspan="1"></td>
+                <td colspan="1"><h1>Facture</h1></td>
+                <td colspan="1"></td>
+            </tr>
+            <tr>
+                <td width="80">Page</td>
+                <td width="100">Date</td>
+                <td width="120">Ref</td>
+            </tr>
+            <tr>
+                <td class="color">[[page_nb]]</td>
+                <td class="color">dgjfdgjjjjhjhghjg</td>
+        {#        <td class="color">{{ facture.date|date('d-m-Y') }}</td>#}
+                <td class="color">dgjfdgjjjjhjhghjg</td>
+        {#        <td class="color">{{ facture.reference }}</td>#}
+            </tr>
+        </table>
+        <ul id="coordonnes">
+        {#    <li>{{ facture.commande.facturation.nom }} {{ facture.commande.facturation.prenom }}</li>#}
+            <li>jgdidsjdfjsldvfjlksjfvlkdsqjkjdkjlkfd</li>
+        {#    <li>{{ facture.commande.facturation.adresse}}</li>#}
+            <li>jgdidsjdfjsldvfjlksjfvlkdsqjkjdkjlkfd</li>
+        {#    <li>{{ facture.commande.facturation.cp }} {{ facture.commande.facturation.ville }} - {{ facture.commande.facturation.pays }}</li>#}
+            <li>jgdidsjdfjsldvfjlksjfvlkdsqjkjdkjlkfd</li>
+        </ul>
+        <table id="entity">
+            <tr>
+                <td width="280">DESIGNATION</td>
+                <td width="105">QUANTITE</td>
+                <td width="100">P.U - HT</td>
+                <td width="105">MONTANT HT</td>
+                <td width="105">MONTANT TTC</td>
+            </tr>
+        {#    {% for produit in facture.commande.produit %}#}
+                <tr>
+        {#            <td class="color">{{ produit.reference }}</td>#}
+                    <td class="color">dfgfdgdfgdgfdgf</td>
+        {#            <td class="color">{{ produit.quantite }}</td>#}
+                    <td class="color">sfjdsiobufidufi</td>
+        {#            <td class="color">{{ produit.prixHT }} €</td>#}
+                    <td class="color">sfjdsiobufidufi</td>
+        {#            <td class="color">{{ produit.prixHT * produit.quantite }} €</td>#}
+                    <td class="color">sfjdsiobufidufi</td>
+        {#            <td class="color">{{ produit.prixTTC * produit.quantite }} €</td>#}
+                    <td class="color">sfjdsiobufidufi</td>
+                </tr>
+        {#    {% endfor %}#}
+        </table>
+        <table id="total">
+            <tr>
+                <td width="110">TOTAL HT :</td>
+                <td width="100" class="color">545485 €</td>
+        {#        <td width="100" class="color">{{ facture.commande.prixHT }} €</td>#}
+            </tr>
+        {#    {% for key, tva in facture.commande.tva %}#}
+                <tr>
+                    <td width="110">TVA <span class="color min">gdfgfgfg</span> :</td>
+        {#            <td width="110">TVA <span class="color min">{{ key }}</span> :</td>#}
+                    <td width="100" class="color">2515 €</td>
+        {#            <td width="100" class="color">{{ tva }} €</td>#}
+                </tr>
+        {#    {% endfor %}#}
+            <tr>
+                <td width="110">TOTAL TTC :</td>
+                <td width="100" class="color">16548.25 €</td>
+        {#        <td width="100" class="color">{{ facture.commande.prixTTC }} €</td>#}
+            </tr>
+        </table>
+        <page_footer>
+            <span class="color strong">fgjisfj street</span>
+            <span>[[page_cu]]/[[page_nb]]</span>
+        </page_footer>
+{#        <div id="footer">#}
+{#            <span class="color strong">fgjisfj street</span>#}
+{#        #}{#    <span class="color strong">{{ adresse }}</span>#}
+{#            <br />#}
+{#        #}{#    {{ telephone }}#}
+{#        </div>#}
+{#    </page>#}
 </body>
 </html>
