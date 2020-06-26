@@ -94,9 +94,12 @@
                     <ul>
                         <!-- For filtering controls add -->
                         <li data-filter="all" class="btn btn-color"> Tous </li>
-                        <li data-filter="1" class="btn btn-color"> Livres </li>
-                        <li data-filter="2" class="btn btn-color"> Films </li>
-                        <li data-filter="3" class="btn btn-color"> Jeux </li>
+                        {% for categorie in categories %}
+                            <li data-filter="{{ product.category.id }}" class="btn btn-color">{{ categorie.name }}</li>
+                        {% endfor %}
+{#                        <li data-filter="1" class="btn btn-color"> Livres </li>#}
+{#                        <li data-filter="2" class="btn btn-color"> Films </li>#}
+{#                        <li data-filter="3" class="btn btn-color"> Jeux </li>#}
                         <!-- For a shuffle control add -->
                         {#                    <li data-shuffle> Shuffle items </li>#}
                         <!-- For sorting controls add -->

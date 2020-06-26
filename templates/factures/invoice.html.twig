@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Facture</title>
-{#    <link href="./css/facture.css" rel="stylesheet" type="text/css" />#}
     <style>
         h1 {
             position:absolute;
@@ -109,61 +108,50 @@
             </tr>
             <tr>
                 <td class="color">[[page_nb]]</td>
-                <td class="color">dgjfdgjjjjhjhghjg</td>
-        {#        <td class="color">{{ facture.date|date('d-m-Y') }}</td>#}
-                <td class="color">dgjfdgjjjjhjhghjg</td>
-        {#        <td class="color">{{ facture.reference }}</td>#}
+                <td class="color">{{ invoice.commandAt|date('d-m-Y') }}</td>
+                <td class="color">{{ invoice.reference }}</td>
             </tr>
         </table>
         <ul id="coordonnes">
-        {#    <li>{{ facture.commande.facturation.nom }} {{ facture.commande.facturation.prenom }}</li>#}
-            <li>jgdidsjdfjsldvfjlksjfvlkdsqjkjdkjlkfd</li>
-        {#    <li>{{ facture.commande.facturation.adresse}}</li>#}
-            <li>jgdidsjdfjsldvfjlksjfvlkdsqjkjdkjlkfd</li>
-        {#    <li>{{ facture.commande.facturation.cp }} {{ facture.commande.facturation.ville }} - {{ facture.commande.facturation.pays }}</li>#}
-            <li>jgdidsjdfjsldvfjlksjfvlkdsqjkjdkjlkfd</li>
+            <li>{{ invoice.user.lastname|capitalize }} {{ invoice.user.firstname|capitalize }}</li>
+            <li>{{ invoice.billingAddress.address}}</li>
+            <li>{{ invoice.billingAddress.cp }} {{ invoice.billingAddress.town|capitalize }} - {{ invoice.billingAddress.country|capitalize }}</li>
         </ul>
         <table id="entity">
             <tr>
-                <td width="280">DESIGNATION</td>
-                <td width="105">QUANTITE</td>
-                <td width="100">P.U - HT</td>
+                <td width="240">DESIGNATION</td>
+                <td width="75">QUANTITE</td>
+                <td width="90">P.U - HT</td>
                 <td width="105">MONTANT HT</td>
+                <td width="85">TAUX TVA</td>
                 <td width="105">MONTANT TTC</td>
             </tr>
-        {#    {% for produit in facture.commande.produit %}#}
+            {% for product in invoice.products.product %}
+                {% set montantTVA = product.priceTTC - product.priceHT %}
+                {% set tauxTVA = (100 * montantTVA)/(product.priceTTC - montantTVA) %}
                 <tr>
-        {#            <td class="color">{{ produit.reference }}</td>#}
-                    <td class="color">dfgfdgdfgdgfdgf</td>
-        {#            <td class="color">{{ produit.quantite }}</td>#}
-                    <td class="color">sfjdsiobufidufi</td>
-        {#            <td class="color">{{ produit.prixHT }} €</td>#}
-                    <td class="color">sfjdsiobufidufi</td>
-        {#            <td class="color">{{ produit.prixHT * produit.quantite }} €</td>#}
-                    <td class="color">sfjdsiobufidufi</td>
-        {#            <td class="color">{{ produit.prixTTC * produit.quantite }} €</td>#}
-                    <td class="color">sfjdsiobufidufi</td>
+                    <td class="color">{{ product.reference }}</td>
+                    <td class="color">{{ product.quantity }}</td>
+                    <td class="color">{{ product.priceHT }} €</td>
+                    <td class="color">{{ product.priceHT * product.quantity }} €</td>
+                    <td class="color">{{ tauxTVA|number_format(0) }} %</td>
+                    <td class="color">{{ product.priceTTC * product.quantity }} €</td>
                 </tr>
-        {#    {% endfor %}#}
+            {% endfor %}
         </table>
         <table id="total">
             <tr>
                 <td width="110">TOTAL HT :</td>
-                <td width="100" class="color">545485 €</td>
-        {#        <td width="100" class="color">{{ facture.commande.prixHT }} €</td>#}
+                <td width="100" class="color">{{ invoice.products.amount.totalHT }} €</td>
             </tr>
-        {#    {% for key, tva in facture.commande.tva %}#}
                 <tr>
-                    <td width="110">TVA <span class="color min">gdfgfgfg</span> :</td>
-        {#            <td width="110">TVA <span class="color min">{{ key }}</span> :</td>#}
-                    <td width="100" class="color">2515 €</td>
-        {#            <td width="100" class="color">{{ tva }} €</td>#}
+                    <td width="110">TVA :</td>
+                    {% set priceTVA = invoice.products.amount.totalTTC|number_format(2) - invoice.products.amount.totalHT|number_format(2) %}
+                    <td width="100" class="color"> {{ priceTVA|number_format(2) }} €</td>
                 </tr>
-        {#    {% endfor %}#}
             <tr>
                 <td width="110">TOTAL TTC :</td>
-                <td width="100" class="color">16548.25 €</td>
-        {#        <td width="100" class="color">{{ facture.commande.prixTTC }} €</td>#}
+                <td width="100" class="color">{{ invoice.products.amount.totalTTC}} €</td>
             </tr>
         </table>
         <page_footer>
