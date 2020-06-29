@@ -10,14 +10,19 @@ use App\Repository\ProductRepository;
 use App\Repository\UserAddressRepository;
 use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
+use App\Service\htmlToPdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class StripeController extends AbstractController
 {
@@ -132,20 +137,33 @@ class StripeController extends AbstractController
      * @param LostCartRepository $lostCartRepository
      * @param SessionInterface $session
      * @param ProductRepository $productRepository
+     * @param htmlToPdfService $htmlToPdfService
      * @return Response
      * @throws NonUniqueResultException
+     * @throws Html2PdfException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function success(
         CartService $cartService,
         UserCommandsRepository $userCommandsRepository,
         LostCartRepository $lostCartRepository,
         SessionInterface $session,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        htmlToPdfService $htmlToPdfService
     ): Response
     {
         $user = $this->getUser();
 
+        //catch userCommand
+        $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
+
         //créer la facture au format pdf
+
+        $invoice = $userCommand;
+
+        $htmlToPdfService->createPDF($user, $invoice);
 
         //enlever du stock en recupérant la commande sur la session
         if($session->has('command')){
@@ -168,12 +186,6 @@ class StripeController extends AbstractController
 
         //vider la session du le panier et de la commande
         $cartService->emptyCartAndCommand();
-
-        //catch userCommand
-        $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
-
-        //récupérer la commande et faire la facture dans un dossier avec id user
-
 
         //set paid to true in userCommand
         $userCommand->setPaid(true);

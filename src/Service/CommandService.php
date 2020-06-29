@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class CommandService
 {
@@ -24,6 +25,7 @@ class CommandService
     protected $user;
     protected $cartService;
     protected $userCommandsRepository;
+    protected $helpers;
 
     /**
      * CommandService constructor.
@@ -32,19 +34,23 @@ class CommandService
      * @param Security $security
      * @param CartService $cartService
      * @param UserCommandsRepository $userCommandsRepository
+     * @param Helpers $helpers
      */
     public function __construct(
         SessionInterface $session,
         EntityManagerInterface $em,
         Security $security,
         CartService $cartService,
-        UserCommandsRepository $userCommandsRepository)
+        UserCommandsRepository $userCommandsRepository,
+        Helpers $helpers
+    )
     {
         $this->session = $session;
         $this->em = $em;
         $this->user = $security->getUser();
         $this->cartService = $cartService;
         $this->userCommandsRepository = $userCommandsRepository;
+        $this->helpers = $helpers;
     }
 
     /**
@@ -136,12 +142,10 @@ class CommandService
     }
 
     /**
-     * @param Helpers $helpers
      * @return Response
      * @throws NonUniqueResultException
-     * @throws \Exception
      */
-    public function prepareCommand(Helpers $helpers): Response
+    public function prepareCommand(): Response
     {
         $user = $this->em->getRepository(User::class)->findByMail($this->user->getUsername());
         //dump($this->em->getRepository(UserCommands::class)->find($this->session->get('command')));
@@ -162,13 +166,15 @@ class CommandService
             }
         }
 
+        $date = new \DateTime('now');
+        $result = $date->format('Y-m-d');
         //dump($user);
         $command->setUser($user);
         $command->setUserAddress($this->em->getRepository(UserAddress::class)->findByUserAndCommand($user));
         $command->setBillingAddress($this->em->getRepository(UserAddress::class)->findByUserAndBilling($user));
         $command->setCommandAt(new \DateTime('now'));
         $command->setValidate(false);
-        $command->setReference($helpers->random_str(20));
+        $command->setReference($this->helpers->random_str(5).$user->getId().'-'.$result);
         $command->setProducts($this->facture());
         $command->setTotalAmount($this->cartService->getTotalPrice());
         $command->setPaid(false);

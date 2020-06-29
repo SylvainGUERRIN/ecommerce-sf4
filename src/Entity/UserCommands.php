@@ -27,7 +27,7 @@ class UserCommands
     private $command_at;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $reference;
 
@@ -105,12 +105,12 @@ class UserCommands
         return $this;
     }
 
-    public function getReference(): ?int
+    public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    public function setReference(int $reference): self
+    public function setReference(string $reference): self
     {
         $this->reference = $reference;
 

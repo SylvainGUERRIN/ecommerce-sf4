@@ -45,20 +45,9 @@ class SiteController extends AbstractController
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
      * @return Response
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws Html2PdfException
      */
-    public function home(CategoryRepository $categoryRepository, ProductRepository $productRepository, htmlToPdfService $htmlToPdfService, UserCommandsRepository $userCommandsRepository): Response
+    public function home(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
     {
-        $user = $this->getUser();
-        $invoice = $userCommandsRepository->find(19);
-
-        $htmlToPdfService->createPDF($user, $invoice);
-
-        die();
-
         return $this->render('site/home.html.twig',[
             'categories' => $categoryRepository->findAll(),
             'products' => $productRepository->findAllWithLimit(12),

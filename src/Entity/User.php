@@ -69,6 +69,11 @@ class User implements UserInterface, \Serializable
      */
     private $lostCart;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pdf_directory;
+
     public function __construct()
     {
         $this->userCommands = new ArrayCollection();
@@ -303,6 +308,18 @@ class User implements UserInterface, \Serializable
         if ($lostCart->getUser() !== $newUser) {
             $lostCart->setUser($newUser);
         }
+
+        return $this;
+    }
+
+    public function getPdfDirectory(): ?string
+    {
+        return $this->pdf_directory;
+    }
+
+    public function setPdfDirectory(?string $pdf_directory): self
+    {
+        $this->pdf_directory = $pdf_directory;
 
         return $this;
     }

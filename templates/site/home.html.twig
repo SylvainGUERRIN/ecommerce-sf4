@@ -95,7 +95,7 @@
                         <!-- For filtering controls add -->
                         <li data-filter="all" class="btn btn-color"> Tous </li>
                         {% for categorie in categories %}
-                            <li data-filter="{{ product.category.id }}" class="btn btn-color">{{ categorie.name }}</li>
+                            <li data-filter="{{ categorie.id }}" class="btn btn-color">{{ categorie.name }}</li>
                         {% endfor %}
 {#                        <li data-filter="1" class="btn btn-color"> Livres </li>#}
 {#                        <li data-filter="2" class="btn btn-color"> Films </li>#}
