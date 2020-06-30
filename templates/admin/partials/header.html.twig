@@ -1,4 +1,5 @@
 {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+    {% set current = app.request.attributes.get("_route") %}
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Logo du site</a>
@@ -9,28 +10,28 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_dashboard') }}">Administration</a>
+                        <a class="nav-link{% if current == 'admin_dashboard' %} active{% endif %}" href="{{ path('admin_dashboard') }}">Administration</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('dashboard-products') }}">Produits</a>
+                        <a class="nav-link{% if current == 'dashboard-products' %} active{% endif %}" href="{{ path('dashboard-products') }}">Produits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('dashboard-categories') }}">Catégories</a>
+                        <a class="nav-link{% if current == 'dashboard-categories' %} active{% endif %}" href="{{ path('dashboard-categories') }}">Catégories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('dashboard-tva') }}">TVA</a>
+                        <a class="nav-link{% if current == 'dashboard-tva' %} active{% endif %}" href="{{ path('dashboard-tva') }}">TVA</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('dashboard-promos') }}">Promotions</a>
+                        <a class="nav-link{% if current == 'dashboard-promos' %} active{% endif %}" href="{{ path('dashboard-promos') }}">Promotions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('dashboard-commands') }}">Commandes</a>
+                        <a class="nav-link{% if current == 'dashboard-commands' %} active{% endif %}" href="{{ path('dashboard-commands') }}">Commandes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Other stuff</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
+                        <a href="#" class="nav-link{% if current == 'admin_profil' or current == 'adminProfil_password' %} active{% endif %} dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
                             {#                                <img src="{% if app.user.avatarurl is null %}{{ asset('avatars/user-default-64px.png') }}#}
                             {#                        {% else %}{{ asset('avatars/' ~ app.user.avatarurl) }}{% endif %}" alt="Avatar de {{ app.user.username }}" class="avatar-mini rounded-circle">#}
                             {{ app.user.firstname }}

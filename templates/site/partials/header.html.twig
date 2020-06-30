@@ -8,17 +8,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('home') }}">Accueil</a>
+                    <a class="nav-link{% if current == 'home' %} active{% endif %}" href="{{ path('home') }}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('products') }}">Nos produits</a>
+                    <a class="nav-link{% if current == 'products' %} active{% endif %}" href="{{ path('products') }}">Nos produits</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                    <a class="nav-link{% if current == 'contact' %} active{% endif %}" href="{{ path('contact') }}">Contact</a>
                 </li>
                 {% if app.user is not null %}
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
+                        <a href="#" class="nav-link{% if current == 'user_profil' or current == 'address' or current == 'order_history' or current == 'profil_password' %} active{% endif %} dropdown-toggle" data-toggle="dropdown" id="accountDropdownLink">
 {#                                <img src="{% if app.user.avatarurl is null %}{{ asset('avatars/user-default-64px.png') }}#}
 {#                        {% else %}{{ asset('avatars/' ~ app.user.avatarurl) }}{% endif %}" alt="Avatar de {{ app.user.username }}" class="avatar-mini rounded-circle">#}
                             {{ app.user.firstname }}
