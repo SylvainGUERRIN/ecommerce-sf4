@@ -60,7 +60,7 @@ class UserCommandsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->where('u.command_at <= :date')
             ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
-//            ->andWhere()
+            ->andWhere('u.sent IS NULL')
 //            ->setParameter()
             ->orderBy('u.command_at','DESC')
             ->getQuery();

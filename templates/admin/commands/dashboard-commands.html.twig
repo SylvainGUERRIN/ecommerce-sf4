@@ -6,88 +6,112 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row mt-5 mb-3">
+            <div class="col-12 mb-5 text-center">
+                <h1 class="text-center mt-5 mb-2">La liste des commandes à envoyer</h1>
+                <a href="{{ path('command_archives') }}" class="btn btn-color">Archives</a>
+            </div>
             <div class="col-12">
-                <h1 class="text-center mt-5 mb-5">La liste des commandes à envoyer</h1>
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                     <tr>
                         <th>Validation de la commande</th>
+                        <th>Paiement de la commande</th>
                         <th>Date de la commande</th>
                         <th>Référence</th>
                         <th>Produits dans la commande</th>
                         <th>Client</th>
                         <th>Adresse de livraison</th>
+                        <th>Adresse de facturation</th>
                         <th>Commande envoyée</th>
                         <th>Date de l'envoi de la commande</th>
+                        <th>Promo</th>
                         <th>Montant total</th>
                         <th>Voir la commande en détail</th>
                         <th>Supprimer la commande</th>
                     </tr>
                     </thead>
                     <tbody>
-{#                    {% if commands is not empty %}#}
-{#                    {% for product in products %}#}
-{#                        <tr>#}
-{#                            <td>{{ product.name }}</td>#}
-{#                            <td>{% if product.productImage is not null %}#}
-{#                                    <img src="{{ vich_uploader_asset(product.productImage, 'imageFile') }}" alt="image du produit" width="100px">#}
-{#                                    #}{#                                    <img src="{{ vich_uploader_asset(product, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
-{#                                {% else %}#}
-{#                                    Cet article n'a pas encore d'image#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            <td>{{ product.description | slice(0,30) }}...</td>#}
-{#                            <td>{% if product.dispo == 1 %}#}
-{#                                    Produit disponible#}
-{#                                {% else %}#}
-{#                                    Produit indisponible#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {% if product.category is not null %}#}
-{#                                    {{ product.category.name }}#}
-{#                                {% else %}#}
-{#                                    Ce produit n'a pas encore de catégorie#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            <td>{{ product.price }} €</td>#}
-{#                            <td>{{ product.quantity }}</td>#}
-{#                            <td>#}
-{#                                {% if product.tva is not null %}#}
-{#                                    {{ product.tva.name }}#}
-{#                                {% else %}#}
-{#                                    Ce produit n'a pas encore de tva#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {{ product.createdAt | date("d/m/Y H:i:s") }}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {% if product.updatedAt is not null %}#}
-{#                                    {{ product.updatedAt | date("d/m/Y H:i:s") }}#}
-{#                                {% else %}#}
-{#                                    Ce produit n'a pas encore été modifié#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                <a href="{{ path('product_edit', {'slug': product.slug}) }}" class="btn btn-color">#}
-{#                                    <i class="fas fa-edit"></i>#}
-{#                                </a>#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                <form action="{{ path('product_delete', {'slug': product.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">#}
-{#                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>#}
-{#                                </form>#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                    {% endfor %}#}
-{#                    {% else %}#}
-{#                        <tr>#}
-{#                            <td colspan="numero a mettre en fonction du nb de champs du tableau">Il n'y a pas encore de commandes enregistrées</td>#}
-{#                        </tr>#}
-{#                    {% endif %}#}
+                    {% if commands is not empty %}
+                    {% for command in commands %}
+                        <tr>
+                            <td>
+                                {% if command.validate == true %}
+                                    Commande validée
+                                {% else %}
+                                    Commande non-validée
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if command.paid == true %}
+                                    Commande payée
+                                {% else %}
+                                    Commande non-payée
+                                {% endif %}
+                            </td>
+                            <td>{{ command.commandAt|date('d-m-Y H:m') }}</td>
+                            <td>{{ command.reference }}</td>
+                            <td>
+                                {% for product in command.products.product %}
+                                    {{ product.reference }} <br>
+                                    Qté: {{ product.quantity }} <br>
+                                    <hr>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {{ command.user.firstname|capitalize }}
+                                {{ command.user.lastname|capitalize }}
+                            </td>
+                            <td>
+                                {{ command.userAddress.address }} <br>
+                                {{ command.userAddress.cp }} {{ command.userAddress.town|capitalize }}, {{ command.userAddress.country|capitalize }}
+                            </td>
+                            <td>
+                                {{ command.billingAddress.address }} <br>
+                                {{ command.billingAddress.cp }} {{ command.billingAddress.town|capitalize }}, {{ command.billingAddress.country|capitalize }}
+                            </td>
+                            <td>
+                                {% if command.sent == true %}
+                                    Commande envoyée
+                                {% else %}
+                                    Commande non-envoyée
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if command.sentAt is not null %}
+                                    {{ command.sentAt|date('d-m-Y H:m') }}
+                                {% else %}
+                                    Commande non-envoyée
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if command.promo is not null %}
+                                    {{ command.promo.name }}
+                                {% else %}
+                                    Aucunes promotions sur l'ensemble du panier
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ command.totalAmount }}€
+                            </td>
+                            <td>
+                                <a href="{{ path('command_detail', {'reference': command.reference}) }}" class="btn btn-color">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <form action="{{ path('command_delete', {'reference': command.reference}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="14">Il n'y a pas encore de commandes enregistrées</td>
+                        </tr>
+                    {% endif %}
                     </tbody>
                 </table>
             </div>
