@@ -50,7 +50,7 @@ class UserCommandsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @method Product[]
+     * @method UserCommands[]
      * @return Query
      * @throws \Exception
      */
@@ -68,7 +68,23 @@ class UserCommandsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @method Product[]
+     * @method UserCommands[]
+     * @return Query
+     * @throws \Exception
+     */
+    public function findAllArchives(): Query
+    {
+
+        return $this->createQueryBuilder('u')
+            ->where('u.command_at <= :date')
+            ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
+            ->andWhere('u.sent = TRUE')
+            ->orderBy('u.command_at','DESC')
+            ->getQuery();
+    }
+
+    /**
+     * @method UserCommands[]
      * @return Query
      * @throws \Exception
      */

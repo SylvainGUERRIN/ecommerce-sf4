@@ -9,10 +9,10 @@
     <div class="container-fluid">
         <div class="row mt-5 mb-3">
             <div class="col-12 mb-5 text-center">
-                <h1 class="text-center mt-5 mb-2">La liste des commandes à envoyer</h1>
+                <h1 class="text-center mt-5 mb-2">Liste des commandes à envoyer</h1>
                 <a href="{{ path('command_archives') }}" class="btn btn-color">Archives</a>
             </div>
-            <div class="col-12">
+            <div class="col-12 mt-5 mb-5">
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                     <tr>
@@ -28,7 +28,7 @@
                         <th>Date de l'envoi de la commande</th>
                         <th>Promo</th>
                         <th>Montant total</th>
-                        <th>Voir la commande en détail</th>
+                        <th>Confirmer l'envoi de la commande</th>
                         <th>Supprimer la commande</th>
                     </tr>
                     </thead>
@@ -101,7 +101,7 @@
                                 </a>
                             </td>
                             <td>
-                                <form action="{{ path('command_delete', {'reference': command.reference}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                                <form action="{{ path('command_delete', {'reference': command.reference}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cette commande ?')">
                                     <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>
                             </td>

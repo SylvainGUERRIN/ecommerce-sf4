@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 
 use App\Entity\UserCommands;
+use App\Form\SentUserCommandType;
 use App\Repository\ProductRepository;
 use App\Repository\UserCommandsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,20 +52,56 @@ class AdminCommandsController extends AbstractController
 
     /**
      * @Route("/command-detail/{reference}", name="command_detail")
+     * @param UserCommands $command
+     * @param Request $request
      * @return Response
      */
-    public function commandDetail(): Response
+    public function commandDetail(UserCommands $command, Request $request): Response
     {
-        return $this->render('admin/commands/command-detail.html.twig',[]);
+        //récupére la commande grâce à la reference dans l'url
+        //dd($command);
+
+        $form = $this->createForm(SentUserCommandType::class, $command);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $this->em->persist($command);
+            $this->em->flush();
+
+            $this->addFlash('success',
+                "L'envoi de la commande a bien été enregistré !"
+            );
+
+            return $this->redirectToRoute('dashboard-products');
+        }
+
+        return $this->render('admin/commands/command-detail.html.twig',[
+            'command' => $command,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
      * @Route("/command-archives", name="command_archives")
+     * @param PaginatorInterface $paginator
+     * @param UserCommandsRepository $userCommandsRepository
+     * @param Request $request
      * @return Response
+     * @throws \Exception
      */
-    public function commandArchives(): Response
+    public function commandArchives(PaginatorInterface $paginator, UserCommandsRepository $userCommandsRepository, Request $request): Response
     {
-        return $this->render('admin/commands/command-archives.html.twig',[]);
+        $commands = $paginator->paginate(
+            $userCommandsRepository->findAllArchives(),
+            $request->query->getInt('page',1),
+            5
+        );
+
+        return $this->render('admin/commands/command-archives.html.twig',[
+            'commands' => $commands
+        ]);
     }
 
     /**
