@@ -74,7 +74,7 @@ class AdminCommandsController extends AbstractController
                 "L'envoi de la commande a bien été enregistré !"
             );
 
-            return $this->redirectToRoute('dashboard-products');
+            return $this->redirectToRoute('dashboard-commands');
         }
 
         return $this->render('admin/commands/command-detail.html.twig',[

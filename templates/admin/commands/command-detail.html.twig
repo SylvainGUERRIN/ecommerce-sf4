@@ -3,18 +3,53 @@
 
 {% block body %}
     <div class="container">
-        <div class="row">
+        <div class="row mt-5 mb-5">
             <div class="col-12">
-                <h1 class="text-center">Valider l'envoi de la commande</h1>
+                <h1 class="text-center mb-5">Valider l'envoi de la commande</h1>
                 {{ form_start(form) }}
-
+                {{ form_widget(form.sent) }}
+                <span>date:</span>
+                <div class="input-group date" id="availability_date" data-target-input="nearest">
+                    {{ form_widget(form.sentAt) }}
+                    <div class="input-group-append" data-target="#availability_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-color mt-3">Confirmer l'envoi de la commande</button>
                 {{ form_end(form) }}
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-
+                <h1 class="text-center mb-5">Détail de la commande</h1>
+                <p>
+                    Référence de la commande: {{ command.reference }} <br>
+                    Commande passée le: {{ command.commandAt|date('d/m/Y') }} à {{ command.commandAt|date('H:m') }}
+                </p>
+                <p>
+                    Articles de la commande: <br>
+                    <hr>
+                    {% for product in command.products.product %}
+                        Nom du produit: <strong>{{ product.reference }}</strong> <br>
+                        Qté: <strong>{{ product.quantity }}</strong> <br>
+                        Prix HT: <strong>{{ product.priceHT }} €</strong> <br>
+                        {% if product.priceTTCWithPromo > 0 %}
+                            Prix TTC with promo: <strong>{{ product.priceTTCWithPromo }} €</strong> <br>
+                            <del>Prix TTC: <strong>{{ product.priceTTC }} €</strong></del>
+                        {% else %}
+                            Prix TTC: <strong>{{ product.priceTTC }} €</strong>
+                        {% endif %}
+                        <hr>
+                    {% endfor %}
+                    Total HT: <strong>{{ command.products.amount.totalHT }} €</strong><br>
+                    Total TTC: <strong>{{ command.totalAmount }} €</strong>
+                </p>
+{#                put command details#}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/datetimePicker.js') }}"></script>
 {% endblock %}

@@ -75,7 +75,7 @@
                                 </td>
                                 <td>
                                     {% if command.sentAt is not null %}
-                                        {{ command.sentAt|date('d-m-Y H:m') }}
+                                        {{ command.sentAt|date('d-m-Y') }}
                                     {% else %}
                                         Commande non-envoyée
                                     {% endif %}

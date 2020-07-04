@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    {% set ressources = app.request.attributes.get("_route") %}
     <meta charset="UTF-8">
     <meta name="robots" content="noindex, nofollow">
     <title>{% block title %}Blog{% endblock %}</title>
@@ -11,6 +12,14 @@
     <link rel="stylesheet" href="{{ asset('admin/css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% if ressources == 'command_detail'%}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/moment.min.js"></script>
+        <script src="{{ asset('js/fr.js') }}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+        {#            <link rel="stylesheet" href="{{ asset('css/user/bootstrap-datetimepicker.min.css') }}">#}
+    {% endif %}
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
@@ -18,7 +27,6 @@
 {% block body %}{% endblock %}
 {% include 'admin/partials/footer.html.twig' %}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
