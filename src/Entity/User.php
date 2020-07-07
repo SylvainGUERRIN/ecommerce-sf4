@@ -74,10 +74,16 @@ class User implements UserInterface, \Serializable
      */
     private $pdf_directory;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoices", mappedBy="user")
+     */
+    private $invoices;
+
     public function __construct()
     {
         $this->userCommands = new ArrayCollection();
         $this->userAddresses = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -320,6 +326,37 @@ class User implements UserInterface, \Serializable
     public function setPdfDirectory(?string $pdf_directory): self
     {
         $this->pdf_directory = $pdf_directory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invoices[]
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoices $invoice): self
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices[] = $invoice;
+            $invoice->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoices $invoice): self
+    {
+        if ($this->invoices->contains($invoice)) {
+            $this->invoices->removeElement($invoice);
+            // set the owning side to null (unless already changed)
+            if ($invoice->getUser() === $this) {
+                $invoice->setUser(null);
+            }
+        }
 
         return $this;
     }

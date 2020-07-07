@@ -1,0 +1,38 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Dashboard des factures{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5 mb-5">
+            <div class="col-12 mt-3">
+                <h1 class="text-center">Liste des utilisateurs possédant des factures</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-5 mb-5">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nom de l'utilisateur</th>
+                        <th>Factures de l'utilisateur</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>
+                                    {{ user.firstname }}
+                                </td>
+                                <td>
+                                    <a href="{{ asset('factures/5ef9f6ae777f20.82244254/172-2020-06-29.pdf') }}" target="_blank">
+                                        <i class="fas fa-file-pdf fa-2x"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

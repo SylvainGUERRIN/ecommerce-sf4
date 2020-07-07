@@ -79,10 +79,11 @@ class htmlToPdfService
             }
         }
 
-        $date = new \DateTime('now');
-        $result = $date->format('Y-m-d');
+        //don't need to use already in userCommand
+        //$date = new \DateTime('now');
+        //$result = $date->format('Y-m-d');
 
-        $filename = $invoice->getReference() . $user->getId() . '-' . $result . '.pdf';
+        $filename = $invoice->getReference() . $user->getId() . '.pdf';
 
         // e.g /var/www/project/public/factures/mypdf.pdf
         $pdfFilepath =  $publicDirectory . $user->getPdfDirectory(). '/'. $filename;

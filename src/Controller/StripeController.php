@@ -156,13 +156,14 @@ class StripeController extends AbstractController
     {
         $user = $this->getUser();
 
+        //how to protect success url to an other try ?
+        //api call with session id in the url
+
         //catch userCommand
         $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
 
         //créer la facture au format pdf
-
         $invoice = $userCommand;
-
         $htmlToPdfService->createPDF($user, $invoice);
 
         //enlever du stock en recupérant la commande sur la session
