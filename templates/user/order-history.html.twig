@@ -33,7 +33,15 @@
                                         <p>
                                             N° de commande: {{ userCommand.reference }}
                                         </p>
-                                        <a href="#" class="btn btn-color">Facture de la commande</a>
+                                        {% if userCommand.user.invoices is not empty %}
+                                            {% set urlPdf = userCommand.user.pdfDirectory %}
+                                            {% set url = 'factures/' ~ urlPdf ~ '/' ~ userCommand.reference ~ userCommand.user.id ~ '.pdf' %}
+                                            <a href="{{ asset(url) }}" target="_blank">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                            </a>
+                                        {% else %}
+                                            Il n'y a pas encore de factures.
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +56,7 @@
                                     {% else %}
                                         {% set shippingDate = userCommand.sentAt|date_modify("+3 day") %}
                                         {% if shippingDate > 'now'|date('d/m/Y') %}
-                                            Livré le: {{ shippingDate }}
+                                            Livré le: {{ shippingDate|date('d/m/Y') }}
                                         {% else %}
                                             Livraison prévue le {{ shippingDate|date('d/m/Y') }}
                                         {% endif %}

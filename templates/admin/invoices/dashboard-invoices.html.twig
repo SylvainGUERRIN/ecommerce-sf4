@@ -24,9 +24,17 @@
                                     {{ user.firstname }}
                                 </td>
                                 <td>
-                                    <a href="{{ asset('factures/5ef9f6ae777f20.82244254/172-2020-06-29.pdf') }}" target="_blank">
-                                        <i class="fas fa-file-pdf fa-2x"></i>
-                                    </a>
+                                    {% if user.invoices is not empty %}
+                                        {% set urlPdf = user.pdfDirectory %}
+                                        {% for invoice in user.invoices %}
+                                            {% set url = 'factures/' ~ urlPdf ~ '/' ~ invoice.filename %}
+                                            <a href="{{ asset(url) }}" target="_blank">
+                                                <i class="fas fa-file-pdf fa-2x"></i>
+                                            </a>
+                                        {% endfor %}
+                                    {% else %}
+                                        Cet utilisateur n'a pas encore de factures.
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

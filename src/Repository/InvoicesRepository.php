@@ -19,22 +19,20 @@ class InvoicesRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoices::class);
     }
 
-    // /**
-    //  * @return Invoices[] Returns an array of Invoices objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $user
+     * @return Invoices[] Returns an array of Invoices objects
+     */
+    public function findByUser($user)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('i.user = :val')
+            ->setParameter('val', $user)
+            ->orderBy('i.invoice_at', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Invoices

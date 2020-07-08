@@ -4,6 +4,8 @@
 namespace App\Service;
 
 
+use App\Entity\Invoices;
+use App\Repository\InvoicesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
@@ -84,6 +86,14 @@ class htmlToPdfService
         //$result = $date->format('Y-m-d');
 
         $filename = $invoice->getReference() . $user->getId() . '.pdf';
+
+        //create invoice in invoices table
+        $invoices = new Invoices();
+        $invoices->setUser($user);
+        $invoices->setFilename($filename);
+        $invoices->setInvoiceAt(new \DateTime('now'));
+        $this->em->persist($invoices);
+        $this->em->flush();
 
         // e.g /var/www/project/public/factures/mypdf.pdf
         $pdfFilepath =  $publicDirectory . $user->getPdfDirectory(). '/'. $filename;

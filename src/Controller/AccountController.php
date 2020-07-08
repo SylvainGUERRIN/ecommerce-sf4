@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\UserAddress;
 use App\Form\UserAddressType;
+use App\Repository\InvoicesRepository;
 use App\Repository\UserAddressRepository;
 use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
@@ -202,8 +203,6 @@ class AccountController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-//        $userCommands = $userCommandsRepository->findByUser($user);
-//        dump($userCommands);
         $userCommands = $paginator->paginate(
             $userCommandsRepository->findByUser($user),
             $request->query->getInt('page',1),
@@ -213,18 +212,6 @@ class AccountController extends AbstractController
         return $this->render('user/order-history.html.twig',[
             'quantityProducts' => $this->quantityProducts,
             'userCommands' => $userCommands,
-        ]);
-    }
-
-    /**
-     * page de la liste des factures de l'utilisateur
-     * @Route("/mes-factures", name="invoices")
-     * @return Response
-     */
-    public function invoices(): Response
-    {
-        return $this->render('user/invoices.html.twig',[
-            'quantityProducts' => $this->quantityProducts,
         ]);
     }
 }
