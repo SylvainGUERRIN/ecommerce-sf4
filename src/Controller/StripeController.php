@@ -17,9 +17,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -138,12 +145,19 @@ class StripeController extends AbstractController
      * @param SessionInterface $session
      * @param ProductRepository $productRepository
      * @param htmlToPdfService $htmlToPdfService
+     * @param HttpClientInterface $client
+     * @param Request $request
      * @return Response
-     * @throws NonUniqueResultException
      * @throws Html2PdfException
      * @throws LoaderError
+     * @throws NonUniqueResultException
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
      */
     public function success(
         CartService $cartService,
@@ -151,16 +165,46 @@ class StripeController extends AbstractController
         LostCartRepository $lostCartRepository,
         SessionInterface $session,
         ProductRepository $productRepository,
-        htmlToPdfService $htmlToPdfService
+        htmlToPdfService $htmlToPdfService,
+        HttpClientInterface $client,
+        Request $request
     ): Response
     {
         $user = $this->getUser();
 
-        //how to protect success url to an other try ?
-        //api call with session id in the url
-
-        //catch userCommand
+        //catch userCommand and verify if exists
         $userCommand = $userCommandsRepository->findByUserValidateNoPaid($user);
+        if(empty($userCommand)){
+            $sessionID = $request->query->get('session_id');
+            $secretKEY = $_ENV['STRIPE_SECRET_KEY'];
+            //retrouve toutes les sessions
+            /*$response = $client->request('GET','https://api.stripe.com/v1/checkout/sessions',[
+                'auth_basic' => [$secretKEY]
+            ]);*/
+
+            $responseSessionID = $client->request('GET','https://api.stripe.com/v1/checkout/sessions/'.$sessionID,[
+                'auth_basic' => [$secretKEY]
+            ]);
+
+            $statusCode = $responseSessionID->getStatusCode();
+
+            if($statusCode === 200){
+
+                $content = $responseSessionID->toArray();
+                $paymentIntent = $content['payment_intent'];
+                //dump($paymentIntent);
+                $responseIntent = $client->request('GET','https://api.stripe.com/v1/payment_intents/'.$paymentIntent,[
+                    'auth_basic' => [$secretKEY]
+                ]);
+                $contentIntent = $responseIntent->toArray();
+                if($contentIntent['status'] === 'succeeded'){
+                    return $this->redirectToRoute('user_profil');
+                }
+                //dump($responseIntent->toArray());
+            }
+
+            return $this->redirectToRoute('home');
+        }
 
         //créer la facture au format pdf
         $invoice = $userCommand;
