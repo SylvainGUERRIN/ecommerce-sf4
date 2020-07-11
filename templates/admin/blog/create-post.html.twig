@@ -2,5 +2,18 @@
 {% block title %}Créer un article pour le blog{% endblock %}
 
 {% block body %}
-
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-5 mb-5">
+                {{ form_start(form) }}
+                {{ form_row(form.title) }}
+                {{ form_row(form.imageFile) }}
+                {{ form_row(form.content) }}
+                {{ form_row(form.excerpt) }}
+                {{ form_row(form.refDescription) }}
+                <button type="submit" class="btn btn-color">Enregistrer le nouvel article</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

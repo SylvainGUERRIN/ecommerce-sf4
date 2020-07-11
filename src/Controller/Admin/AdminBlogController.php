@@ -3,7 +3,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Post;
+use App\Form\PostType;
 use App\Repository\PostRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +21,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminBlogController extends AbstractController
 {
+    protected $em;
+
+    /**
+     * AdminBlogController constructor.
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @Route("/", name="dashboard-blog")
      * @param PaginatorInterface $paginator
@@ -41,12 +55,33 @@ class AdminBlogController extends AbstractController
 
     /**
      * @Route("/create-post", name="create_post")
+     * @param Request $request
      * @return Response
      */
-    public function createPost(): Response
+    public function createPost(Request $request): Response
     {
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
 
-        return $this->render('admin/blog/create-post.html.twig');
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $post->setPostCreatedAt(new \DateTime('now'));
+
+            $this->em->persist($post);
+            $this->em->flush();
+
+            $this->addFlash('success',
+                "L'article <strong>{$post->getTitle()}</strong> a bien été enregistrée !"
+            );
+            return $this->redirectToRoute('dashboard-blog', [
+                'slug' => $post->getSlug()
+            ]);
+        }
+
+        return $this->render('admin/blog/create-post.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 
     /**

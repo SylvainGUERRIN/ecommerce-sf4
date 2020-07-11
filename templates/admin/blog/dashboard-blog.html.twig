@@ -2,5 +2,86 @@
 {% block title %}Dashboard Blog{% endblock %}
 
 {% block body %}
-
+    <div class="container">
+        <div class="row mt-5 mb-3">
+            <div class="col-12 text-center">
+                <a href="{{ path('create_post') }}" class="btn btn-color">Créer un nouvel article</a>
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-12">
+                <h1 class="text-center mt-5 mb-5">La liste des articles</h1>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Image</th>
+                        <th>Extrait</th>
+                        <th>Date de création</th>
+                        <th>Date de modification</th>
+                        <th>Description référencement</th>
+                        <th>editer</th>
+                        <th>supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if posts is not empty %}
+                        {% for post in posts %}
+                            <tr>
+                                <td>{{ post.title }}</td>
+                                <td>{% if post.imgUrl is not null %}
+                                        <img src="{{ vich_uploader_asset(post, 'imageFile') }}" alt="image du produit" width="100px">
+                                        {#                                    <img src="{{ vich_uploader_asset(post, 'imageFile') | imagine_filter('thumb') }}" alt="image de l'article">#}
+                                    {% else %}
+                                        Cet article n'a pas encore d'image
+                                    {% endif %}
+                                </td>
+                                <td>{{ post.excerpt | slice(0,30) }}</td>
+{#                                <td>#}
+{#                                    {% if post.category is not null %}#}
+{#                                        {{ post.category.name }}#}
+{#                                    {% else %}#}
+{#                                        Ce produit n'a pas encore de catégorie#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+                                <td>
+                                    {{ post.postCreatedAt | date("d/m/Y H:i:s") }}
+                                </td>
+                                <td>
+                                    {% if post.postModifiedAt is not null %}
+                                        {{ post.postModifiedAt | date("d/m/Y H:i:s") }}
+                                    {% else %}
+                                        Ce produit n'a pas encore été modifié
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ post.refDescription }}
+                                </td>
+                                <td>
+{#                                    <a href="{{ path('post_edit', {'slug': post.slug}) }}" class="btn btn-color">#}
+{#                                        <i class="fas fa-edit"></i>#}
+{#                                    </a>#}
+                                </td>
+                                <td>
+{#                                    <form action="{{ path('post_delete', {'slug': post.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">#}
+{#                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>#}
+{#                                    </form>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8">Il n'y a pas encore d'articles en base de données</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 nav-pagination">
+                {{ knp_pagination_render(posts) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

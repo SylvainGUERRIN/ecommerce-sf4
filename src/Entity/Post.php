@@ -2,10 +2,22 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     message="Un autre article posséde déjà ce titre, merci de le modifier"
+ * )
+ * @Vich\Uploadable()
  */
 class Post
 {
@@ -25,6 +37,15 @@ class Post
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @var File|null
+     * @Assert\Image(
+     *     mimeTypes={"image/jpeg", "image/jpg", "image/png", "image/svg"}
+     * )
+     * @Vich\UploadableField(mapping="article_image", fileNameProperty="img_url")
+     */
+    private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -155,5 +176,47 @@ class Post
         $this->ref_description = $ref_description;
 
         return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File|null $imageFile
+     * @return Post
+     * @throws \Exception
+     */
+    public function setImageFile(?File $imageFile): Post
+    {
+        $this->imageFile = $imageFile;
+        if($this->imageFile instanceof UploadedFile){
+            $this->post_modified_at = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    /**
+     * Permet d'initialiser un slug
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
+     * @return void
+     */
+    public function initializeSlug(): void
+    {
+        if(empty($this->slug)){
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
+        if(!empty($this->slug)){
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
     }
 }
