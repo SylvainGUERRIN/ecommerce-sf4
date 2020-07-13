@@ -58,14 +58,14 @@
                                     {{ post.refDescription }}
                                 </td>
                                 <td>
-{#                                    <a href="{{ path('post_edit', {'slug': post.slug}) }}" class="btn btn-color">#}
-{#                                        <i class="fas fa-edit"></i>#}
-{#                                    </a>#}
+                                    <a href="{{ path('edit_post', {'slug': post.slug}) }}" class="btn btn-color">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                                 </td>
                                 <td>
-{#                                    <form action="{{ path('post_delete', {'slug': post.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">#}
-{#                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>#}
-{#                                    </form>#}
+                                    <form action="{{ path('delete_post', {'slug': post.slug}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}

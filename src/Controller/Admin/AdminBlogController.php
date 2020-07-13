@@ -85,21 +85,48 @@ class AdminBlogController extends AbstractController
     }
 
     /**
-     * @Route("/edit-post", name="edit_post")
+     * @Route("/edit-post/{slug}", name="edit_post")
+     * @param Request $request
+     * @param Post $post
+     * @param $slug
      * @return Response
      */
-    public function editPost(): Response
+    public function editPost(Request $request, Post $post, $slug): Response
     {
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
 
-        return $this->render('admin/blog/edit-post.html.twig');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post->setPostModifiedAt(new \DateTime('now'));
+            $this->em->persist($post);
+            $this->em->flush();
+
+            $this->addFlash('success',
+                "L'article <strong>{$post->getTitle()}</strong> a bien été modifié !"
+            );
+            return $this->redirectToRoute('dashboard-blog');
+        }
+
+        return $this->render('admin/blog/edit-post.html.twig',[
+            'form' => $form->createView(),
+            'title' => $slug
+        ]);
     }
 
     /**
-     * @Route("/delete-post", name="delete_post")
+     * @Route("/delete-post/{slug}", name="delete_post")
+     * @param Post $post
      * @return Response
      */
-    public function deletePost(): Response
+    public function deletePost(Post $post): Response
     {
+        $this->em->remove($post);
+        $this->em->flush();
+
+        $this->addFlash(
+            'success',
+            "L'article <strong>{$post->getTitle()}</strong> a  bien été supprimé !"
+        );
 
         return $this->redirectToRoute('dashboard-blog');
     }

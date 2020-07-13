@@ -1,0 +1,62 @@
+{% extends 'admin/partials/base.html.twig' %}
+{% block title %}Dashboard Commentaires{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5 mb-5">
+            <div class="col-12">
+                <h1 class="text-center mt-5 mb-5">La liste des commentaires</h1>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>Commentaire de l'article</th>
+                        <th>Mail de l'auteur</th>
+                        <th>Extrait du contenu du commentaire</th>
+                        <th>Validation</th>
+                        <th>Date du commentaire</th>
+                        <th>supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if comments is not empty %}
+                        {% for comment in comments %}
+                            <tr>
+                                <td>{{ comment.post.title }}</td>
+                                <td>
+                                    {{ comment.mail }}
+                                </td>
+                                <td>{{ comment.content | slice(0,30) }}</td>
+                                <td>
+                                    {% if comment.valid == true %}
+                                        Ce commentaire a déjà été validé.
+                                    {% else %}
+                                        Ce commentaire n'a pas encore été validé.
+                                        faire btn avec appel ajax
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ comment.commentAt | date("d/m/Y H:i:s") }}
+                                </td>
+                                <td>
+                                    <form action="{{ path('delete_comment', {'slug': comment.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                                        <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Il n'y a pas encore de commentaires en base de données</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 nav-pagination">
+                {{ knp_pagination_render(comments) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

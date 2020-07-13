@@ -8,6 +8,7 @@ use App\Form\AccountType;
 use App\Form\InscriptionType;
 use App\Form\PasswordUpdateType;
 use App\Repository\CategoryRepository;
+use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserCommandsRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -182,6 +183,7 @@ class AdminAccountController extends AbstractController
      * @param ProductRepository $productRepository
      * @param UserCommandsRepository $userCommandsRepository
      * @param CategoryRepository $categoryRepository
+     * @param PostRepository $postRepository
      * @return Response
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -189,10 +191,13 @@ class AdminAccountController extends AbstractController
     public function administrate(
         ProductRepository $productRepository,
         UserCommandsRepository $userCommandsRepository,
-        CategoryRepository $categoryRepository): Response
+        CategoryRepository $categoryRepository,
+        PostRepository $postRepository
+    ): Response
     {
         return $this->render('admin/account/dashboard.html.twig', [
             'nbProducts' => $productRepository->countNbProducts(),
+            'nbPosts' => $postRepository->countNbPosts(),
             'nbCommands' => $userCommandsRepository->countNbUserCommands(),
             'nbCategories' => $categoryRepository->countNbCategories()
         ]);
