@@ -49,4 +49,19 @@ class PostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findLatestWithLimit(int $limit)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.post_created_at','DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findPostWithSlug($slug)
+    {
+
+    }
 }

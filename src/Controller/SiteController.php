@@ -7,24 +7,17 @@ use App\Data\SearchData;
 use App\Form\ContactType;
 use App\Form\SearchType;
 use App\Repository\CategoryRepository;
+use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
-use App\Repository\UserCommandsRepository;
 use App\Service\CartService;
-use App\Service\htmlToPdfService;
-use App\Service\PdfService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class SiteController extends AbstractController
 {
@@ -44,15 +37,21 @@ class SiteController extends AbstractController
      * @Route("/", name="home")
      * @param CategoryRepository $categoryRepository
      * @param ProductRepository $productRepository
+     * @param PostRepository $postRepository
      * @return Response
      */
-    public function home(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
+    public function home(
+        CategoryRepository $categoryRepository,
+        ProductRepository $productRepository,
+        PostRepository $postRepository
+    ): Response
     {
         return $this->render('site/home.html.twig',[
             'categories' => $categoryRepository->findAll(),
             'products' => $productRepository->findAllWithLimit(12),
             'latestProducts' => $productRepository->findLatestWithLimit(6),
-            'quantityProducts' => $this->quantityProducts
+            'quantityProducts' => $this->quantityProducts,
+            'posts' => $postRepository->findLatestWithLimit(6),
         ]);
     }
 
@@ -155,6 +154,20 @@ class SiteController extends AbstractController
             'slug' => $slug,
             'product' => $productRepository->findProductWithSlug($slug),
             'quantityProducts' => $this->quantityProducts
+        ]);
+    }
+
+    /**
+     * @Route("/article/{slug}", name="single-post")
+     * @param $slug
+     * @param PostRepository $postRepository
+     * @return Response
+     */
+    public function singlePost($slug, PostRepository $postRepository): Response
+    {
+        return $this->render('site/blog/show.html.twig',[
+            'slug' => $slug,
+            'post' => $postRepository->findPostWithSlug($slug),
         ]);
     }
 
