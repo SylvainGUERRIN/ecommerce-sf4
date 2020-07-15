@@ -50,6 +50,10 @@ class PostRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @param int $limit
+     * @return int|mixed|string
+     */
     public function findLatestWithLimit(int $limit)
     {
         return $this->createQueryBuilder('p')
@@ -60,8 +64,18 @@ class PostRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @param $slug
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
     public function findPostWithSlug($slug)
     {
-
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 }

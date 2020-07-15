@@ -4,9 +4,12 @@ namespace App\Controller;
 
 
 use App\Data\SearchData;
+use App\Entity\Comment;
+use App\Form\CommentType;
 use App\Form\ContactType;
 use App\Form\SearchType;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
@@ -161,13 +164,55 @@ class SiteController extends AbstractController
      * @Route("/article/{slug}", name="single-post")
      * @param $slug
      * @param PostRepository $postRepository
+     * @param CommentRepository $commentRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function singlePost($slug, PostRepository $postRepository): Response
+    public function singlePost(
+        $slug,
+        PostRepository $postRepository,
+        CommentRepository $commentRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response
     {
+        $post = $postRepository->findPostWithSlug($slug);
+
+        $comments = $paginator->paginate(
+            $commentRepository->findByPost($post),
+            $request->query->getInt('page', 1),
+            10);
+
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            /*$comment->setArticle($articleRepository->findOneBySlug($slugarticle));
+            $comment->setCommentCreatedAt(new \DateTime());
+            $comment->setActivation(0);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre commentaire à été ajouté ! Nous le traiteront dans les plus brefs délais.'
+            );
+            return $this->redirectToRoute('show_article', [
+                'slugarticle' => $article->getSlug(),
+            ]);*/
+        }
+
         return $this->render('site/blog/show.html.twig',[
             'slug' => $slug,
-            'post' => $postRepository->findPostWithSlug($slug),
+            'post' => $post,
+            'comments' => $comments,
+            'form' => $form->createView(),
         ]);
     }
 

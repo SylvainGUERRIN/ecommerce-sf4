@@ -48,4 +48,18 @@ class CommentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @param int|null $post
+     * @return int|mixed|string
+     */
+    public function findByPost(?int $post)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.post = :post')
+            ->setParameter('post', $post)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
