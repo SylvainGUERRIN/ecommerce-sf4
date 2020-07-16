@@ -191,9 +191,9 @@ class SiteController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            /*$comment->setArticle($articleRepository->findOneBySlug($slugarticle));
-            $comment->setCommentCreatedAt(new \DateTime());
-            $comment->setActivation(0);
+            $comment->setPost($post);
+            $comment->setCommentAt(new \DateTime());
+            $comment->setValid(false);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
@@ -203,7 +203,7 @@ class SiteController extends AbstractController
                 'success',
                 'Votre commentaire à été ajouté ! Nous le traiteront dans les plus brefs délais.'
             );
-            return $this->redirectToRoute('show_article', [
+            /*return $this->redirectToRoute('show_article', [
                 'slugarticle' => $article->getSlug(),
             ]);*/
         }

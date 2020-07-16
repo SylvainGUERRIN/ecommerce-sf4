@@ -50,10 +50,10 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int|null $post
+     * @param $post
      * @return int|mixed|string
      */
-    public function findByPost(?int $post)
+    public function findByPost($post)
     {
         return $this->createQueryBuilder('c')
             ->where('c.post = :post')
