@@ -41,6 +41,11 @@ class Comment
      */
     private $comment_at;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +107,18 @@ class Comment
     public function setCommentAt(\DateTimeInterface $comment_at): self
     {
         $this->comment_at = $comment_at;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

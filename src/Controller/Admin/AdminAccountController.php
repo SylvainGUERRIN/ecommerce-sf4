@@ -8,6 +8,7 @@ use App\Form\AccountType;
 use App\Form\InscriptionType;
 use App\Form\PasswordUpdateType;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserCommandsRepository;
@@ -184,6 +185,7 @@ class AdminAccountController extends AbstractController
      * @param UserCommandsRepository $userCommandsRepository
      * @param CategoryRepository $categoryRepository
      * @param PostRepository $postRepository
+     * @param CommentRepository $commentRepository
      * @return Response
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -192,13 +194,15 @@ class AdminAccountController extends AbstractController
         ProductRepository $productRepository,
         UserCommandsRepository $userCommandsRepository,
         CategoryRepository $categoryRepository,
-        PostRepository $postRepository
+        PostRepository $postRepository,
+        CommentRepository $commentRepository
     ): Response
     {
         return $this->render('admin/account/dashboard.html.twig', [
             'nbProducts' => $productRepository->countNbProducts(),
             'nbPosts' => $postRepository->countNbPosts(),
             'nbCommands' => $userCommandsRepository->countNbUserCommands(),
+            'nbComments' => $commentRepository->countNbComments(),
             'nbCategories' => $categoryRepository->countNbCategories()
         ]);
     }

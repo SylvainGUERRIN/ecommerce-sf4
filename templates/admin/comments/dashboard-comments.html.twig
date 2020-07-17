@@ -30,15 +30,14 @@
                                     {% if comment.valid == true %}
                                         Ce commentaire a déjà été validé.
                                     {% else %}
-                                        Ce commentaire n'a pas encore été validé.
-                                        faire btn avec appel ajax
+                                        <button class="btn btn-color valid-comment-button">Valider le commentaire</button>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {{ comment.commentAt | date("d/m/Y H:i:s") }}
                                 </td>
                                 <td>
-                                    <form action="{{ path('delete_comment', {'slug': comment.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                                    <form action="{{ path('delete_comment', {'id': comment.id}) }}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
                                         <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -59,4 +58,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('admin/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('admin/js/comments.js') }}"></script>
 {% endblock %}

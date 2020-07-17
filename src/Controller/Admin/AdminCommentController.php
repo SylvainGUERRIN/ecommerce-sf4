@@ -55,6 +55,14 @@ class AdminCommentController extends AbstractController
     }
 
     /**
+     * @Route("/ajax/valid-comment", name="valid-comment")
+     */
+    public function validComment()
+    {
+
+    }
+
+    /**
      * @Route("/delete-comment/{id}", name="delete_comment")
      * @param Comment $comment
      * @return Response
