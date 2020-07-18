@@ -27,11 +27,13 @@
                                 </td>
                                 <td>{{ comment.content | slice(0,30) }}</td>
                                 <td>
-                                    {% if comment.valid == true %}
-                                        Ce commentaire a déjà été validé.
-                                    {% else %}
-                                        <button class="btn btn-color valid-comment-button">Valider le commentaire</button>
-                                    {% endif %}
+                                    <button id="{{ comment.id }}" class="btn btn-color {% if comment.valid == true %}unvalid-comment-button{% else %}valid-comment-button{% endif %}">
+                                        {% if comment.valid == true %}
+                                            Retirer le commentaire
+                                        {% else %}
+                                            Valider le commentaire
+                                        {% endif %}
+                                    </button>
                                 </td>
                                 <td>
                                     {{ comment.commentAt | date("d/m/Y H:i:s") }}

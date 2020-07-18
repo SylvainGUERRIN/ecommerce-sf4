@@ -58,6 +58,7 @@ class CommentRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->where('c.post = :post')
             ->setParameter('post', $post)
+            ->AndWhere('c.valid = true')
             ->getQuery()
             ->getResult()
             ;

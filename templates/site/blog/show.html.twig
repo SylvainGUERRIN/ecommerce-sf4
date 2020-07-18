@@ -57,13 +57,9 @@
                     {% if comment.valid == true %}
                         <div class="block-comment mb-5">
                         <h6>Le {{ comment.commentAt | date('d/m/Y') }} à {{ comment.commentAt | date('H:m:i') }}
-                            commentaire de {{ comment.name }}</h6>
+                            commentaire de <strong>{{ comment.name }}</strong></h6>
                         <p>{{ comment.content }}</p>
                         </div>
-                    {% else %}
-                        <p>
-                            Commentaire en cours de validation.
-                        </p>
                     {% endif %}
                 {% endfor %}
                 </div>

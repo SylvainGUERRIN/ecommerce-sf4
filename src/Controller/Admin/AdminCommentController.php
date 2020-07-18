@@ -11,6 +11,8 @@ use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,10 +58,50 @@ class AdminCommentController extends AbstractController
 
     /**
      * @Route("/ajax/valid-comment", name="valid-comment")
+     * @param Request $request
+     * @param CommentRepository $commentRepository
+     * @return JsonResponse|RedirectResponse
      */
-    public function validComment()
+    public function validComment(Request $request, CommentRepository $commentRepository)
     {
+        if($request->isXmlHttpRequest()) {
+            $data = '';
+            $id = $request->get('value');
+            $comment = $commentRepository->find($id);
 
+            if($comment !== null && $comment->getValid() === false){
+                $comment->setValid(true);
+                $this->em->flush();
+                return new JsonResponse($data = $id, JsonResponse::HTTP_OK);
+            }
+
+            return new JsonResponse($data = 'Le commentaire a déjà été validé', JsonResponse::HTTP_OK);
+        }
+        return $this->redirectToRoute('admin_dashboard');
+    }
+
+    /**
+     * @Route("/ajax/unvalid-comment", name="unvalid-comment")
+     * @param Request $request
+     * @param CommentRepository $commentRepository
+     * @return JsonResponse|RedirectResponse
+     */
+    public function unvalidComment(Request $request, CommentRepository $commentRepository)
+    {
+        if($request->isXmlHttpRequest()) {
+            $data = '';
+            $id = $request->get('value');
+            $comment = $commentRepository->find($id);
+
+            if($comment !== null && $comment->getValid() === true){
+                $comment->setValid(false);
+                $this->em->flush();
+                return new JsonResponse($data = $id, JsonResponse::HTTP_OK);
+            }
+
+            return new JsonResponse($data = 'Le commentaire a déjà été retiré', JsonResponse::HTTP_OK);
+        }
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**

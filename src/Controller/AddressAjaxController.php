@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserAddressRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,7 @@ class AddressAjaxController extends AbstractController
      * @param UserAddressRepository $userAddressRepository
      * @return JsonResponse
      * @Route("/address/add/check/{addressID}", name="add_check_to_address")
+     * @throws NonUniqueResultException
      */
     public function addCheckToAddress($addressID, Request $request, UserAddressRepository $userAddressRepository): ? JsonResponse
     {
