@@ -4,7 +4,9 @@
 namespace App\Form;
 
 
+use App\Entity\Category;
 use App\Entity\Post;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -43,6 +45,12 @@ class PostType extends AbstractType
             ->add('excerpt', TextType::class, [
                 'label' => "Extrait de la description de l'article / texte d'accroche",
                 'attr' => ['placeholder' => "Mettez un extrait (il ne doit pas dépasser 255 caractères) de l'article."],
+            ])
+            ->add('category', EntityType::class, [
+                'label' => "Choississez la catégorie correspondant a cet article",
+                'required' => false,
+                'class' => Category::class,
+                'choice_label' => 'name',
             ])
             ->add('refDescription', TextType::class,[
                 'label' => "Mettre une bref description pour le référencement",

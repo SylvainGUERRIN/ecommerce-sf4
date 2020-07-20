@@ -134,6 +134,38 @@ class SiteController extends AbstractController
     }
 
     /**
+     * @Route("/articles/categorie/{slug}", name="posts_category")
+     * @param $slug
+     * @param CategoryRepository $categoryRepository
+     * @param PaginatorInterface $paginator
+     * @param PostRepository $postRepository
+     * @param Request $request
+     * @return Response
+     * @throws NonUniqueResultException
+     * @throws \Exception
+     */
+    public function postCategory(
+        $slug,
+        CategoryRepository $categoryRepository,
+        PaginatorInterface $paginator,
+        PostRepository $postRepository,
+        Request $request
+    ): Response
+    {
+        $category = $categoryRepository->findCategoryWithSlug($slug);
+        $posts = $paginator->paginate(
+            $postRepository->findAllRecentWithCategory($category),
+            $request->query->getInt('page',1),
+            8
+        );
+        return $this->render('site/posts-category.html.twig',[
+            'slug' => $slug,
+            'posts' => $posts,
+            'quantityProducts' => $this->quantityProducts
+        ]);
+    }
+
+    /**
      * page d'un produit dans le détail
      * @Route("/produit/{slug}", name="single-product")
      * @param $slug

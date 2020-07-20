@@ -1,0 +1,50 @@
+{% extends 'site/partials/base.html.twig' %}
+
+{% block title %}Catégorie {{ slug }} - Ecommerce{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center mt-5 mb-5">
+                <h1>Les articles de la catégorie {{ slug }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-xs-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="card category-post mb-3">
+                        <div class="card-img">
+                            {% if post.imgUrl is not null %}
+                                <img class="card-img-top"
+                                     src="{{ vich_uploader_asset(post, 'imageFile') }}"
+                                     alt="Image du produit">
+                            {% else %}
+                                <img class="card-img-top" src="{{ asset('assets/produits/default.png') }}" alt="image par défaut pour un produit">
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title text-center">{{ post.title }}</h4>
+                            <p class="card-text text-justify">
+                                {{ post.excerpt }}
+                            </p>
+                            <div class="text-center">
+                                <a href="{{ path('single-post', {'slug': post.slug}) }}"
+                                   class="btn btn-color">En savoir plus</a>
+                            </div>
+                            <div class="text-center mt-4">
+                                <strong class="text-muted text-primary text-italic">
+                                    Article posté le: <br> {{ post.postCreatedAt|date('d m Y') }} à {{ post.postCreatedAt|date('h:m') }}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-12 nav-pagination">
+                {{ knp_pagination_render(posts) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

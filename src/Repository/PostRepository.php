@@ -78,4 +78,22 @@ class PostRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    /**
+     * @method Post[]
+     * @param $category
+     * @return Query
+     * @throws \Exception
+     */
+    public function findAllRecentWithCategory($category): Query
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.post_created_at <= :date')
+            ->setParameter('date', new \DateTime(date('Y-m-d H:i:s')))
+            ->andWhere('p.category = :category')
+            ->setParameter('category', $category)
+            ->orderBy('p.post_created_at','DESC')
+            ->getQuery();
+//            ->getResult();
+    }
 }

@@ -189,15 +189,24 @@
                                 <p class="text text-muted text-justify">
                                     {{ post.excerpt }}
                                 </p>
-{#                                <div>#}
-{#                                    <em class="text-muted text-primary text-italic">#}
-{#                                        {{ product.category.name }}#}
-{#                                    </em>#}
-{#                                </div>#}
                                 <div class="text-center">
-                                    <a href="{{ path('single-post', {'slug': post.slug}) }}" class="btn btn-color mt-5">
+                                    <a href="{{ path('single-post', {'slug': post.slug}) }}" class="btn btn-color mt-2 mb-5">
                                         En savoir plus
                                     </a>
+                                </div>
+                                <div>
+                                    <strong class="text-muted text-primary text-italic">
+                                        Article posté le: {{ post.postCreatedAt|date('d m Y') }} à {{ post.postCreatedAt|date('h:m') }}
+                                    </strong> <br>
+                                    <em class="text-muted text-primary text-italic">
+                                        {% if post.category is not null %}
+                                            Catégorie:
+                                            <a href="{{ path('posts_category', {'slug': post.category.slug}) }}"
+                                               class="btn btn-color">{{ post.category.name }}</a>
+                                        {% else %}
+                                            Cet article n'a pas encore de catégorie.
+                                        {% endif %}
+                                    </em>
                                 </div>
                             </div>
                         </div>

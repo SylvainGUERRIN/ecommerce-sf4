@@ -24,12 +24,15 @@
         </div>
         <div class="row">
             <div class="col-12 text-center">
-                <p>Tags:
-{#                    {% for postTag in postTags %}#}
-{#                        <a class="btn btn-color mb-3" href="{{ path('categorie_show', {'slugcat': postTag.slug}) }}">{{ postTag.name }}</a>#}
-{#                    {% endfor %}#}
+                <p>
+                    {% if post.category is not null %}
+                        Catégorie: <br>
+                        <a class="btn btn-color mb-3" href="{{ path('posts_category', {'slug': post.category.slug}) }}">{{ post.category.name }}</a>
+                    {% else %}
+                        Cet article n'a pas encore de catégorie.
+                    {% endif %}
                 </p>
-{#                <p>Auteur: {{ post.user.username }} <br> Publié le: {{ post.postCreatedAt| date('d/m/Y') }}</p>#}
+                <p>Publié le: {{ post.postCreatedAt| date('d/m/Y') }} à {{ post.postCreatedAt| date('h:m') }}</p>
             </div>
         </div>
         <hr>

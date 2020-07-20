@@ -17,6 +17,7 @@
                         <th>Titre</th>
                         <th>Image</th>
                         <th>Extrait</th>
+                        <th>Catégorie de l'article</th>
                         <th>Date de création</th>
                         <th>Date de modification</th>
                         <th>Description référencement</th>
@@ -37,6 +38,13 @@
                                     {% endif %}
                                 </td>
                                 <td>{{ post.excerpt | slice(0,30) }}</td>
+                                <td>
+                                    {% if post.category is not null %}
+                                        {{ post.category }}
+                                    {% else %}
+                                        Cet article ne posséde pas encore catégorie.
+                                    {% endif %}
+                                </td>
 {#                                <td>#}
 {#                                    {% if post.category is not null %}#}
 {#                                        {{ post.category.name }}#}
@@ -71,7 +79,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="8">Il n'y a pas encore d'articles en base de données</td>
+                            <td colspan="9">Il n'y a pas encore d'articles en base de données</td>
                         </tr>
                     {% endif %}
                     </tbody>
