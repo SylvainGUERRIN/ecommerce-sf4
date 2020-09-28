@@ -78,6 +78,9 @@
     "doctrine/reflection": {
         "version": "1.2.1"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "dompdf/dompdf": {
         "version": "v0.8.5"
     },
@@ -87,9 +90,6 @@
     "imagine/imagine": {
         "version": "1.2.3"
     },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
-    },
     "jms/metadata": {
         "version": "2.1.0"
     },
@@ -98,6 +98,9 @@
     },
     "knplabs/knp-paginator-bundle": {
         "version": "v5.2.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
     },
     "liip/imagine-bundle": {
         "version": "1.8",
@@ -226,6 +229,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.4.7"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.4.7"
@@ -389,6 +395,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.15.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
     },
     "symfony/process": {
         "version": "v4.4.7"
@@ -556,6 +565,9 @@
         "files": [
             "./config/packages/vich_uploader.yaml"
         ]
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.8.0"
